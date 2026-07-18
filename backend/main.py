@@ -35,6 +35,10 @@ VERTICALS = ("telco", "energy", "insurance")  # water is info-only, no endpoint
 # Streamed to the client when claude -p fails before any token — never a stage error.
 FALLBACK_REPLY = "oprosti, trenutno ne morem do podatkov. probaj se enkrat cez par sekund."
 
+# Chat model: default (unset) uses the CLI default (opus) — the latency delta to the
+# faster tiers isn't worth it here. Tunable via env (e.g. FRUGL_CHAT_MODEL=haiku).
+CHAT_MODEL = os.environ.get("FRUGL_CHAT_MODEL") or None
+
 app = FastAPI(title="Frugl calculator API", version="0.3.0")
 
 _CATALOG = catalog_module.load()  # static grounding data, load once
@@ -133,7 +137,7 @@ async def chat(
         got_token = False
         full = []
         try:
-            async for chunk in llm_module.stream(prompt):
+            async for chunk in llm_module.stream(prompt, model=CHAT_MODEL):
                 got_token = True
                 full.append(chunk)
                 yield _sse({"type": "token", "text": chunk})

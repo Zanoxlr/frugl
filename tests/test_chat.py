@@ -108,7 +108,7 @@ def client():
 
 
 def _fake_stream(chunks, raise_after=None):
-    async def gen(prompt, *, timeout=45):
+    async def gen(prompt, *, timeout=45, model=None):
         for i, c in enumerate(chunks):
             if raise_after is not None and i == raise_after:
                 raise llm.LlmError("boom")

@@ -37,7 +37,16 @@ class LlmError(Exception):
     pass
 
 
-def ask(prompt: str, *, timeout: int = 45) -> str:
+def _with_model(args, model):
+    """Insert `--model <alias>` before the trailing -p, if a model is pinned."""
+    if not model:
+        return list(args)
+    out = list(args)
+    out[-1:-1] = ["--model", model]
+    return out
+
+
+def ask(prompt: str, *, timeout: int = 45, model: Optional[str] = None) -> str:
     """Run one grounded prompt through `claude -p`, return the model's text.
 
     Raises LlmError on non-zero exit / timeout / unparseable output so callers can
@@ -45,7 +54,7 @@ def ask(prompt: str, *, timeout: int = 45) -> str:
     """
     try:
         proc = subprocess.run(
-            _BASE_ARGS,
+            _with_model(_BASE_ARGS, model),
             input=prompt,            # prompt via stdin: no ARG_MAX limit, no empty-stdin wait
             capture_output=True,     # stdout only into .stdout; stderr stays separate (MCP/warn noise)
             text=True,
@@ -77,14 +86,15 @@ def ask_safe(prompt: str, fallback: str, *, timeout: int = 45) -> tuple[str, Opt
         return fallback, str(e)
 
 
-async def stream(prompt: str, *, timeout: int = 45) -> AsyncIterator[str]:
+async def stream(prompt: str, *, timeout: int = 45, model: Optional[str] = None) -> AsyncIterator[str]:
     """Async-stream a grounded prompt through `claude -p`, yielding text deltas as
-    they arrive. Raises LlmError on timeout / non-zero exit / result error so callers
-    can emit a fallback. Cleans up the whole process group on any exit (incl. the
-    consumer abandoning the generator on client disconnect).
+    they arrive. `model` pins a tier ('haiku'/'sonnet'/'opus'); None = CLI default.
+    Raises LlmError on timeout / non-zero exit / result error so callers can emit a
+    fallback. Cleans up the whole process group on any exit (incl. the consumer
+    abandoning the generator on client disconnect).
     """
     proc = await asyncio.create_subprocess_exec(
-        *_STREAM_ARGS,
+        *_with_model(_STREAM_ARGS, model),
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.DEVNULL,   # --verbose noise; draining a PIPE would deadlock
