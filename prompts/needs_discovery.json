@@ -1,0 +1,34 @@
+{
+  "telco": {
+    "vertical": "telco",
+    "intro": "par kratkih vprasanj pa ti povem kaj je zate",
+    "questions": [
+      "gledas sport ali kaksne posebne kanale?",
+      "kolko telefonov / SIM rabis (sam ti al cela druzina)?",
+      "kolko mobilnih podatkov porabis na mesec, priblizno?",
+      "delas kej od doma, rabis hiter net?",
+      "ti je glavno da je cim ceneje, al rabis da vse dela brez skrbi?"
+    ]
+  },
+  "energy": {
+    "vertical": "energy",
+    "intro": "energija je odvisna od porabe, pa mi povej par stvari",
+    "questions": [
+      "rabis samo elektriko al tud plin (dvojno gorivo)?",
+      "vec kolko kWh porabis na leto (na racunu pise)?",
+      "ti je pomembno da je zelena / iz obnovljivih virov?",
+      "hoces fiksno ceno za dlje casa al ti je ok da niha s trgom?"
+    ]
+  },
+  "insurance": {
+    "vertical": "insurance",
+    "intro": "da vidim kaj res rabis pa kaj placujes zaman",
+    "questions": [
+      "imas avto? je na leasing al ze placan?",
+      "imas svoje stanovanje/hiso al si najemnik?",
+      "kaj vse ze imas zavarovano zdej?",
+      "placujes se kej za dopolnilno zdravstveno loceno?",
+      "ti je glavno cim nizja premija al hoces siroko kritje?"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "slug": "telemach-tvnetmob",
+    "title": "Telemach",
+    "mobileHas5G": 1,
+    "mobileMaxUp": 100,
+    "smartTvCost": 5.00,
+    "mobileMaxDown": 1000,
+    "additionalTvCost": 5.00
+  },
+  {
+    "id": 2,
+    "slug": "telekom-slovenije-tvnetmob",
+    "title": "Telekom Slovenije",
+    "mobileHas5G": 1,
+    "mobileMaxUp": 200,
+    "smartTvCost": 1.90,
+    "mobileMaxDown": 1000,
+    "additionalTvCost": 5.00
+  },
+  {
+    "id": 3,
+    "slug": "a1-tvnetmob",
+    "title": "A1",
+    "mobileHas5G": 1,
+    "mobileMaxUp": 100,
+    "smartTvCost": 3.00,
+    "mobileMaxDown": 1000,
+    "additionalTvCost": 5.00
+  },
+  {
+    "id": 4,
+    "slug": "t2-tvnetmob",
+    "title": "T2",
+    "mobileHas5G": 1,
+    "mobileMaxUp": 50,
+    "smartTvCost": 3.00,
+    "mobileMaxDown": 300,
+    "additionalTvCost": 5.00
+  },
+  {
+    "id": 5,
+    "slug": "hot",
+    "title": "HOT",
+    "mobileHas5G": 1,
+    "mobileMaxUp": 50,
+    "smartTvCost": 0.00,
+    "mobileMaxDown": 150,
+    "additionalTvCost": 0.00
+  },
+  {
+    "id": 6,
+    "slug": "bob",
+    "title": "BOB",
+    "mobileHas5G": 0,
+    "mobileMaxUp": 50,
+    "smartTvCost": 0.00,
+    "mobileMaxDown": 150,
+    "additionalTvCost": 0.00
+  },
+  {
+    "id": 7,
+    "slug": "electricity-gas",
+    "title": "Elektrika in plin",
+    "mobileHas5G": 0,
+    "mobileMaxUp": null,
+    "smartTvCost": 0.00,
+    "mobileMaxDown": null,
+    "additionalTvCost": 0.00
+  }
+]

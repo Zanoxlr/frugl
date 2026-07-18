@@ -1,0 +1,191 @@
+{
+  "vertical": "telco_mvno",
+  "marketNote": "HOT (Hofer Telekom) and BOB are Slovenia's two big discount MVNOs, undercutting the premium brands (Telekom Slovenije/Mobitel, A1, Telemach, T-2) with flat, no-contract prices; both lead on 'unlimited data + unlimited SLO calls/SMS from ~6-10 EUR', and their real revenue extras are speed upgrades (5G/LTE) and out-of-EU roaming, not the base plan.",
+  "_dataCaveats": "Prices captured 2026-07-18 direct from hot.si and bob.si package pages. IMPORTANT correction to the seed brief: BOB is NOT Telekom Slovenije's brand - it runs on the A1 Slovenija network (bob.si states 'zanesljivo A1 omrezje'); it was historically a Mobitel/Telekom prepaid brand but has been an A1 property for years. HOT = Hofer Telekom, an MVNO (host network not asserted here). Exact per-plan EU roaming GB come from BOB's own text (rumeni 15,246 MB, zeleni 12,194 MB); HOT per-plan EU roaming allotments are governed by the EU fair-use formula and the full cenik PDF, so HOT euRoamingGB is left null with a note rather than guessed.",
+  "providers": [
+    {
+      "provider": "HOT",
+      "_note": "hot.si/hot-paketi. Hybrid prepaid/postpaid, all no-contract, free plan switching, VoLTE + eSIM + basic 5G at no extra charge. Base speed capped 150/50 Mbit/s unless you buy the 5G+ add-on (EXTRA is the exception, includes 1000/200). Pricing is per 30 days.",
+      "plans": [
+        {
+          "name": "HoT MINI",
+          "type": "mobile",
+          "monthlyEur": 6.99,
+          "dataGB": 9,
+          "unlimited": false,
+          "minutesSlo": 1500,
+          "sms": 1500,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["1500 min + 1500 SMS/MMS to all SLO networks", "9 GB data", "up to 150/50 Mbit/s", "cheapest monthly plan"],
+          "includedFree": ["mobile data 9 GB", "1500 SLO min", "1500 SLO SMS/MMS", "VoLTE", "eSIM", "basic 5G", "free plan changes"],
+          "paidExtras": [
+            {"name": "Opcija 5GB (extra 5 GB + 5 GB in EU)", "priceEur": 5.00},
+            {"name": "Opcija EU (100 min SLO->EU)", "priceEur": 6.99},
+            {"name": "Opcija 5G+ (raise speed to 1000/200 Mbit/s on 5G/LTE)", "priceEur": 2.00},
+            {"name": "1 GB Srbija (A1 Srbija network)", "priceEur": 4.99}
+          ],
+          "notes": "Capped, not unlimited - suited to light users. EU roaming allotment per EU fair-use, see cenik.",
+          "source": "https://www.hot.si/hot-paketi"
+        },
+        {
+          "name": "HoT MAXI",
+          "type": "mobile",
+          "monthlyEur": 9.99,
+          "dataGB": 150,
+          "unlimited": false,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["unlimited min + SMS/MMS to all SLO networks", "150 GB data", "up to 150/50 Mbit/s"],
+          "includedFree": ["150 GB data", "unlimited SLO minutes", "unlimited SLO SMS/MMS", "VoLTE", "eSIM", "basic 5G", "free plan changes"],
+          "paidExtras": [
+            {"name": "Opcija 5GB", "priceEur": 5.00},
+            {"name": "Opcija EU (100 min SLO->EU)", "priceEur": 6.99},
+            {"name": "Opcija 5G+ (1000/200 Mbit/s)", "priceEur": 2.00},
+            {"name": "1 GB Srbija", "priceEur": 4.99}
+          ],
+          "notes": "minutesSlo/sms marked null but are UNLIMITED to all SLO networks (schema has no 'unlimited minutes' flag). 'For active users'.",
+          "source": "https://www.hot.si/hot-paketi"
+        },
+        {
+          "name": "HoT MEGA",
+          "type": "mobile",
+          "monthlyEur": 9.99,
+          "dataGB": null,
+          "unlimited": true,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["best-selling plan", "unlimited data*", "unlimited min + SMS/MMS to all SLO networks", "up to 150/50 Mbit/s"],
+          "includedFree": ["unlimited data (fair-use *)", "unlimited SLO minutes", "unlimited SLO SMS/MMS", "VoLTE", "eSIM", "basic 5G", "free plan changes"],
+          "paidExtras": [
+            {"name": "Opcija EU (100 min SLO->EU)", "priceEur": 6.99},
+            {"name": "Opcija 5G+ (1000/200 Mbit/s)", "priceEur": 2.00},
+            {"name": "1 GB Srbija", "priceEur": 4.99}
+          ],
+          "notes": "'neomejeno*' = unlimited subject to fair-use policy. Same 9.99 price as MAXI but unlimited data instead of 150 GB - flagged NAJBOLJE PRODAJAN (best selling).",
+          "source": "https://www.hot.si/hot-paketi"
+        },
+        {
+          "name": "HoT EXTRA",
+          "type": "mobile",
+          "monthlyEur": 13.99,
+          "dataGB": 300,
+          "unlimited": false,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["300 GB data", "unlimited min + SMS/MMS to all SLO networks", "higher EU roaming amounts + SLO->EU minutes included", "up to 1000/200 Mbit/s (5G+ speed included)"],
+          "includedFree": ["300 GB data", "unlimited SLO minutes", "unlimited SLO SMS/MMS", "higher EU roaming allotment", "SLO->EU minutes", "1000/200 Mbit/s speed (no 5G+ surcharge)", "VoLTE", "eSIM", "5G", "free plan changes"],
+          "paidExtras": [
+            {"name": "1 GB Srbija", "priceEur": 4.99}
+          ],
+          "notes": "Top consumer plan ('za najzahtevnejse'). Uniquely bundles the 1000/200 5G speed and SLO->EU minutes that other plans charge for.",
+          "source": "https://www.hot.si/hot-paketi"
+        },
+        {
+          "name": "HoT GIGA neomejeni internet",
+          "type": "internet",
+          "monthlyEur": 14.99,
+          "dataGB": null,
+          "unlimited": true,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["unlimited mobile data (data-only SIM)", "up to 150/50 Mbit/s", "home/office internet over the mobile network"],
+          "includedFree": ["unlimited data", "no contract"],
+          "paidExtras": [
+            {"name": "WiFi2Go komplet (modem + SIM + 1st month GIGA unlimited)", "priceEur": 64.99}
+          ],
+          "notes": "This is HOT's 'home internet' but it is mobile-network / 4G-5G based, NOT fixed line. Cheaper GIGA mini variant: 6.99 EUR for 30 GB data-only. A 9.99 EUR 'GIGA DVOJCEK' bundles unlimited-data GIGA with a MEGA/MINI/MAXI/EXTRA voice plan. HOT has NO fixed broadband and NO TV product.",
+          "source": "https://www.hot.si/hot-paketi"
+        }
+      ]
+    },
+    {
+      "provider": "BOB",
+      "_note": "bob.si, runs on A1 Slovenija network. Mobile-only (voice plans + mobile-internet SIM + prepaid); NO fixed broadband, NO TV. All no-contract, free plan switching by SMS to 0680. Promo (new subscribers 15.7.-30.9.2026): rumeni & zeleni at 5.99 EUR/mo forever with e-invoice. Regular prices listed below. Base plans run on LTE; full 5G/1000 Mbit/s needs the paid LTE/5G add-on.",
+      "plans": [
+        {
+          "name": "rumeni bob",
+          "type": "mobile",
+          "monthlyEur": 9.99,
+          "dataGB": null,
+          "unlimited": true,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": 14.8,
+          "noContract": true,
+          "keyFeatures": ["unlimited data in SLO (150 GB at full 300/100 Mbit/s, then throttled to 2/1 Mbit/s)", "unlimited MIN + SMS in SLO and EU/EEA", "14.8 GB (15,246 MB) EU/EEA roaming data", "'choice of most' plan"],
+          "includedFree": ["unlimited SLO data (150 GB full speed)", "unlimited SLO minutes", "unlimited SLO SMS", "unlimited EU/EEA minutes + SMS", "14.8 GB EU roaming data", "free plan changes"],
+          "paidExtras": [
+            {"name": "bob LTE/5G option (raise speed to up to 1000 Mb/s, unlock 5G)", "priceEur": null},
+            {"name": "svet 1 GB (1 GB data outside EU/EEA, 10+ countries)", "priceEur": 5.00}
+          ],
+          "notes": "Promo 5.99 EUR/mo forever for new subscribers with e-invoice (regular 9.99). After 150 GB, speed drops to 2/1 Mbit/s but data keeps working free. LTE/5G add-on price not shown on this page (see options page).",
+          "source": "https://www.bob.si/ponudba-bob/narocniski-mobilni-paketi"
+        },
+        {
+          "name": "zeleni bob",
+          "type": "mobile",
+          "monthlyEur": 7.99,
+          "dataGB": null,
+          "unlimited": true,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": 11.9,
+          "noContract": true,
+          "keyFeatures": ["unlimited data in SLO (20 GB at full 150/50 Mbit/s, then 2/1 Mbit/s)", "unlimited MIN + SMS in SLO and EU/EEA", "11.9 GB (12,194 MB) EU/EEA roaming data"],
+          "includedFree": ["unlimited SLO data (20 GB full speed)", "unlimited SLO minutes", "unlimited SLO SMS", "unlimited EU/EEA minutes + SMS", "11.9 GB EU roaming data", "free plan changes"],
+          "paidExtras": [
+            {"name": "bob LTE/5G option (up to 1000 Mb/s, unlock 5G)", "priceEur": null},
+            {"name": "svet 1 GB (outside EU/EEA)", "priceEur": 5.00}
+          ],
+          "notes": "Promo 5.99 EUR/mo forever for new subscribers with e-invoice (regular 7.99).",
+          "source": "https://www.bob.si/ponudba-bob/narocniski-mobilni-paketi"
+        },
+        {
+          "name": "rdeci bob",
+          "type": "mobile",
+          "monthlyEur": 5.99,
+          "dataGB": null,
+          "unlimited": true,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": 0,
+          "noContract": true,
+          "keyFeatures": ["unlimited data in SLO (10 GB at full 150/50 Mbit/s, then 2/1 Mbit/s)", "unlimited MIN + SMS in SLO only", "NO foreign/roaming use at all"],
+          "includedFree": ["unlimited SLO data (10 GB full speed)", "unlimited SLO minutes", "unlimited SLO SMS", "free plan changes"],
+          "paidExtras": [
+            {"name": "bob LTE/5G option (up to 1000 Mb/s, unlock 5G)", "priceEur": null}
+          ],
+          "notes": "Slovenia-only plan: roaming and all foreign use disabled (svet 1 GB not available). Cheapest bob plan at 5.99 flat.",
+          "source": "https://www.bob.si/ponudba-bob/narocniski-mobilni-paketi"
+        },
+        {
+          "name": "bob 4 cente",
+          "type": "mobile",
+          "monthlyEur": 0,
+          "dataGB": null,
+          "unlimited": false,
+          "minutesSlo": null,
+          "sms": null,
+          "euRoamingGB": null,
+          "noContract": true,
+          "keyFeatures": ["pay-per-use: 0.04 EUR per minute / SMS / MB in SLO and EU/EEA", "no monthly fee", "up to 150/50 Mbit/s"],
+          "includedFree": ["no monthly subscription cost"],
+          "paidExtras": [
+            {"name": "everything is metered at 0.04 EUR per unit (min / SMS / MB)", "priceEur": 0.04}
+          ],
+          "notes": "Flat 4-cent-per-unit tariff for very low usage. monthlyEur set to 0 (no fixed fee); real cost is entirely usage-based.",
+          "source": "https://www.bob.si/ponudba-bob/narocniski-mobilni-paketi"
+        }
+      ]
+    }
+  ]
+}

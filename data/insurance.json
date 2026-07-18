@@ -1,0 +1,1020 @@
+{
+  "vertical": "insurance",
+  "marketNote": "Slovenian consumer insurance is dominated by Triglav, Sava, Generali (which absorbed Adriatic Slovenica in 2019), plus health specialist Vzajemna and smaller players Merkur, Grawe and Wiener Staedtische; the biggest 2024 shift: the old prostovoljno dopolnilno zdravstveno zavarovanje (voluntary supplemental health, ~35 EUR/mo) was abolished 31 Dec 2023 and replaced by a compulsory health contribution (obvezni zdravstveni prispevek, OZP), a flat 35 EUR/mo in 2024 that rose to 37.17 EUR/mo from March 2025, so that classic upsell product is gone and insurers now push discretionary health riders (faster specialist access, dental, surgery, second opinion) instead.",
+  "captureDate": "2026-07-18",
+  "premiumCaveat": "All EUR figures are illustrative market-typical ranges for a demo, NOT quotes. Real premiums come from each insurer's calculator and depend heavily on driver age/bonus-malus class, vehicle value/power, postal-code risk (flood/theft/hail), property value and construction, sum insured, deductible (fransiza), and bundling discounts (Triglav up to ~40% bonus + 14% package; Generali package discounts 8-20%). Treat every number as 'profile-dependent'.",
+  "providers": [
+    {
+      "provider": "Triglav",
+      "note": "Market leader. Bundling ('Triglav komplet') stacks discounts; DRAJV telematics app gives safe-driving discount.",
+      "products": [
+        {
+          "name": "Avtomobilska odgovornost (AO) - obvezno",
+          "type": "car",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Legally mandatory liability. Profile-dependent; typical annual ~200-450 EUR for a mid-size car depending on bonus-malus class and vehicle power. Priced per year, often paid in installments.",
+          "baseCoverage": [
+            "third-party bodily injury and property damage caused by the insured vehicle",
+            "help dealing with the at-fault party's insurer"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "AO plus (zavarovanje voznika)",
+              "extraEur": null,
+              "whoNeedsIt": "Covers the AT-FAULT driver's own bodily injury/death, which plain AO and kasko do NOT. Worth it for the main driver; redundant if you already have strong personal accident/life cover."
+            },
+            {
+              "name": "Nezgodno zavarovanje voznika in potnikov",
+              "extraEur": null,
+              "whoNeedsIt": "Accident payout for driver and passengers. Skippable if occupants already have personal accident cover."
+            },
+            {
+              "name": "Zavarovanje avtomobilske in pravne pomoci (asistenca + pravna pomoc)",
+              "extraEur": null,
+              "whoNeedsIt": "Roadside assistance + legal help. Useful for older cars / frequent travel; often overlaps with what a kasko package or a credit card already bundles - check before paying twice."
+            },
+            {
+              "name": "Rehabilitacija po nesreci",
+              "extraEur": null,
+              "whoNeedsIt": "Rehab costs after a crash. Niche add-on; low priority for most."
+            }
+          ],
+          "notes": "Bonus-malus: new policy starts around premium class 14; each claim-free year drops one class (bonus up to ~50% of base), each claim jumps three classes.",
+          "source": "https://www.triglav.si/zavarovanja/zasebni/zavarovanje-vozil/zavarovanje-avtomobila",
+          "typicalAnnualEurRange": [
+            200,
+            450
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Mandatory third-party liability (AO) itself carries NO deductible for the injured party - the insurer pays the victim in full. A deductible (fransiza) only appears once you add kasko / AO plus modules.",
+          "keyExclusions": [
+            "damage to the at-fault driver's OWN vehicle (that is kasko)",
+            "the at-fault driver's own bodily injury unless AO plus is added",
+            "intent/gross negligence, driving under the influence, unlicensed driving",
+            "racing/track use, war and nuclear events"
+          ],
+          "typicalLimits": "Statutory minimum sums insured under ZOZP (well into the millions of EUR for bodily injury and for property damage per event); the legal minimums are periodically indexed."
+        },
+        {
+          "name": "Avtomobilski kasko (splosni + delni kombinacije)",
+          "type": "car",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Optional own-damage cover; strongly value-dependent. Full (splosni) kasko can easily add 300-900+ EUR/yr on top of AO for a mid-value car; partial (delni) combos are far cheaper. Recommended mainly for cars up to ~8 yrs or financed/leased vehicles.",
+          "baseCoverage": [
+            "damage to your own vehicle from collision, destruction or theft (incl. electric/hybrid)",
+            "covers events outside your control: hail, storm, flood, falling objects, vandalism"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "GAP zavarovanje",
+              "extraEur": null,
+              "whoNeedsIt": "Only for leased/credit-financed cars: pays the loan-vs-payout gap if the car is totaled/stolen. Pointless if you own the car outright."
+            },
+            {
+              "name": "Delni kasko combos - steklo (glass)",
+              "extraEur": null,
+              "whoNeedsIt": "Windscreen/glass breakage. Cheap and popular; genuinely useful. Can be bought standalone without full kasko."
+            },
+            {
+              "name": "Delni kasko - kraja (theft)",
+              "extraEur": null,
+              "whoNeedsIt": "Theft-only. Matters in higher-theft areas / desirable models; low value for cheap old cars."
+            },
+            {
+              "name": "Delni kasko - toca (hail) / parkirisce (parking damage)",
+              "extraEur": null,
+              "whoNeedsIt": "Hail and parking-lot dents. Region/lifestyle dependent - hail cover pays off in hail-prone areas."
+            },
+            {
+              "name": "Delni kasko - nadomestno vozilo (replacement car)",
+              "extraEur": null,
+              "whoNeedsIt": "Courtesy car while yours is repaired. Convenience upsell; skip if you have a second car."
+            },
+            {
+              "name": "Delni kasko - osebna prtljaga / kljuci in registrske tablice",
+              "extraEur": null,
+              "whoNeedsIt": "Personal luggage, keys and plates. Small-ticket riders that are easy over-buys for most drivers."
+            }
+          ],
+          "notes": "Partial-kasko claims do NOT cost you the bonus, unlike full-kasko claims. Delni combos can be assembled a la carte or bought with AO only.",
+          "source": "https://www.triglav.si/zavarovanja/zasebni/zavarovanje-vozil/zavarovanje-avtomobila/zavarovanje-avtomobilskega-kaska",
+          "typicalAnnualEurRange": [
+            300,
+            900
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "range is the ADD-ON cost on top of AO for a mid-value car; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Full (splosni) kasko is typically written WITH a deductible (fransiza), e.g. a fixed EUR amount or % of the claim; a higher chosen deductible lowers the premium. Partial-kasko perils (glass, etc.) are often deductible-free.",
+          "keyExclusions": [
+            "wear and tear, mechanical/electrical failure not caused by an insured event",
+            "damage while driving under the influence or without a valid licence",
+            "intent/gross negligence",
+            "using the car for racing or hire when not declared",
+            "existing damage predating the policy"
+          ],
+          "typicalLimits": "Payout capped at the vehicle's market (actual-cash) value at time of loss, not the purchase price; total-loss settlements deduct salvage value."
+        },
+        {
+          "name": "Zavarovanje doma (hisa, stanovanje in oprema)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Profile-dependent (property value, size, location, sum insured). Typical basic building+contents ~100-300 EUR/yr; earthquake and flood riders add materially.",
+          "baseCoverage": [
+            "fire, storm, lightning",
+            "burst pipes / water escape (izliv vode)",
+            "burglary and robbery incl. lock replacement",
+            "glass breakage",
+            "basic home assistance (domska asistenca)"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Potresno zavarovanje (earthquake)",
+              "extraEur": null,
+              "whoNeedsIt": "Earthquake, with a policyholder co-share deductible. Slovenia's most under-insured major risk; genuinely worth it, not a fluff upsell."
+            },
+            {
+              "name": "Poplava / vdor vode (flood)",
+              "extraEur": null,
+              "whoNeedsIt": "Flood - priced by flood-zone risk. Skip only if your address is verifiably not flood-exposed (Triglav's i.triglav shows the risk)."
+            },
+            {
+              "name": "Strojelomno zavarovanje naprav / instalacij (machinery breakdown)",
+              "extraEur": null,
+              "whoNeedsIt": "Breakdown of appliances/installations (heat pump, boiler, home solar). Useful for expensive built-in tech; over-buy for a basic flat."
+            },
+            {
+              "name": "Zavarovanje soncne elektrarne (rooftop solar)",
+              "extraEur": null,
+              "whoNeedsIt": "Only relevant if you have rooftop PV; covers damage, breakdown, business interruption, liability."
+            },
+            {
+              "name": "Odgovornost zasebnika (private liability)",
+              "extraEur": null,
+              "whoNeedsIt": "Personal/family third-party liability, cheaper when added to home policy. High value-for-money; one of the few riders worth actively recommending."
+            },
+            {
+              "name": "Zavarovanje za najemodajalce (landlord cover)",
+              "extraEur": null,
+              "whoNeedsIt": "Only if you rent the property out."
+            }
+          ],
+          "notes": "Assistance has a paid 'Asistenca Plus' tier above the included base assistance. Watch per-peril sub-limits (limit kritja).",
+          "source": "https://www.triglav.si/zavarovanja/zasebni/zavarovanja-za-dom/zavarovanje-doma",
+          "typicalAnnualEurRange": [
+            100,
+            300
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "basic building+contents range; earthquake/flood riders add materially; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Most base perils are deductible-free, but catastrophe riders carry a policyholder co-share: earthquake typically has a co-insurance deductible (odbitna fransiza, e.g. a % of the sum insured per event); flood may use a first-loss limit.",
+          "keyExclusions": [
+            "gradual damage: damp, mould, wear, poor maintenance",
+            "earthquake and flood UNLESS the specific rider is bought",
+            "damage to a building under construction / not up to code",
+            "war, nuclear, intentional acts"
+          ],
+          "typicalLimits": "Watch per-peril sub-limits (limit kritja) and first-loss caps; contents often insured on a 'novo za staro' (new-for-old) basis up to the agreed contents sum."
+        },
+        {
+          "name": "Zdravstvena zavarovanja (Specialisti, Zobje, Zdravnik 360, Operacije)",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "These are DISCRETIONARY private health riders, NOT the old supplemental cover (which the OZP replaced in 2024). Profile/age-dependent; typically ~10-30 EUR/mo per module.",
+          "baseCoverage": [
+            "faster access to specialist exams and treatment outside public waiting lists (Specialisti / Specialisti+)"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Zobje in Zobje+ (dental)",
+              "extraEur": null,
+              "whoNeedsIt": "Dental treatment cover. Useful if you expect dental work; classic over-sold add-on otherwise."
+            },
+            {
+              "name": "Zdravnik 360 (telemedicine / GP access)",
+              "extraEur": null,
+              "whoNeedsIt": "Remote doctor / second-opinion. Low cost, convenience buy."
+            },
+            {
+              "name": "Operacije (surgery)",
+              "extraEur": null,
+              "whoNeedsIt": "Funds private/faster surgery. Consider if long public waits worry you; otherwise skippable."
+            },
+            {
+              "name": "Specialisti Nezgoda",
+              "extraEur": null,
+              "whoNeedsIt": "Specialist care specifically after an accident."
+            }
+          ],
+          "notes": "KEY DEMO POINT: since 1 Jan 2024 the compulsory OZP (35 EUR/mo 2024, 37.17 EUR/mo from March 2025) replaced the old dopolnilno zavarovanje for everyone; anything Triglav sells under 'Zdravje' now is an extra private upsell on top of that.",
+          "source": "https://www.triglav.si/zavarovanja/zasebni/zdravstvena-zavarovanja",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            10,
+            30
+          ],
+          "priceCaveat": "per-module monthly range, age-dependent; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "These riders usually have no cash deductible; the real 'cost of entry' is a WAITING PERIOD (cakalna doba, often several months to ~1 year) before benefits can be used, plus health questions/exclusions at underwriting.",
+          "keyExclusions": [
+            "pre-existing conditions and treatments already under way at sign-up",
+            "claims within the waiting period",
+            "purely cosmetic procedures",
+            "care already fully covered by the compulsory system (no double payout)"
+          ],
+          "typicalLimits": "Each module carries an annual benefit cap and/or a capped number of specialist visits/procedures per year; surgery modules cap the funded procedure cost."
+        },
+        {
+          "name": "Zivljenjska zavarovanja (Lajf, za primer smrti, Jesen zivljenja)",
+          "type": "life",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Term / whole-life, age- and sum-insured-dependent. Wide range.",
+          "baseCoverage": [
+            "death benefit to beneficiaries"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Critical illness / accident riders",
+              "extraEur": null,
+              "whoNeedsIt": "Add-ons on the life base; useful for breadwinners, easy to over-stack."
+            }
+          ],
+          "notes": "Investment-linked variants (i.fleks) blend savings and cover - higher fees, scrutinize.",
+          "source": "https://www.triglav.si/zavarovanja/zasebni/zivljenjska-in-nezgodna-zavarovanja/zivljenjska-zavarovanja",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            10,
+            60
+          ],
+          "priceCaveat": "pure-term monthly indication for a healthy adult; whole-life and investment-linked variants cost far more; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible)."
+        }
+      ]
+    },
+    {
+      "provider": "Sava (Zavarovalnica Sava)",
+      "note": "Second-largest group. 'Nikoli sami' brand line across auto, travel, pet.",
+      "products": [
+        {
+          "name": "Avtomobilsko zavarovanje (AO + AK + Fleksi kasko)",
+          "type": "car",
+          "typicalMonthlyEur": null,
+          "premiumNote": "AO mandatory; kasko optional and value-dependent. Profile-dependent, similar market ranges to Triglav.",
+          "baseCoverage": [
+            "AO: legally required third-party liability",
+            "AK (avtomobilski kasko): own-vehicle damage from collision, fire, storm, hail, flood, theft, vandalism, animals"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Fleksi kasko (a la carte partial kasko)",
+              "extraEur": null,
+              "whoNeedsIt": "Build-your-own kasko - pick individual perils instead of full cover. Good for keeping cost down; the point is to NOT buy perils you don't need."
+            },
+            {
+              "name": "Delni kasko kombinacija T-KOMT (theft of vehicle/parts)",
+              "extraEur": null,
+              "whoNeedsIt": "Theft of the car or attached parts; must attach to full kasko."
+            },
+            {
+              "name": "Pravna zascita (legal protection)",
+              "extraEur": null,
+              "whoNeedsIt": "Covers defense costs and pursuing damage claims after an accident. Nice-to-have; overlaps with legal cover you may already hold."
+            },
+            {
+              "name": "Kritje odbitne franzize in izgube bonusa (deductible + bonus protection)",
+              "extraEur": null,
+              "whoNeedsIt": "Refunds your kasko deductible and protects your bonus when Sava recovers >50% from the at-fault party. Conditional payout - read the fine print before buying."
+            },
+            {
+              "name": "Nezgodno zavarovanje oseb v vozilu",
+              "extraEur": null,
+              "whoNeedsIt": "Accident cover for all occupants regardless of who caused the crash."
+            }
+          ],
+          "notes": "Delni kasko sold both standalone and bundled with AK.",
+          "source": "https://www.zav-sava.si/zavarovanja-in-asistence/zavarovanja/nikoli-sami-v-avtu/avtomobilsko-zavarovanje-za-osebna-vozila",
+          "typicalAnnualEurRange": [
+            200,
+            450
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "AO band; full kasko adds ~300-900/yr; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "AO liability is deductible-free; AK/full kasko typically carries a chosen deductible (fransiza). Sava's 'kritje odbitne franzize' rider can refund that deductible under set conditions.",
+          "keyExclusions": [
+            "own-vehicle damage under AO alone",
+            "driving under the influence / without a licence",
+            "intent and gross negligence",
+            "wear, mechanical failure, pre-existing damage"
+          ],
+          "typicalLimits": "AO to statutory ZOZP minimum sums; kasko capped at market value at time of loss."
+        },
+        {
+          "name": "Zavarovanje za tujino (travel)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Travel medical/assistance; per-trip or annual. Tiered packages by sum insured. Included here as a common bundled consumer product (not strictly home).",
+          "baseCoverage": [
+            "medical treatment abroad",
+            "24/7 assistance in Slovenian",
+            "repatriation after treatment"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Annual policy with unlimited trip duration",
+              "extraEur": null,
+              "whoNeedsIt": "Frequent travelers / long stays >92 days; over-buy for one holiday a year."
+            },
+            {
+              "name": "Work-abroad risk extension",
+              "extraEur": null,
+              "whoNeedsIt": "Only if you work (not just travel) abroad; added for a surcharge at the agent."
+            }
+          ],
+          "notes": "Higher sums insured and no time cap in the reworked product.",
+          "source": "https://www.zav-sava.si/zavarovanja-in-asistence/zavarovanja/nikoli-sami-na-poti",
+          "typicalAnnualEurRange": [
+            15,
+            90
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "single-trip from a few EUR; annual multi-trip toward the top of the band; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Some medical-abroad tiers apply a small per-claim deductible; assistance and repatriation are usually deductible-free.",
+          "keyExclusions": [
+            "pre-existing/chronic conditions unless declared",
+            "extreme sports or work-abroad risk unless the extension is bought",
+            "events while intoxicated",
+            "treatment that could reasonably wait until return home"
+          ],
+          "typicalLimits": "Medical sum insured tiered by package (commonly tens of thousands up to unlimited on top tiers); sub-limits on baggage, cancellation, liability."
+        },
+        {
+          "name": "Zavarovanje Nase tacke (pet insurance)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Optional lifestyle product; tiered by vet-cost sum insured (1000 / 2000 / 4000 EUR). Illustrative of pure add-on selling.",
+          "baseCoverage": [
+            "death/euthanasia of pet from accident: purchase value, vet costs, some liability"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Veterinarski stroski (full vet costs, illness+accident)",
+              "extraEur": null,
+              "whoNeedsIt": "Covers full vet treatment up to chosen sum for 12 months; pick sum to match, don't over-insure."
+            },
+            {
+              "name": "Odgovornost lastnika (owner liability, worldwide, all breeds)",
+              "extraEur": null,
+              "whoNeedsIt": "Third-party damage caused by your pet; the only module valid for all breeds."
+            },
+            {
+              "name": "Pravna zascita (legal protection)",
+              "extraEur": null,
+              "whoNeedsIt": "Court costs if sued over the pet."
+            }
+          ],
+          "notes": "Four modules (one base + three optional) - a clean example of modular upselling.",
+          "source": "https://www.zav-sava.si/zavarovanja-in-asistence/zavarovanja/nikoli-sami-v-skrbi-za-zivali/zavarovanje-nase-tacke",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            5,
+            25
+          ],
+          "priceCaveat": "scales with the chosen vet-cost sum (1000/2000/4000 EUR) and pet age; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible)."
+        }
+      ]
+    },
+    {
+      "provider": "Generali",
+      "note": "Absorbed Adriatic Slovenica in 2019 (so 'Adriatic' policies are now Generali). Loyalty program 'Generali ZAME' gives points/discounts for bundling. Kasko sold as named packages MALI / DELNI / SPLOSNI.",
+      "products": [
+        {
+          "name": "Avtomobilsko zavarovanje (AO + kasko paketi)",
+          "type": "car",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Package discounts of 8% (MALI), 20% (DELNI), 10% (SPLOSNI) shown on site. Absolute premium profile-dependent. New policy starts premium class 14; bonus down to 50%, malus up to 200% of base.",
+          "baseCoverage": [
+            "AO: mandatory third-party liability",
+            "Splosni kasko: own-vehicle damage incl. theft, parking damage, vandalism"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "AO-plus (zavarovanje voznika za telesne poskodbe)",
+              "extraEur": null,
+              "whoNeedsIt": "Covers the at-fault driver's own injuries - neither AO nor kasko does. Recommended for the main driver."
+            },
+            {
+              "name": "Paket DELNI (steklo, svetlobna telesa/ogledala, nadomestno vozilo, kljuci in tablice)",
+              "extraEur": null,
+              "whoNeedsIt": "Partial-kasko bundle: glass, lights/mirrors, replacement car, keys/plates. 20% package discount - but includes small riders many don't need."
+            },
+            {
+              "name": "Paket SPLOSNI extras (toca, kraja, parkirisce, osebna prtljaga)",
+              "extraEur": null,
+              "whoNeedsIt": "Hail, theft, parking, luggage. Region/value dependent; luggage cover is a typical over-buy."
+            },
+            {
+              "name": "Nezgoda (potnikov)",
+              "extraEur": null,
+              "whoNeedsIt": "Passenger accident cover; skip if occupants have personal accident cover."
+            },
+            {
+              "name": "Pravna zascita",
+              "extraEur": null,
+              "whoNeedsIt": "Legal protection module."
+            },
+            {
+              "name": "Avto asistenca 24/7",
+              "extraEur": null,
+              "whoNeedsIt": "Roadside assistance home/abroad; check overlap with existing memberships."
+            }
+          ],
+          "notes": "Delni kasko claims don't cost the bonus and can attach to AO or full kasko; deductible optional but usually taken without.",
+          "source": "https://www.generali.si/zavarovanje/zavarovanje-avta/kasko-zavarovanje",
+          "typicalAnnualEurRange": [
+            200,
+            450
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "AO band; package (MALI/DELNI/SPLOSNI) discounts of 8-20% apply; full kasko adds ~300-900/yr; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Liability deductible-free; full kasko sold with an optional deductible (usually taken). Bonus/malus runs class 14 at start, bonus down to 50%, malus up to 200% of base.",
+          "keyExclusions": [
+            "own-vehicle damage under AO alone",
+            "impaired/unlicensed driving",
+            "intent and gross negligence",
+            "wear and mechanical failure"
+          ],
+          "typicalLimits": "AO to statutory ZOZP minimums; kasko capped at market value at time of loss."
+        },
+        {
+          "name": "Premozenjsko zavarovanje doma",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Profile-dependent; base building+contents typically ~100-300 EUR/yr, earthquake/flood extra.",
+          "baseCoverage": [
+            "fire, storm, lightning",
+            "water escape",
+            "burglary/robbery",
+            "glass"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Potres (earthquake)",
+              "extraEur": null,
+              "whoNeedsIt": "Under-insured major risk in Slovenia; worth it."
+            },
+            {
+              "name": "Poplava (flood)",
+              "extraEur": null,
+              "whoNeedsIt": "Flood-zone dependent."
+            },
+            {
+              "name": "Odgovornost / private liability, home assistance",
+              "extraEur": null,
+              "whoNeedsIt": "Liability is high-value; assistance often overlaps."
+            }
+          ],
+          "notes": "Ex-Adriatic Slovenica property book folded into Generali; bundling earns ZAME points.",
+          "source": "https://www.generali.si/zavarovanje/zavarovanje-doma",
+          "typicalAnnualEurRange": [
+            100,
+            300
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "base building+contents; earthquake/flood extra; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Base perils largely deductible-free; earthquake carries a policyholder co-share; flood commonly on a first-loss limit.",
+          "keyExclusions": [
+            "gradual damp/mould/wear/poor upkeep",
+            "earthquake and flood unless the rider is bought",
+            "intentional damage, war, nuclear"
+          ],
+          "typicalLimits": "Per-peril sub-limits apply; contents typically new-for-old up to the agreed sum."
+        },
+        {
+          "name": "Zdravstvena zavarovanja (Specialisti / private health)",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Discretionary private health riders (faster specialist access, dental, surgery), NOT the abolished supplemental cover. Age-dependent.",
+          "baseCoverage": [
+            "faster specialist access outside public waiting lists"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Dental / surgery / second-opinion modules",
+              "extraEur": null,
+              "whoNeedsIt": "Buy only the module matching an actual need; easy to over-stack."
+            }
+          ],
+          "notes": "Same OZP context: since 2024 the compulsory 35 EUR/mo (37.17 from March 2025) OZP replaced the old dopolnilno zavarovanje; Generali's health line is now pure private upsell.",
+          "source": "https://www.generali.si/zavarovanje/zdravje",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            10,
+            30
+          ],
+          "priceCaveat": "per-module monthly range, age-dependent; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "No cash deductible; entry cost is a waiting period plus underwriting health questions.",
+          "keyExclusions": [
+            "pre-existing conditions",
+            "claims in the waiting period",
+            "cosmetic procedures",
+            "care already fully funded by the compulsory system"
+          ],
+          "typicalLimits": "Annual benefit cap and/or capped visit count per module; surgery module caps funded procedure cost."
+        }
+      ]
+    },
+    {
+      "provider": "Vzajemna",
+      "note": "Historically THE big supplemental-health insurer (dopolnilno zdravstveno zavarovanje). That flagship product was killed by the 2024 OZP reform, so Vzajemna pivoted to discretionary private health products.",
+      "products": [
+        {
+          "name": "Dopolnilno zdravstveno zavarovanje (LEGACY - abolished)",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Historically ~35-40 EUR/mo and near-universal. ABOLISHED 31 Dec 2023. Replaced 1 Jan 2024 by the compulsory OZP: flat 35 EUR/mo in 2024, 37.17 EUR/mo from March 2025, collected via payroll/ZZZS, not an insurer. Include as the canonical 'you no longer choose this' example.",
+          "baseCoverage": [
+            "previously covered the co-payment gap (doplacilo) on public health services, drugs, devices"
+          ],
+          "optionalAddOns": [],
+          "notes": "DEMO-CRITICAL: consumers who think they still pay Vzajemna ~35 EUR/mo for dopolnilno are almost certainly now paying the state OZP instead. Any remaining Vzajemna monthly charge is a NEW discretionary product they opted into.",
+          "source": "https://www.gov.si/novice/2023-12-29-z-novim-letom-prihaja-obvezni-zdravstveni-prispevek",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            35,
+            40
+          ],
+          "priceCaveat": "HISTORIC amount only - product abolished 31 Dec 2023, replaced by the state OZP (35 EUR 2024, 37.17 from Mar 2025, 39.36 from Mar 2026). No longer purchasable."
+        },
+        {
+          "name": "Specialisti / Specialisti senior / Specialisti in operacije",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Discretionary private health cover (post-OZP flagship). Age-tiered, senior variant priced higher. Profile-dependent.",
+          "baseCoverage": [
+            "Package A: fast access to specialist exams/diagnostics outside public waiting lists",
+            "Package B (nezgoda in bolezen): package A plus specialist treatment needed due to accident/illness"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Operacije (surgery module)",
+              "extraEur": null,
+              "whoNeedsIt": "Adds funded private/faster surgery on top of specialist access."
+            },
+            {
+              "name": "Specialisti senior",
+              "extraEur": null,
+              "whoNeedsIt": "Older applicants; higher premium tier."
+            },
+            {
+              "name": "Free assistance for arranging care",
+              "extraEur": 0,
+              "whoNeedsIt": "Bundled concierge to book services - included, not a paid rider."
+            }
+          ],
+          "notes": "This is what Vzajemna now sells instead of the old supplemental cover.",
+          "source": "https://www.vzajemna.si",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            10,
+            35
+          ],
+          "priceCaveat": "senior tier priced higher; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "No cash deductible; waiting period and health underwriting apply, and the senior variant is priced by age band.",
+          "keyExclusions": [
+            "pre-existing conditions",
+            "claims within the waiting period",
+            "cosmetic care",
+            "services already fully covered by the compulsory system"
+          ],
+          "typicalLimits": "Annual caps per package (A: exams/diagnostics; B: adds treatment); surgery module caps funded procedure cost."
+        }
+      ]
+    },
+    {
+      "provider": "Merkur zavarovalnica",
+      "note": "Smaller insurer; strong online self-service. 'Merkur Dom' is its flagship modular property product with clear tiered packages.",
+      "products": [
+        {
+          "name": "Merkur Dom (premozenjsko zavarovanje)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Sold in tiered packages; uses 'prvi riziko' (first-loss) limits, e.g. flood on contents capped at an agreed limit like 8.000 EUR. Profile-dependent.",
+          "baseCoverage": [
+            "building and contents",
+            "burst pipe / water damage",
+            "broken locks",
+            "glass breakage",
+            "Domska asistenca (home assistance) included",
+            "emergency securing of the home"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Higher-tier package perils (compare tables)",
+              "extraEur": null,
+              "whoNeedsIt": "Upper packages add perils/limits; the demo lesson is to match package to actual risk, not auto-take the top tier."
+            },
+            {
+              "name": "Poplava na prvi riziko z izbranim limitom (flood, first-loss limit)",
+              "extraEur": null,
+              "whoNeedsIt": "Flood cover with a chosen payout cap (e.g. 8.000 EUR) - pick the limit to your exposure; don't over-insure or under-insure."
+            },
+            {
+              "name": "Potres (earthquake)",
+              "extraEur": null,
+              "whoNeedsIt": "Earthquake extension; recommended given Slovenian seismic risk."
+            }
+          ],
+          "notes": "First-loss ('prvi riziko') means you agree a max payout up front - a good teaching example for 'what limit do I actually need'.",
+          "source": "https://www.merkur-zav.si/zavarovanje-za-dom-merkur-dom",
+          "typicalAnnualEurRange": [
+            100,
+            300
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "tiered packages; flood/earthquake on first-loss limits add cost; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "deductibleNote": "Uses 'prvi riziko' (first-loss) limits rather than classic deductibles on several perils - you agree a max payout (e.g. flood on contents capped at ~8.000 EUR); earthquake extension carries a co-share.",
+          "keyExclusions": [
+            "gradual damage, damp, wear, poor maintenance",
+            "earthquake/flood beyond the chosen first-loss limit or unless the extension is bought",
+            "intentional damage, war, nuclear"
+          ],
+          "typicalLimits": "First-loss caps per peril (e.g. flood contents ~8.000 EUR); higher packages raise limits/perils - match the limit to real exposure."
+        },
+        {
+          "name": "Merkur premozenjsko / nezgodno / zdravstveno / zivljenjsko / turisticno",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Full consumer line across property, accident, health, life, travel. Profile-dependent.",
+          "baseCoverage": [
+            "accident cover valid at home/work/leisure worldwide (nezgodno)",
+            "discretionary private health, life and travel modules"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Nezgodno zavarovanje riders",
+              "extraEur": null,
+              "whoNeedsIt": "Accident payout add-ons; check overlap with life/health cover."
+            },
+            {
+              "name": "Zdravstveno (private health)",
+              "extraEur": null,
+              "whoNeedsIt": "Post-OZP discretionary health cover - same 'extra on top of state OZP' logic as the big insurers."
+            }
+          ],
+          "notes": "Merkur zavarovalnica is separate from the old Merkur retail brand; verify entity when matching a user's statement.",
+          "source": "https://www.merkur-zav.si/zavarovanja",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            8,
+            30
+          ],
+          "priceCaveat": "per-module, spans accident/health/life/travel; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible)."
+        }
+      ]
+    },
+    {
+      "provider": "GRAWE zavarovalnica",
+      "note": "Austrian-owned insurer (GRAWE group, S&P 'A'), 30+ years in Slovenia. Full private line under 'GRAWE AVTO', 'GRAWE DOM', 'GRAWE ZIVLJENJE'. Smaller share than the big three; strong on life/savings.",
+      "products": [
+        {
+          "name": "GRAWE AVTO (avtomobilsko zavarovanje: AO + kasko)",
+          "type": "car",
+          "typicalMonthlyEur": null,
+          "premiumNote": "AO mandatory; kasko optional. Covers cars, motorbikes, caravans, motorhomes, small trucks and tractors. Package-based. Profile-dependent, market-typical ranges.",
+          "typicalAnnualEurRange": [
+            200,
+            450
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "AO band; full kasko adds ~300-900/yr; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "AO: legally required third-party liability",
+            "Kasko: own-vehicle damage from collision, fire, theft, natural events, vandalism"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Delni / splosni kasko",
+              "extraEur": null,
+              "whoNeedsIt": "Own-damage cover; full kasko for newer/financed cars, partial (glass, theft, natural events) to keep cost down."
+            },
+            {
+              "name": "Zavarovanje voznika in potnikov (driver/passenger accident)",
+              "extraEur": null,
+              "whoNeedsIt": "Accident payout for occupants; skip if they already hold personal accident cover."
+            },
+            {
+              "name": "Asistenca (roadside assistance)",
+              "extraEur": null,
+              "whoNeedsIt": "Breakdown/travel help; check overlap with AMZS membership or a credit-card benefit before paying twice."
+            }
+          ],
+          "deductibleNote": "AO liability deductible-free; full kasko normally carries a chosen deductible (fransiza) that trades premium for out-of-pocket at claim time.",
+          "keyExclusions": [
+            "own-vehicle damage under AO alone",
+            "impaired/unlicensed driving",
+            "intent and gross negligence",
+            "wear and mechanical failure"
+          ],
+          "typicalLimits": "AO to statutory ZOZP minimums; kasko capped at market value at time of loss.",
+          "source": "https://www.grawe.si/avto/"
+        },
+        {
+          "name": "GRAWE DOM (premozenjsko zavarovanje doma)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Building + contents cover for house/flat. Profile-dependent (value, size, location, sum insured).",
+          "typicalAnnualEurRange": [
+            100,
+            300
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "base building+contents; earthquake/flood riders add materially; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "fire, storm, lightning",
+            "water escape / burst pipes",
+            "burglary and robbery",
+            "glass breakage"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Potres (earthquake)",
+              "extraEur": null,
+              "whoNeedsIt": "Slovenia's most under-insured major risk; genuinely worth it, carries a policyholder co-share."
+            },
+            {
+              "name": "Poplava (flood)",
+              "extraEur": null,
+              "whoNeedsIt": "Flood-zone dependent; skip only if the address is verifiably not flood-exposed."
+            },
+            {
+              "name": "Odgovornost zasebnika (private liability)",
+              "extraEur": null,
+              "whoNeedsIt": "Family third-party liability, cheap when added to the home policy; high value-for-money."
+            }
+          ],
+          "deductibleNote": "Base perils largely deductible-free; catastrophe riders (earthquake/flood) carry a co-share or first-loss limit.",
+          "keyExclusions": [
+            "gradual damp/mould/wear/poor upkeep",
+            "earthquake and flood unless the rider is bought",
+            "intentional damage, war, nuclear"
+          ],
+          "typicalLimits": "Per-peril sub-limits; contents typically new-for-old up to the agreed sum.",
+          "source": "https://www.grawe.si/dom/"
+        },
+        {
+          "name": "GRAWE ZIVLJENJE (klasicna + naloznbena zivljenjska zavarovanja)",
+          "type": "life",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Life/savings is GRAWE's core strength: classic risk-and-endowment life plus fund-linked variants. Age- and sum-insured-dependent.",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            15,
+            80
+          ],
+          "priceCaveat": "pure-term monthly indication for a healthy adult; endowment and fund-linked variants cost more and carry fees; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "death benefit to beneficiaries",
+            "endowment (za primer smrti in dozivetja) pays out on survival too"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Nezgodni / critical-illness riders",
+              "extraEur": null,
+              "whoNeedsIt": "Add-ons on the life base; useful for breadwinners / loan cover, easy to over-stack."
+            },
+            {
+              "name": "Naloznbeno zivljenjsko (fund-linked)",
+              "extraEur": null,
+              "whoNeedsIt": "Blends cover with investing; higher fees, scrutinize vs a plain fund + term policy."
+            }
+          ],
+          "notes": "GRAWE positions life/savings as its differentiator; compare total fees on fund-linked variants.",
+          "source": "https://www.grawe.si/zivljenje/"
+        },
+        {
+          "name": "GRAWE nezgodno in zdravstveno / turisticno",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Accident, discretionary private health and travel modules rounding out the private line. Post-OZP health is an extra on top of the state contribution.",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            8,
+            30
+          ],
+          "priceCaveat": "per-module, age-dependent; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "accident cover valid at home/work/leisure",
+            "discretionary private health and travel modules"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Nezgodno zavarovanje",
+              "extraEur": null,
+              "whoNeedsIt": "Accident payout; check overlap with life/health cover."
+            },
+            {
+              "name": "Zdravstveno (private health)",
+              "extraEur": null,
+              "whoNeedsIt": "Faster specialist access on top of the state OZP - same 'extra on top of compulsory' logic as the big insurers."
+            }
+          ],
+          "notes": "Same OZP context: the compulsory contribution (39.36 EUR/mo since Mar 2026) already funds core care; this line is discretionary.",
+          "source": "https://www.grawe.si/zavarovanja/"
+        }
+      ]
+    },
+    {
+      "provider": "Wiener Staedtische (podruznica v Ljubljani, Vienna Insurance Group)",
+      "note": "Vienna Insurance Group branch, operating in Slovenia since 2004. Offers ALL life and property insurance EXCEPT motor-vehicle and credit insurance - so NO car product here. Strength is life, annuity/pension and fund-linked savings.",
+      "products": [
+        {
+          "name": "Zivljenjska zavarovanja (za primer smrti in dozivetja / za primer smrti)",
+          "type": "life",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Classic life: pure death cover and endowment (death + survival). Death-only variant marketed for people with large loan obligations. Age- and sum-insured-dependent.",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            12,
+            70
+          ],
+          "priceCaveat": "pure-term monthly indication for a healthy adult; endowment variants cost more; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "death benefit to beneficiaries",
+            "endowment variant also pays on survival to term"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Multi Protect (funkcionalna nezmoznost / disability)",
+              "extraEur": null,
+              "whoNeedsIt": "Payout on functional disability; useful for income protection, redundant if you hold strong disability cover."
+            }
+          ],
+          "notes": "Death-only cover is pitched specifically as loan/mortgage protection.",
+          "source": "https://wienerstaedtische.si/zasebno/zivljenjska-zavarovanja/"
+        },
+        {
+          "name": "Rentna zavarovanja (annuity / pension)",
+          "type": "life",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Retirement-income / annuity products for a supplementary pension. Contribution- and term-dependent.",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            30,
+            200
+          ],
+          "priceCaveat": "savings vehicle, not a risk premium - 'cost' is really the contribution you choose plus fees; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "accumulates a fund paid back as a regular annuity / lump sum in retirement"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "UFOS Premium / Hybrid Invest (fund-linked)",
+              "extraEur": null,
+              "whoNeedsIt": "Combines classic guarantee with fund upside (single or regular premium); scrutinize total fees vs a plain fund + term policy."
+            }
+          ],
+          "notes": "Positioned for 'third-life-phase' planning; compare fees against pillar-3 pension options.",
+          "source": "https://wienerstaedtische.si/zasebno/"
+        },
+        {
+          "name": "Premozenjsko zavarovanje (stanovanjska nepremicnina + oprema)",
+          "type": "home",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Home building (foundations, walls, roof, installations) plus contents (furniture, appliances, valuables/collections). Profile-dependent.",
+          "typicalAnnualEurRange": [
+            100,
+            300
+          ],
+          "typicalMonthlyEurRange": null,
+          "priceCaveat": "base building+contents; catastrophe riders add cost; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "building structure and built-in installations",
+            "household contents incl. valuables up to agreed sum",
+            "fire, storm, water escape, burglary, glass"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Potres / poplava (earthquake / flood)",
+              "extraEur": null,
+              "whoNeedsIt": "Catastrophe riders; earthquake worth it in seismic Slovenia, flood is zone-dependent, both carry co-share/first-loss."
+            },
+            {
+              "name": "Odgovornost (private liability)",
+              "extraEur": null,
+              "whoNeedsIt": "Family third-party liability; cheap add-on, high value-for-money."
+            }
+          ],
+          "deductibleNote": "Base perils largely deductible-free; earthquake/flood carry a policyholder co-share or first-loss limit.",
+          "keyExclusions": [
+            "gradual damp/mould/wear/poor upkeep",
+            "earthquake and flood unless the rider is bought",
+            "intentional damage, war, nuclear"
+          ],
+          "typicalLimits": "Per-peril sub-limits; contents new-for-old up to the agreed sum, with sub-caps on jewellery/valuables/collections.",
+          "source": "https://wienerstaedtische.si/zasebno/"
+        },
+        {
+          "name": "Nezgodna zavarovanja (accident)",
+          "type": "health",
+          "typicalMonthlyEur": null,
+          "premiumNote": "Personal and family accident cover (injury/disability/death from accident). Not health-service cover - a cash-benefit accident product.",
+          "typicalAnnualEurRange": null,
+          "typicalMonthlyEurRange": [
+            5,
+            25
+          ],
+          "priceCaveat": "per-person, sum-insured-dependent; typical range, real premium is quote-dependent (age, bonus-malus, vehicle, postcode, sum insured, deductible).",
+          "baseCoverage": [
+            "lump-sum payout on accidental death or permanent disability",
+            "optional daily allowance / treatment cost benefits"
+          ],
+          "optionalAddOns": [
+            {
+              "name": "Family cover extension",
+              "extraEur": null,
+              "whoNeedsIt": "Adds spouse/children; check overlap with employer or other accident cover."
+            }
+          ],
+          "notes": "Wiener Staedtische offers no private medical-access ('Specialisti'-style) product and no car insurance in Slovenia.",
+          "source": "https://wienerstaedtische.si/zasebno/"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "https://www.triglav.si/zavarovanja/zasebni/zavarovanje-vozil/zavarovanje-avtomobila",
+    "https://www.triglav.si/zavarovanja/zasebni/zavarovanje-vozil/zavarovanje-avtomobila/zavarovanje-avtomobilskega-kaska",
+    "https://www.triglav.si/zavarovanja/zasebni/zavarovanja-za-dom/zavarovanje-doma",
+    "https://www.zav-sava.si/zavarovanja-in-asistence/zavarovanja/nikoli-sami-v-avtu/avtomobilsko-zavarovanje-za-osebna-vozila",
+    "https://www.zav-sava.si/zavarovanja-in-asistence/zavarovanja/nikoli-sami-v-skrbi-za-zivali/zavarovanje-nase-tacke",
+    "https://www.generali.si/zavarovanje/zavarovanje-avta/kasko-zavarovanje",
+    "https://www.vzajemna.si",
+    "https://www.merkur-zav.si/zavarovanje-za-dom-merkur-dom",
+    "https://www.gov.si/novice/2023-12-29-z-novim-letom-prihaja-obvezni-zdravstveni-prispevek",
+    "https://www.mm-konto.si/aktualno/article/2024/jan/19/obvezni-zdravstveni-prispevek",
+    "https://zavezanec.zzzs.si/prispevki-za-obvezno-zdravstveno-zavarovanje/obvezni-zdravstveni-prispevek/",
+    "https://zavarovanec.zzzs.si/pravice-iz-obveznega-zdravstvenega-zavarovanja/obseg-pravic-v-obveznem-zdravstvenem-zavarovanju/",
+    "https://www.zds.si/sl/o-zds/novice/obvezen-zdravstveni-prispevek-znasa-od-1-marca-2025-dalje-3717-eur/",
+    "https://www.rtvslo.si/zdravje/zvisuje-se-obvezni-zdravstveni-prispevek-znasal-bo-dobrih-39-evrov/774001",
+    "https://cekin.si/finance/zavarovanja/kaj-krije-obvezno-in-kaj-dopolnilno-zdravstveno-zavarovanje.html",
+    "https://www.grawe.si/zavarovanja/",
+    "https://www.grawe.si/avto/",
+    "https://www.grawe.si/zivljenje/",
+    "https://wienerstaedtische.si/zasebno/",
+    "https://wienerstaedtische.si/zasebno/zivljenjska-zavarovanja/"
+  ],
+  "publicCoverBaseline": {
+    "note": "What a Slovenian resident already has WITHOUT any private insurance. Use this to stop double-buying: most 'health insurance' a consumer thinks they need is already covered by the compulsory system, and the classic dopolnilno upsell no longer exists.",
+    "obveznoZdravstvenoZavarovanje": {
+      "name": "Obvezno zdravstveno zavarovanje (compulsory health insurance via ZZZS)",
+      "whoHasIt": "Every resident with a legal basis: employees, self-employed, pensioners, dependent family members, registered unemployed, etc. Administered by ZZZS.",
+      "covers": [
+        "GP, specialist, hospital and emergency treatment within the public system",
+        "prescription drugs on the positive/intermediate list",
+        "maternity and childbirth; full-scope treatment for children and students up to age 26",
+        "preventive and systematic exams, screening programmes, mandatory vaccinations",
+        "treatment of listed chronic and serious illnesses, home nursing (patronaza), listed medical devices",
+        "since 1 Jan 2024, via the OZP, the co-payment (doplacilo, 10-90% of service value) that dopolnilno zavarovanje used to cover is now covered too - there is no co-payment gap left to insure"
+      ],
+      "source": "https://zavarovanec.zzzs.si/pravice-iz-obveznega-zdravstvenega-zavarovanja/obseg-pravic-v-obveznem-zdravstvenem-zavarovanju/"
+    },
+    "ozp": {
+      "name": "Obvezni zdravstveni prispevek (OZP) - compulsory health contribution",
+      "whatItIs": "Flat compulsory monthly contribution introduced 1 Jan 2024 that replaced the abolished prostovoljno dopolnilno zdravstveno zavarovanje. Collected via payroll / ZPIZ / employment office alongside other ZZZS contributions, NOT sold by a private insurer. Together with existing contributions it funds 100% of compulsory-insurance services.",
+      "currentMonthlyEur": 39.36,
+      "currentSince": "2026-03-01",
+      "history": [
+        {
+          "period": "Jan 2024 - Feb 2025",
+          "monthlyEur": 35.0,
+          "note": "introductory flat amount"
+        },
+        {
+          "period": "Mar 2025 - Feb 2026",
+          "monthlyEur": 37.17
+        },
+        {
+          "period": "from Mar 2026",
+          "monthlyEur": 39.36,
+          "note": "current"
+        }
+      ],
+      "adjustment": "Re-indexed once a year on 1 March to average gross-wage growth (SURS).",
+      "demoPoint": "If a consumer thinks they still pay ~35-37 EUR/mo to Vzajemna/Triglav/Generali for 'dopolnilno', they almost certainly now pay this state OZP instead; any remaining monthly charge to a private insurer is a NEW discretionary product they opted into. NOTE: prose elsewhere in this file cites 37.17 EUR/mo, which was correct for Mar 2025-Feb 2026; the current amount since Mar 2026 is 39.36 EUR/mo.",
+      "sources": [
+        "https://zavezanec.zzzs.si/prispevki-za-obvezno-zdravstveno-zavarovanje/obvezni-zdravstveni-prispevek/",
+        "https://www.zds.si/sl/o-zds/novice/obvezen-zdravstveni-prispevek-znasa-od-1-marca-2025-dalje-3717-eur/",
+        "https://www.rtvslo.si/zdravje/zvisuje-se-obvezni-zdravstveni-prispevek-znasal-bo-dobrih-39-evrov/774001"
+      ]
+    },
+    "notCoveredGap": {
+      "note": "What compulsory cover does NOT give you - this is exactly what private health riders target. Everything a consumer buys on top of the OZP is discretionary.",
+      "gaps": [
+        "waiting lists: compulsory cover pays for the treatment but not for jumping the public queue; private 'Specialisti' riders buy faster access outside waiting times",
+        "self-pay / private specialists and clinics outside the public network",
+        "adult dental beyond basics: most adult dental prosthetics/work are limited (white fillings become free for everyone only from 1 Jul 2026; today mainly free for under-15s, pregnant and breastfeeding women)",
+        "elective or faster private surgery and second-opinion services",
+        "higher comfort (private room, choice of doctor) and treatments/devices outside the covered list"
+      ],
+      "source": "https://cekin.si/finance/zavarovanja/kaj-krije-obvezno-in-kaj-dopolnilno-zdravstveno-zavarovanje.html"
+    }
+  }
+}

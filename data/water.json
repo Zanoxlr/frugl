@@ -1,0 +1,48 @@
+{
+  "vertical": "water",
+  "isCompetitive": false,
+  "marketNote": "Water is a municipal monopoly tied to your address. Household water/sewage is an obligatory local public service (obvezna obcinska gospodarska javna sluzba); each municipality assigns one public utility and the consumer cannot switch provider. Tariffs are cost-based and approved by the municipal council under a state methodology (Uredba / ZOPVOOV), so there is no shopping-around or price competition. Advisor treats water as info-only: explain the bill line items (vodarina, omreznina, odvajanje/kanalscina, ciscenje, okoljska dajatev), not as a switch opportunity.",
+  "billStructure": {
+    "volumetricPerM3": ["vodarina (water supply, EUR/m3)", "odvajanje/kanalscina (sewage collection, EUR/m3)", "ciscenje (wastewater treatment, EUR/m3)", "okoljska dajatev (state environmental levy on wastewater, ~0.0528 EUR/m3)"],
+    "fixedMonthly": ["omreznina (network/infrastructure fee, EUR/month, scaled by water-meter diameter DN; household DN<=20 = factor 1)", "vzdrzevalnina vodomera (meter maintenance, in some utilities e.g. Maribor)"],
+    "notes": "Volumetric charges are all billed per m3 of metered drinking water consumed (wastewater volume is assumed equal to water drawn). Fixed omreznina does not depend on usage, only on connection/meter size. Prices shown include 9.5% VAT unless noted."
+  },
+  "providers": [
+    {
+      "provider": "JP VOKA Snaga (Javno podjetje Vodovod Kanalizacija Snaga)",
+      "city": "Ljubljana",
+      "tariff": {
+        "waterEurPerM3": 0.7258,
+        "wastewaterEurPerM3": 0.5639,
+        "wastewaterBreakdown": {"odvajanjeKomunalneEurPerM3": 0.1949, "ciscenjeKomunalneEurPerM3": 0.3690},
+        "fixedMonthlyEur": 9.66,
+        "fixedMonthlyBreakdown": {"omrezninaVodaEur": 5.5409, "omrezninaOdvajanjeEur": 1.6669, "omrezninaCiscenjeEur": 2.4529},
+        "otherFees": ["okoljska dajatev za odpadno vodo (~0.0528 EUR/m3, state levy)", "prekomerna poraba surcharge: +50% on vodarina above normed use (1.0886 EUR/m3)"]
+      },
+      "notes": "Rates with 9.5% VAT, valid from 1.2.2026, per official VOKA Snaga price list EAD-300819. Fixed monthly figures are for a household water meter DN<=20 (omreznina factor 1). A single-family home on public sewer pays roughly 20-24 EUR/month for water+sewage before waste collection; VOKA's own worked example for a single-family house connected to sewer was 35.94 EUR/month total (2025, incl. waste). Same utility also serves Brezovica, Dobrova-Polhov Gradec, Dol pri Ljubljani, Medvode, Skofljica, Ig, Horjul.",
+      "source": "https://www.vokasnaga.si/sites/www.jhl.si/files/dokumenti/ead-300819_0.pdf"
+    },
+    {
+      "provider": "Mariborski vodovod d.o.o. (water supply) + Nigrad d.o.o. (sewage/treatment)",
+      "city": "Maribor",
+      "tariff": {
+        "waterEurPerM3": 1.0082,
+        "wastewaterEurPerM3": null,
+        "fixedMonthlyEur": 6.17,
+        "fixedMonthlyBreakdown": {"omrezninaVodaEur": 4.01, "vzdrzevalninaVodomeraEur": 2.16},
+        "otherFees": ["subsidized vodarina 0.9500 EUR/m3 for non-commercial users", "sewage/treatment (kanalscina) billed separately by Nigrad; Nigrad wastewater-treatment component e.g. 0.52825 EUR/m3 for septic-to-sewer cases", "okoljska dajatev (state levy)"]
+      },
+      "notes": "Water-supply (vodarina + omreznina + meter maintenance) rates with 9.5% VAT from Mariborski vodovod price list, DN<=20 household meter. In Maribor the water utility (Mariborski vodovod) and the sewerage/treatment utility (Nigrad) are separate companies but each is still the sole assigned provider for its service - no consumer choice. Water-supply figures dated 2022 (latest published on their cenik page); wastewater rates set by municipal ordinance via Nigrad.",
+      "source": "https://www.mb-vodovod.si/uporabniki/obracun-vode/obracun-in-cena-pitne-vode/cenik-vode/"
+    }
+  ],
+  "canSwitchProvider": false,
+  "regulator": "Municipal council (obcinski svet) approves tariffs; methodology set by national Uredba o metodologiji za oblikovanje cen storitev obveznih obcinskih GJS varstva okolja and ZOPVOOV (Zakon o oskrbi s pitno vodo ter odvajanju in ciscenju komunalne odpadne vode).",
+  "sources": [
+    "https://www.vokasnaga.si/pitna-odpadna-voda/ceniki",
+    "https://www.vokasnaga.si/sites/www.jhl.si/files/dokumenti/ead-300819_0.pdf",
+    "https://www.vokasnaga.si/aktualno/nove-cene-od-1-februarja-2025",
+    "https://www.mb-vodovod.si/uporabniki/obracun-vode/obracun-in-cena-pitne-vode/cenik-vode/",
+    "https://www.mb-vodovod.si/uporabniki/obracun-vode/obracun-in-cena-pitne-vode/omreznina/"
+  ]
+}

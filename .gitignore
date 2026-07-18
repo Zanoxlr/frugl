@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+data/leads.jsonl
+*.bak
+.plan/
+.DS_Store

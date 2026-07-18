@@ -1,0 +1,930 @@
+[
+  {
+    "tier": "Xplore TV mini",
+    "addon": "Arena Sport Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "Arena Sport Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Arena Sport Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Dodatni paket Razširjena shema",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 1.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "VOYO",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "Pink",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "HBO Premium",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "CineStar Premiere",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "VOYO",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "Pink",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "HBO Premium",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "CineStar Premiere",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "KING",
+    "addon": "VOYO",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "KING",
+    "addon": "Pink",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 2
+  },
+  {
+    "tier": "KING",
+    "addon": "HBO Premium",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "KING",
+    "addon": "CineStar Premiere",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Paket Cinestar premiere",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Paket Cinestar premiere",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "FilmBox+",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Pickbox",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Pink",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "SkyShowtime",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "WiFi Plus osnovni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 2.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Net Zaščita",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.99,
+    "addonCategory": 0
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Voyo 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Paket Balkan",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "HBO MAX - 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "WiFi Plus napredni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 4.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Paket Balkan - gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "PREMIUM",
+    "addon": "Paket PINK",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Net Zaščita",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.99,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Paket Balkan",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Paket Cinestar premiere",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Dodatni paket Razširjena shema",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 4.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "WiFi Plus osnovni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 2.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "WiFi Plus osnovni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 2.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Paket Balkan",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Net Zaščita",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.99,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Dodatni paket Razširjena shema",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 4.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Voyo 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "HBO MAX - 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Paket PINK",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "WiFi Plus napredni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 4.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Razširjena programska shema (v paketu Light 5G)",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Paket Balkan - gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Voyo 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Paket Balkan - gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "WiFi Plus napredni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 4.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Paket PINK",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "HBO MAX - 12m gratis",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Razširjena shema gratis (v paketu Full)",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Višja  shema - gratis (v paketu Light)",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Razširjena shema gratis (v paketu Full)",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Razširjena shema gratis (v paketu Light)",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "NEO C",
+    "addon": "JOKER ",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Ultra Xplore TV maxi",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Ultra Xplore TV maxi",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV maxi",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV maxi",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Ultra Xplore TV maxi",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV maxi+",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Ultra Xplore TV maxi+",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV maxi+",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV maxi+",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Ultra Xplore TV maxi+",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV mini",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Ultra Xplore TV mini",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV mini",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Ultra Xplore TV mini",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Ultra Xplore TV mini",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Xplore TV maxi",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Xplore TV maxi+",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV mini",
+    "addon": "Balkan",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "Xplore TV mini",
+    "addon": "HBO Premium",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV mini",
+    "addon": "Netflix",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 1
+  },
+  {
+    "tier": "Xplore TV mini",
+    "addon": "Časovni zamik",
+    "operator": "A1",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "Xplore TV mini",
+    "addon": "VOYO",
+    "operator": "A1",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 1
+  },
+  {
+    "tier": "EON NET",
+    "addon": "WiFi Plus osnovni",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 2.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON NET",
+    "addon": "Net Zaščita",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 0.99,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO B",
+    "addon": "JOKER ",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO A",
+    "addon": "JOKER ",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "Dodatni TV sprejemnik",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "Balkanski kanali",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "Pametni TV",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 3.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "DIAMANT",
+    "addon": "Časovni zamik",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "KING",
+    "addon": "Dodatni TV sprejemnik",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "KING",
+    "addon": "Balkanski kanali",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "KING",
+    "addon": "Pametni TV",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 3.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "KING",
+    "addon": "Časovni zamik",
+    "operator": "T2",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "Dodatni TV sprejemnik",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "Balkanski kanali",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 0.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "Pametni TV",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 3.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "OPTIMUM",
+    "addon": "Časovni zamik",
+    "operator": "T2",
+    "includedFree": 0,
+    "paidPriceEur": 5.99,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO A",
+    "addon": "Balkan",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 4.50,
+    "addonCategory": 2
+  },
+  {
+    "tier": "NEO A",
+    "addon": "Fiksna telefonija",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO A",
+    "addon": "HBO Premium",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.60,
+    "addonCategory": 1
+  },
+  {
+    "tier": "NEO A",
+    "addon": "Časovni zamik",
+    "operator": "Telekom Slovenije",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO B",
+    "addon": "Balkan",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 4.50,
+    "addonCategory": 2
+  },
+  {
+    "tier": "NEO B",
+    "addon": "Fiksna telefonija",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO B",
+    "addon": "HBO Premium",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.60,
+    "addonCategory": 1
+  },
+  {
+    "tier": "NEO B",
+    "addon": "Časovni zamik",
+    "operator": "Telekom Slovenije",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO C",
+    "addon": "Balkan",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 4.50,
+    "addonCategory": 2
+  },
+  {
+    "tier": "NEO C",
+    "addon": "Fiksna telefonija",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.00,
+    "addonCategory": 0
+  },
+  {
+    "tier": "NEO C",
+    "addon": "HBO Premium",
+    "operator": "Telekom Slovenije",
+    "includedFree": 0,
+    "paidPriceEur": 5.60,
+    "addonCategory": 1
+  },
+  {
+    "tier": "NEO C",
+    "addon": "Časovni zamik",
+    "operator": "Telekom Slovenije",
+    "includedFree": 1,
+    "paidPriceEur": null,
+    "addonCategory": 0
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "Paket VOYO",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON FULL",
+    "addon": "SkyShowtime",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 1.00,
+    "addonCategory": 2
+  },
+  {
+    "tier": "EON LIGHT",
+    "addon": "Paket VOYO",
+    "operator": "Telemach",
+    "includedFree": 0,
+    "paidPriceEur": 7.99,
+    "addonCategory": 2
+  }
+]

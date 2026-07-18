@@ -1,0 +1,274 @@
+{
+  "note": "Retail monthly prices for fixed internet+TV packages, SI, captured 2026-07. Promo vs regular flagged. Illustrative where operator hides price behind a configurator. Prices include VAT (z DDV). Promo prices are 24-month (or shorter, noted) new-subscriber rates that revert to regular after the promo window; verify per address, as fixed-line pricing is availability- and technology-dependent (FTTH vs cable/DSL).",
+  "capturedOn": "2026-07-18",
+  "currency": "EUR",
+  "operators": [
+    {
+      "operator": "A1",
+      "operatorId": 3,
+      "packages": [
+        {
+          "name": "Xplore TV mini",
+          "monthlyEur": 35.99,
+          "regularOrPromo": "promo",
+          "regularEur": 44.99,
+          "internetSpeed": "up to 500/100 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "100+ (osnovna shema)",
+          "commitmentMonths": 24,
+          "notes": "Entry Xplore TV tier. Promo is 24-month new-subscriber rate, reverts to 44.99 after. Time-shift limited to 1 month on this tier.",
+          "source": "https://www.a1.si/tv-paketi"
+        },
+        {
+          "name": "Xplore TV maxi",
+          "monthlyEur": 45.98,
+          "regularOrPromo": "promo",
+          "regularEur": 56.99,
+          "internetSpeed": "up to 500/100 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "180+ (napredna shema)",
+          "commitmentMonths": 24,
+          "notes": "Mid tier. Pickbox TV included. Time-shift 3 months. Promo reverts to 56.99 after 24 months.",
+          "source": "https://www.a1.si/tv-paketi"
+        },
+        {
+          "name": "Xplore TV maxi+",
+          "monthlyEur": 55.99,
+          "regularOrPromo": "promo",
+          "regularEur": 70.99,
+          "internetSpeed": "up to 500/100 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "180+ (napredna shema), unlimited time-shift",
+          "commitmentMonths": 24,
+          "notes": "DEMO PERSONA PACKAGE. Top Xplore TV tier: VOYO permanently included + 1 selectable premium service per month (Netflix, HBO Max, SkyShowtime, FilmBox+, etc). Unlimited time-shift at no extra cost. Promo 55.99 for 24 months reverts to regular 70.99. NOTE: a secondary source (siol/trojcek reseller) quoted regular ~67.99 earlier in 2026 and deeper time-limited promos (down to ~52 during 10.6-31.8.2026 47.89 percent action); treat 70.99 as the current official a1.si regular and 55.99 as the standing promo. Fixed telephony can be added for +2 EUR/mo.",
+          "source": "https://www.a1.si/tv-paketi"
+        }
+      ],
+      "bundles": [
+        {
+          "name": "A1 Komplet Basic",
+          "monthlyEur": 34.98,
+          "regularEur": 60.98,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+mobile",
+          "notes": "3play. Internet up to 1000/100, 100+ TV channels, unlimited mobile calls/SMS + unlimited data (throttled to 2/1 Mbps after 20GB). ~42 percent off over 24 months.",
+          "source": "https://www.a1.si/paketna-ponudba"
+        },
+        {
+          "name": "A1 Komplet Standard",
+          "monthlyEur": 40.48,
+          "regularEur": 77.97,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+mobile",
+          "notes": "3play. Same 1000/100 internet, 180+ TV channels, 3 months free time-shift, mobile 200GB before throttle. ~48 percent off over 24 months. VOYO included; Netflix/HBO Max/SkyShowtime free first 3 months for new customers.",
+          "source": "https://www.a1.si/paketna-ponudba"
+        },
+        {
+          "name": "A1 Komplet Custom",
+          "monthlyEur": null,
+          "regularOrPromo": "configurator",
+          "includes": "internet+TV+mobile",
+          "notes": "Build-your-own: any mobile plan + any internet/TV combination, price computed in configurator. No fixed published price.",
+          "source": "https://www.a1.si/paketna-ponudba"
+        }
+      ]
+    },
+    {
+      "operator": "Telemach",
+      "operatorId": 1,
+      "packages": [
+        {
+          "name": "EON LIGHT",
+          "monthlyEur": 29.90,
+          "regularOrPromo": "promo",
+          "regularEur": 50.90,
+          "internetSpeed": "up to 1 Gbps / 20 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "150+ (90+ HD), 3000+ video club titles",
+          "commitmentMonths": 24,
+          "notes": "Entry EON internet+TV. Includes telephony and promotional Arena Sport through Dec 2026. Promo 29.90 for 24 months reverts to 50.90.",
+          "source": "https://telemach.si/eon/eon-paketi"
+        },
+        {
+          "name": "EON FULL",
+          "monthlyEur": 34.90,
+          "regularOrPromo": "promo",
+          "regularEur": 60.90,
+          "internetSpeed": "up to 1 Gbps / 50 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "180+ (100+ HD), 10000+ video club titles, CineStar TV Premiere HD",
+          "commitmentMonths": 24,
+          "notes": "Mid EON tier. Promo 34.90 for 24 months reverts to 60.90.",
+          "source": "https://telemach.si/eon/eon-paketi"
+        },
+        {
+          "name": "EON PREMIUM",
+          "monthlyEur": 44.90,
+          "regularOrPromo": "promo",
+          "regularEur": 74.90,
+          "internetSpeed": "up to 1 Gbps / 100 Mbps",
+          "tvIncluded": true,
+          "tvChannels": "230+ (130+ HD), 29000+ video club titles",
+          "commitmentMonths": 24,
+          "notes": "Top EON tier (marked PRILJUBLJENO/Popular). VOYO included + choice of HBO Max or SkyShowtime. 2x EON Smart Box. Promo 44.90 for 24 months reverts to 74.90.",
+          "source": "https://telemach.si/eon/eon-paketi"
+        }
+      ],
+      "bundles": [
+        {
+          "name": "EON LIGHT + ŠE VEČ",
+          "monthlyEur": 39.80,
+          "regularEur": 72.30,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+mobile",
+          "notes": "3play. Adds unlimited mobile (data/calls/SMS) to EON LIGHT. Promo 24 months.",
+          "source": "https://telemach.si/eon/eon-vec-paketi"
+        },
+        {
+          "name": "EON FULL + ŠE VEČ",
+          "monthlyEur": 44.80,
+          "regularEur": 82.30,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+mobile",
+          "notes": "3play. EON FULL + unlimited mobile. Promo 24 months.",
+          "source": "https://telemach.si/eon/eon-vec-paketi"
+        },
+        {
+          "name": "EON PREMIUM + ŠE VEČ",
+          "monthlyEur": 54.80,
+          "regularEur": 96.30,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+mobile",
+          "notes": "3play. EON PREMIUM + unlimited mobile, VOYO + HBO Max/SkyShowtime, 2x EON Smart Box. Promo 24 months. New subscribers get 100 EUR Telemach klub credit.",
+          "source": "https://telemach.si/eon/eon-vec-paketi"
+        }
+      ]
+    },
+    {
+      "operator": "Telekom Slovenije",
+      "operatorId": 2,
+      "packages": [
+        {
+          "name": "NEO A",
+          "monthlyEur": 32.99,
+          "regularOrPromo": "promo",
+          "regularEur": 49.00,
+          "internetSpeed": "up to 1 Gbps / 40 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "150+ (Osnovna shema)",
+          "commitmentMonths": 24,
+          "notes": "Entry NEO. Promo 32.99 requires 24-month commitment; for new subscribers WITH a mobile plan it holds 24 months, WITHOUT mobile only first 6 months (promo window 15.5-31.7.2026). Reverts to regular 49.00.",
+          "source": "https://www.telekom.si/neo"
+        },
+        {
+          "name": "NEO B",
+          "monthlyEur": 32.99,
+          "regularOrPromo": "promo",
+          "regularEur": 58.00,
+          "internetSpeed": "up to 1 Gbps / 100 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "210+ (Standard HD)",
+          "commitmentMonths": 24,
+          "notes": "Mid NEO. Same 32.99 intro promo as NEO A (mobile-gated for full 24 months). Reverts to regular 58.00.",
+          "source": "https://www.telekom.si/neo"
+        },
+        {
+          "name": "NEO C",
+          "monthlyEur": 32.99,
+          "regularOrPromo": "promo",
+          "regularEur": 63.00,
+          "internetSpeed": "up to 1 Gbps / 300 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "255+ (Mega HD), expanded video club (Pickbox, HBO, CineStar)",
+          "commitmentMonths": 24,
+          "notes": "Top NEO. Same 32.99 intro promo (mobile-gated for full 24 months). Reverts to regular 63.00. Wi-Fi 6 modem.",
+          "source": "https://www.telekom.si/neo"
+        }
+      ],
+      "bundles": [
+        {
+          "name": "NEO + mobilni paket (bundle discount)",
+          "monthlyEur": null,
+          "regularOrPromo": "configurator",
+          "includes": "internet+TV+mobile",
+          "notes": "Telekom does not publish a single fixed 3play price; the 32.99 NEO promo IS the bundle mechanic - it only holds for the full 24 months when combined with a qualifying mobile plan. Add a mobile paket on top; combined price via telekom.si configurator.",
+          "source": "https://www.telekom.si/neo"
+        }
+      ]
+    },
+    {
+      "operator": "T2",
+      "operatorId": 4,
+      "packages": [
+        {
+          "name": "Oranžni Optimum (Optika)",
+          "monthlyEur": 29.99,
+          "regularOrPromo": "promo",
+          "regularEur": 63.99,
+          "internetSpeed": "500/100 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "180+ (52 HD), scheme L",
+          "commitmentMonths": 12,
+          "notes": "Includes 1x mobile paket Oranžni Mini (T2 packages bundle mobile by default). Wi-Fi 6, T-2 Ščit, tv2go EU. Promo 29.99 reverts to 63.99. 12-month commitment.",
+          "source": "https://www.t-2.net/paketi"
+        },
+        {
+          "name": "Oranžni Diamant HBO (Optika)",
+          "monthlyEur": 29.99,
+          "regularOrPromo": "promo",
+          "regularEur": 87.99,
+          "internetSpeed": "1000/200 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "200+ HD + HBO Max included",
+          "commitmentMonths": 12,
+          "notes": "Includes 1x mobile paket Oranžni Maxi. HBO Max, 500GB cloud, 1 extra TV pack. Deep promo 29.99 reverts to steep 87.99 regular. 12-month commitment. (Historical ref: Diamant was ~78.99 in 2022.)",
+          "source": "https://www.t-2.net/paketi"
+        },
+        {
+          "name": "Oranžni King (Optika)",
+          "monthlyEur": 59.99,
+          "regularOrPromo": "promo",
+          "regularEur": 99.99,
+          "internetSpeed": "1000/1000 Mbps symmetric (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "200+ HD (XL shema)",
+          "commitmentMonths": 24,
+          "notes": "Top T2 tier. Includes 2x mobile paket Oranžni Maxi, 2 extra TV packs, 1TB cloud. Symmetric gigabit. Promo 59.99 reverts to 99.99. 24-month commitment.",
+          "source": "https://www.t-2.net/paketi"
+        },
+        {
+          "name": "T2 TV+NET (Optika)",
+          "monthlyEur": 19.99,
+          "regularOrPromo": "promo",
+          "regularEur": 41.99,
+          "internetSpeed": "500/100 Mbps (FTTH)",
+          "tvIncluded": true,
+          "tvChannels": "standard scheme",
+          "commitmentMonths": 24,
+          "notes": "Cheapest internet+TV with NO mobile. Promo 19.99 reverts to 41.99. 24-month commitment. Useful floor reference for TV+internet-only.",
+          "source": "https://www.t-2.net/paketi"
+        }
+      ],
+      "bundles": [
+        {
+          "name": "Oranžni King (4play: net+TV+fixed+2x mobile)",
+          "monthlyEur": 59.99,
+          "regularEur": 99.99,
+          "regularOrPromo": "promo",
+          "includes": "internet+TV+fixed-phone+mobile",
+          "notes": "T2's Oranžni tiers ARE the bundles - they include fixed telephony and 1-2 mobile SIMs by default, so the package price above already reflects 3play/4play. King = symmetric gig + 2 mobile SIMs.",
+          "source": "https://www.t-2.net/paketi"
+        }
+      ]
+    }
+  ],
+  "dataQualityCaveats": [
+    "All prices include VAT and are the advertised household consumer rates on official operator sites as of 2026-07-18.",
+    "Fixed-line pricing in SI is address- and technology-dependent (FTTH vs cable vs xDSL). FTTH speeds quoted; DSL variants are slower at similar price.",
+    "Promo prices are new-subscriber, commitment-gated (mostly 24 months; T2 Optimum/Diamant 12 months). They revert to the listed regular price after the promo window.",
+    "A1 Xplore TV maxi+: a1.si lists regular 70.99 / standing promo 55.99. Reseller aggregators (trojcek, siol) cited a lower regular (~67.99) and deeper time-limited actions (~52) earlier in 2026 - the official a1.si figures are used here; the persona's actual bill may differ if signed under an older/other promo.",
+    "Telekom NEO shows one headline promo (32.99) across all three tiers; the promo persistence for the full 24 months is gated on bundling a mobile plan - without mobile it lasts only ~6 months. Regular prices differ by tier (49/58/63).",
+    "Bundle rows for Telekom and A1-Custom are configurator-driven (no single fixed published price); values left null where the operator hides the number behind an address/plan selector.",
+    "Internet-only tiers (EON NET, etc) exist but were out of scope; this file covers internet+TV and multi-play only."
+  ]
+}

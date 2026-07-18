@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cp-advisor/needs_profile.schema.json",
+  "title": "NeedsProfile",
+  "description": "Structured needs profile extracted from an advisor conversation, one vertical per object.",
+  "type": "object",
+  "required": ["vertical", "summary", "dontNeed"],
+  "properties": {
+    "vertical": {
+      "type": "string",
+      "enum": ["telco", "energy", "insurance"],
+      "description": "Which utility vertical this profile covers."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One short SI sentence (no sumniki) summarizing the users real need."
+    },
+    "dontNeed": {
+      "type": "array",
+      "description": "Concrete things the user is paying for or being offered that they do NOT need, tied to dataset fields.",
+      "items": { "type": "string" }
+    },
+    "telco": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "watchesSport": { "type": ["boolean", "null"] },
+        "wantsSpecialChannels": { "type": ["array", "null"], "items": { "type": "string" }, "description": "Channel names the user actually cares about, verbatim from data if known." },
+        "phoneCount": { "type": ["integer", "null"], "minimum": 0 },
+        "dataNeedGB": { "type": ["string", "null"], "description": "e.g. 'low', 'mid', 'high', 'unlimited', or a number like '20'." },
+        "worksFromHome": { "type": ["boolean", "null"] },
+        "wantsFixedBroadband": { "type": ["boolean", "null"] },
+        "budgetPriority": { "type": ["boolean", "null"], "description": "true = cheapest is the goal." }
+      }
+    },
+    "energy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dualFuel": { "type": ["boolean", "null"], "description": "needs both electricity and gas." },
+        "annualKwh": { "type": ["number", "null"], "description": "self-reported yearly kWh; null if unknown." },
+        "greenPreference": { "type": ["boolean", "null"] },
+        "wantsFixedPrice": { "type": ["boolean", "null"], "description": "true = fixed tariff, false = ok with market-linked." }
+      }
+    },
+    "insurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hasCar": { "type": ["boolean", "null"] },
+        "carFinanced": { "type": ["boolean", "null"], "description": "on leasing/loan; drives GAP relevance." },
+        "ownsHome": { "type": ["boolean", "null"] },
+        "isTenant": { "type": ["boolean", "null"] },
+        "needsHealthRider": { "type": ["boolean", "null"] },
+        "paysLegacyDopolnilno": { "type": ["boolean", "null"], "description": "still paying old dopolnilno zdravstveno separately (redundant vs OZP since 2024)." },
+        "coveragePriority": { "type": ["boolean", "null"], "description": "true = wants broad coverage over lowest premium." }
+      }
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "vertical": { "const": "telco" } } }, "then": { "required": ["telco"] } },
+    { "if": { "properties": { "vertical": { "const": "energy" } } }, "then": { "required": ["energy"] } },
+    { "if": { "properties": { "vertical": { "const": "insurance" } } }, "then": { "required": ["insurance"] } }
+  ]
+}

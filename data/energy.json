@@ -1,0 +1,327 @@
+{
+  "vertical": "energy",
+  "marketNote": "Slovenian household energy is priced per-unit (EUR/kWh energy) plus a small fixed monthly fee, then network charges + OVE/SPTE levy + 22% VAT on top; the government cap on household electricity ended 1 March 2025 and gas caps earlier, so as of 2026 there is NO active price cap and prices are fully market-set (households cluster near ~0.11-0.13 EUR/kWh energy ex-VAT, ~0.20 EUR/kWh all-in). Published energy prices below are ex-VAT (brez DDV) as suppliers list them; fixed monthly fees are shown incl. VAT.",
+  "_sourceNote": "Primary source: ZPS (Slovenian Consumers' Association) monthly market survey, prices checked 3 July 2026 (published 6 July 2026). Cross-checked against supplier price-list pages. Electricity: VT=visja/high tariff (weekdays 06-22), MT=nizja/low tariff (nights + weekends/holidays), ET=single-tariff meter. Actual monthly bill = energy price x kWh used + fixed fee + regulated network charges + levies + VAT; it is NOT a flat subscription.",
+  "providers": [
+    {
+      "provider": "GEN-I",
+      "sells": ["electricity", "gas"],
+      "notes": "Slovenia's largest electricity supplier. e-invoice cuts the fixed fee roughly in half (2.43 -> 1.21 EUR/mo).",
+      "plans": [
+        {
+          "name": "Redni cenik (standard, gospodinjski odjemalci)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.1199, "MT": 0.0979, "ET": 0.1089},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "variable (do preklica / until revoked)",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no lock-in, no early-exit penalty", "digital self-service via Moj GEN-I", "e-invoice ECO discount lowers fixed fee to 1.21 EUR/mo"],
+          "bundleDiscounts": ["can pair with GEN-I gas supply (dual-fuel from one supplier)"],
+          "notes": "Energy price ex-VAT; fixed fee incl. VAT. Actual monthly cost depends on usage + network charges + levies + 22% VAT.",
+          "source": "https://gen-i.si/dom/elektricna-energija/ceniki-in-akcije/redni-cenik-elektricne-energije-za-gospodinjske-odjemalce/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "GEN-I Fiksni (fixed-price)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.1249, "MT": 0.1029, "ET": 0.1139},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "fixed price (guaranteed, valid from 23.10.2025 do preklica)",
+          "commitmentMonths": 0,
+          "keyFeatures": ["price locked/guaranteed but no formal lock-in and no early-exit penalty", "e-invoice discount to 1.21 EUR/mo", "higher unit price than standard in exchange for price certainty"],
+          "bundleDiscounts": [],
+          "notes": "Also offers 'GEN-I Aktivni' = a different (multi-block/time-of-use) tariff system where the 8-month low season is ~3.5x cheaper 7h/day than peak; not a simple VT/MT plan. Actual monthly depends on usage + network + levies + VAT.",
+          "source": "https://gen-i.si/dom/elektricna-energija/ceniki-in-akcije/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Redna ponudba (gas)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.0496,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": null,
+          "greenOrFixed": "variable",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no lock-in, no early-exit penalty"],
+          "bundleDiscounts": ["dual-fuel with GEN-I electricity"],
+          "notes": "Gas billed per kWh (Slovenia meters m3 then converts to kWh via caloric value). ZPS July-2026 gas survey lists no monthly fixed fee for GEN-I gas (only 'ni vezave; ni pogodbene kazni'), unlike ECE (2.03) and Energija plus (2.43) which ARE itemized - so a separate fixed fee, if any, is not published; left null. Plus network charges + VAT.",
+          "source": "https://gen-i.si/dom/zemeljski-plin/ceniki-in-akcije/ ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    },
+    {
+      "provider": "Petrol",
+      "sells": ["electricity", "gas"],
+      "notes": "Fuel/retail group; ties energy to the Petrol klub loyalty program.",
+      "plans": [
+        {
+          "name": "Redni cenik (standard)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.12795, "MT": 0.10795},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.42,
+          "greenOrFixed": "variable",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no lock-in", "Petrol klub perk: redeem 300 Zlate tocke to cut electricity cost by an extra 1 EUR/mo for the next 3 months (always available)"],
+          "bundleDiscounts": ["Petrol klub loyalty tie-in", "dual-fuel with Petrol gas"],
+          "notes": "Energy ex-VAT, fixed fee incl. VAT. Actual monthly depends on usage + network + levies + VAT.",
+          "source": "https://www.petrol.si/ (cenik gospodinjski odjem EE) ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcijski cenik (promo, fixed 1yr)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.11795, "MT": 0.09595},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.42,
+          "greenOrFixed": "fixed price for 1 year",
+          "commitmentMonths": 12,
+          "keyFeatures": ["cheaper unit price than standard", "price fixed for 12 months", "early termination penalty applies", "same Petrol klub 300-tocke = -1 EUR/mo x3 perk"],
+          "bundleDiscounts": ["Petrol klub loyalty", "dual-fuel with Petrol gas"],
+          "notes": "Fixed fee 1.98 EUR ex-VAT = 2.42 EUR incl. VAT. Actual monthly depends on usage + network + levies + VAT.",
+          "source": "https://www.petrol.si/binaries/content/assets/www/2026/dokumenti/ee/akcijski-cenik-elektricne-energije-za-gospodinjske-odjemalce-fiks-2026-9.-05.-2026.pdf ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija Ugodno 2026 (gas, promo)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.0469,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": null,
+          "greenOrFixed": "fixed price for 1 year (offer valid 15.12.2025 - 31.8.2026)",
+          "commitmentMonths": 12,
+          "keyFeatures": ["promo gas price fixed 1yr", "free exit unless contract says otherwise"],
+          "bundleDiscounts": ["Petrol klub loyalty tie-in", "dual-fuel with Petrol electricity"],
+          "notes": "Standard (non-promo) Petrol gas = 0.05057 EUR/kWh. ZPS July-2026 gas survey does not itemize a monthly fixed fee for Petrol gas (unlike ECE 2.03 / Energija plus 2.43), so left null. Plus network + VAT.",
+          "source": "https://www.petrol.si/ ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    },
+    {
+      "provider": "Energija plus",
+      "sells": ["electricity", "gas"],
+      "notes": "Retail arm of the Elektro Maribor group; runs an explicit electricity+gas dual-fuel bundle ('Dvojni plus').",
+      "plans": [
+        {
+          "name": "Osnovna oskrba (basic supply)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.12479, "MT": 0.10285, "ET": 0.11378},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "variable",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no lock-in, no early-exit penalty", "e-invoice discount lowers fixed fee to 1.22 EUR/mo"],
+          "bundleDiscounts": ["'Dvojni plus' bundles electricity + gas from one supplier"],
+          "notes": "A green variant 'Osnovna oskrba OVE' adds a 0.003 EUR/kWh renewable-energy surcharge (VT 0.12779). Energy ex-VAT, fee incl. VAT.",
+          "source": "https://www.energijaplus.si/vodici-ceniki-in-dokumenti/689-ceniki ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija GOS 2025/3 (promo, fixed 12mo)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.11876, "MT": 0.09679, "ET": 0.10778},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "fixed price for 12 months",
+          "commitmentMonths": 12,
+          "keyFeatures": ["cheaper promo unit price", "price fixed 12 months from signing", "early-exit compensation charged per metering point per remaining month", "e-invoice fee 1.22 EUR/mo"],
+          "bundleDiscounts": ["'Dvojni plus' dual-fuel"],
+          "notes": "Valid from 1.10.2025 until revoked. Plus network + levies + VAT.",
+          "source": "https://www.energijaplus.si/vodici-ceniki-in-dokumenti/689-ceniki ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija Plin 2026 GOS (gas, promo)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.04677,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "fixed price for 1 year",
+          "commitmentMonths": 12,
+          "keyFeatures": ["promo gas price fixed 1yr", "e-invoice discount 1.22 EUR/mo on fixed fee", "early-exit compensation applies"],
+          "bundleDiscounts": ["'Dvojni plus' dual-fuel bundle with electricity"],
+          "notes": "Standard Energija plus gas (Osnovna / 'Plin' / Dvojni plus) = 0.05399 EUR/kWh with same 2.43 EUR fee. Plus network + VAT.",
+          "source": "https://www.energijaplus.si/vodici-ceniki-in-dokumenti/689-ceniki ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    },
+    {
+      "provider": "Elektro energija",
+      "sells": ["electricity", "gas"],
+      "notes": "Supply company; 'Zanesljiva oskrba' (reliable supply) is its household flagship.",
+      "plans": [
+        {
+          "name": "Zanesljiva oskrba (standard)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.1249, "MT": 0.1029, "ET": 0.1139},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "variable",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no fixed lock-in (early-exit penalty only if the contract stipulates)", "e-invoice discount 0.99 EUR/mo on fixed fee"],
+          "bundleDiscounts": ["can add Elektro energija gas ('Zanesljivo plin')"],
+          "notes": "Energy ex-VAT, fee incl. VAT. Plus network + levies + VAT.",
+          "source": "https://www.elektro-energija.si/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Zanesljiva oskrba - fiksni (fixed)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.1299, "MT": 0.1079, "ET": 0.1189},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "fixed price for 1 year",
+          "commitmentMonths": 12,
+          "keyFeatures": ["price locked 1 year from signing the annex", "1-year commitment", "early-exit penalty", "e-invoice discount 0.99 EUR/mo"],
+          "bundleDiscounts": [],
+          "notes": "Fixed-price option trades a higher unit rate for price certainty. Plus network + levies + VAT.",
+          "source": "https://www.elektro-energija.si/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Zanesljivo plin (gas)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.04969,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 0.99,
+          "greenOrFixed": "variable (valid from 1.12.2024 until revoked)",
+          "commitmentMonths": 0,
+          "keyFeatures": ["low fixed fee (0.99 EUR/mo)", "no lock-in (early-exit penalty only if contract says)"],
+          "bundleDiscounts": ["dual-fuel with Elektro energija electricity"],
+          "notes": "One of the lower fixed monthly fees among gas offers. Plus network + VAT.",
+          "source": "https://www.elektro-energija.si/ ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    },
+    {
+      "provider": "Energetika Ljubljana",
+      "sells": ["electricity", "gas"],
+      "notes": "Ljubljana municipal utility; major gas supplier (sourced via national wholesaler Geoplin). Distinctive: NO fixed monthly fee on its electricity plans.",
+      "plans": [
+        {
+          "name": "Redna ponudba (standard electricity)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.12489, "MT": 0.10289, "ET": 0.11389},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 0,
+          "greenOrFixed": "variable",
+          "commitmentMonths": 0,
+          "keyFeatures": ["NO monthly fixed fee (unusual in the market)", "no lock-in (early-exit only recovers damages/benefits granted)"],
+          "bundleDiscounts": ["dual-fuel with Energetika Ljubljana gas"],
+          "notes": "Zero fixed fee makes this attractive for low-usage households. Plus network + levies + VAT.",
+          "source": "https://www.energetika.si/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija 2026/1 (promo electricity)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.1194, "MT": 0.0974, "ET": 0.1084},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 0,
+          "greenOrFixed": "fixed for 2026 (valid 1.1.2026 - 31.12.2026)",
+          "commitmentMonths": 12,
+          "keyFeatures": ["cheaper promo unit price", "no fixed monthly fee", "commitment to 31.12.2026", "early-exit penalty (waived if switching to another offer from the same supplier)"],
+          "bundleDiscounts": ["dual-fuel with Energetika Ljubljana gas"],
+          "notes": "Plus network + levies + VAT.",
+          "source": "https://www.energetika.si/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija Ugodni plin 2026/1 (gas, promo)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.0449,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 0,
+          "greenOrFixed": "fixed (valid 1.2.2026 - 31.12.2026)",
+          "commitmentMonths": 12,
+          "keyFeatures": ["one of the cheapest promo gas unit prices in the survey", "no monthly fixed fee (Energetika Ljubljana charges 'ni mesecnega stroska' across its offers)", "commitment to 31.12.2026", "early-exit recovers damages + a 5% non-offtake charge"],
+          "bundleDiscounts": ["dual-fuel with Energetika Ljubljana electricity"],
+          "notes": "Standard Energetika Ljubljana gas = 0.04995 EUR/kWh. Gas is sourced via Geoplin (national wholesaler). ZPS July-2026 gas survey lists no pavsalni strosek for Energetika Ljubljana, consistent with its zero-fixed-fee model on electricity ('ni mesecnega stroska') - fixed fee set to 0. Plus network + VAT.",
+          "source": "https://www.energetika.si/ ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    },
+    {
+      "provider": "ECE",
+      "sells": ["electricity", "gas"],
+      "notes": "Celje-area supplier (part of the Elektro Celje / E3 group); competitive fixed-price promos.",
+      "plans": [
+        {
+          "name": "ECE elektrika (standard)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.12479, "MT": 0.10285, "ET": 0.11378},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "variable (valid from 1.10.2025 until revoked)",
+          "commitmentMonths": 0,
+          "keyFeatures": ["no lock-in, no early-exit penalty", "e-invoice discount lowers fixed fee to 1.22 EUR/mo"],
+          "bundleDiscounts": ["can add ECE gas"],
+          "notes": "Energy ex-VAT, fee incl. VAT. Plus network + levies + VAT.",
+          "source": "https://www.ece.si/za-dom/elektrika/ceniki-in-dokumenti/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija ECE FIKS B25/12 (promo, fixed 1yr)",
+          "utility": "electricity",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": {"VT": 0.11876, "MT": 0.09679, "ET": 0.10778},
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.43,
+          "greenOrFixed": "fixed price for 1 year",
+          "commitmentMonths": 12,
+          "keyFeatures": ["cheaper promo unit price", "price fixed 1 year", "early-exit compensation per metering point per remaining month", "e-invoice fee 1.22 EUR/mo"],
+          "bundleDiscounts": [],
+          "notes": "Plus network + levies + VAT.",
+          "source": "https://www.ece.si/za-dom/elektrika/ceniki-in-dokumenti/ ; ZPS survey 3.7.2026"
+        },
+        {
+          "name": "Akcija Zanesljivi plin 26/1 (gas, promo)",
+          "utility": "gas",
+          "priceModel": "per-unit+fixed",
+          "energyEurPerKwh": 0.04678,
+          "energyEurPerM3": null,
+          "fixedMonthlyEur": 2.03,
+          "greenOrFixed": "fixed (valid from 20.2.2026)",
+          "commitmentMonths": null,
+          "keyFeatures": ["low promo gas unit price", "e-invoice discount 0.82 EUR/mo on the 2.03 EUR fixed fee", "early-exit compensation applies"],
+          "bundleDiscounts": ["dual-fuel with ECE electricity"],
+          "notes": "Standard ECE gas = 0.05398 EUR/kWh, fixed fee 2.03 EUR/mo (1.22 with e-invoice). Commitment length not stated - uncertain. Plus network + VAT.",
+          "source": "https://www.ece.si/ ; ZPS gas survey 3.7.2026"
+        }
+      ]
+    }
+  ],
+  "regulatedComponents": {
+    "note": "On top of the supplier energy price, every SI household bill adds regulated network charges + levies + VAT. These are supplier-independent (set by the regulator / SODO-e-distribucija, not the energy seller), so they are the same whichever supplier the advisor recommends.",
+    "_sourceNote": "Figures are the Agencija za energijo / SURS reference for an AVERAGE Slovenian household, Q1 2026 (retail reference price 208.4 EUR/MWh, ~0.208 EUR/kWh all-in). Structure of that all-in price: energy delivery 56.4%, network charge (omreznina) 21.9%, levies 3.0%, excise 0.7%, VAT 18.0%. Sources: energetika-portal.si 'Cene elektricne energije v prvem cetrtletju 2026'; stat.si (SURS) Cene energentov; agen-rs.si tarifne postavke omreznine.",
+    "networkChargeNote": "omreznina = the regulated charge for using the distribution + transmission grid. Since 1 Oct 2024 it is billed mostly on booked connection power (obracunska moc) across 5 seasonal time blocks, NOT purely per kWh, so a very-low-usage apartment pays proportionally MORE per kWh than the average below. For an average household it works out to ~45.6 EUR/MWh ex-VAT (~0.046 EUR/kWh), ~11% higher than a year earlier. Typical absolute figure: roughly 10-18 EUR/month for a small apartment regardless of usage, because most of it is the fixed power component.",
+    "networkChargeTypicalEurPerKwh": 0.0456,
+    "oveSpteLevyEurPerKwh": 0.0061,
+    "oveSpteLevyNote": "This 0.0061 EUR/kWh (6.1 EUR/MWh ex-VAT, Q1 2026) is the SURS 'levies' bundle = OVE+SPTE contribution (renewables + high-efficiency CHP support) PLUS the energy-efficiency contribution PLUS the market-operator fee, which SURS groups together. OVE+SPTE is the largest part. Note: households paid a temporary 50% OVE+SPTE reduction Nov 2025-Feb 2026; from 1 Mar 2026 the full rate is back, and under the new ZSROVE-1 law it is charged on actual consumed kWh rather than booked power.",
+    "trosarinaEurPerKwh": 0.00153,
+    "trosarinaNote": "Excise duty (trosarina) on electricity, 1.53 EUR/MWh ex-VAT (Q1 2026). Small relative to energy + network.",
+    "vatPercent": 22,
+    "allInTypicalEurPerKwh": 0.208,
+    "allInNote": "Average all-in household electricity price ~0.208 EUR/kWh (208 EUR/MWh, Q1 2026, incl. energy + omreznina + levies + excise + 22% VAT). Rule of thumb the advisor can use: all-in ~ energy_price_incl_VAT + ~0.08-0.09 EUR/kWh of regulated network/levies/excise (also VAT-loaded). The supplier's energy price is only ~56% of the final bill, so switching supplier moves ~half the bill, not all of it.",
+    "gasRegulatedNote": "For gas the same logic applies: on top of the ~0.045-0.054 EUR/kWh energy price, the bill adds distribution omreznina (gas network), CO2 dajatev (carbon levy on natural gas), trosarina na zemeljski plin (gas excise), prispevek za energetsko ucinkovitost, and 22% VAT. All-in household gas typically lands around ~0.08-0.09 EUR/kWh incl. everything. Gas regulated charges are set by the regulator + distribution operator, not the supplier.",
+    "sampleMonthlyBill": {
+      "assumption": "250 kWh/month apartment (low-usage, single household), average-supplier + average regulated charges, using the SURS Q1-2026 all-in price and cost structure.",
+      "totalAllInEur": 52.0,
+      "split": {
+        "energyComponentEur": 29.3,
+        "networkOmrezninaEur": 11.4,
+        "leviesOveSpteEfficiencyMarketEur": 1.6,
+        "exciseTrosarinaEur": 0.4,
+        "vat22Eur": 9.4
+      },
+      "splitNote": "250 kWh x ~0.208 EUR/kWh all-in = ~52 EUR/month. Breakdown uses the SURS structure (energy 56.4% incl. the ~2.43 EUR supplier fixed fee, network 21.9%, levies 3.0%, excise 0.7%, VAT 18.0%). Reality check: because omreznina is now mostly a fixed power charge, a genuinely tiny apartment can see network land higher (~13-16 EUR) and the energy share lower. The advisor should treat this as an order-of-magnitude estimate, not a quote. Only the ~29 EUR energy slice moves when you switch supplier."
+    }
+  }
+}
