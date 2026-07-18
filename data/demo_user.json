@@ -14,6 +14,8 @@
       "provider": "A1",
       "planName": "A1 Xplore TV maxi+ (fiber internet + TV)",
       "monthlyEur": 55.99,
+      "lineId": "telco-fixed-a1-xplore",
+      "contract": { "startDate": "2024-09-01", "termMonths": 24, "endDate": "2026-09-01", "noticePeriodDays": 30, "autoRenews": true },
       "kind": "fixed",
       "attributes": {},
       "flags": [],
@@ -25,6 +27,8 @@
       "provider": "A1",
       "planName": "A1 Arena Sport Premium (TV channel add-on)",
       "monthlyEur": 4.99,
+      "lineId": "telco-addon-arena",
+      "contract": null,
       "kind": "tv_addon",
       "attributes": {
         "packType": "sport"
@@ -40,6 +44,8 @@
       "provider": "A1",
       "planName": "A1 MaksiMIO (mobile, unlimited calls/SMS + 500 GB)",
       "monthlyEur": 27.99,
+      "lineId": "telco-mobile-maksimio",
+      "contract": { "startDate": "2025-02-01", "termMonths": 24, "endDate": "2027-02-01", "noticePeriodDays": 30, "autoRenews": true },
       "kind": "mobile",
       "attributes": {
         "dataGB": 500
@@ -55,6 +61,8 @@
       "provider": "Petrol",
       "planName": "Petrol Redni cenik (standard variable electricity)",
       "monthlyEur": 41.9,
+      "lineId": "energy-elec-petrol-redni",
+      "contract": null,
       "kind": "electricity",
       "attributes": {},
       "flags": [
@@ -68,6 +76,8 @@
       "provider": "Vzajemna",
       "planName": "Dopolnilno zdravstveno zavarovanje (supplemental health)",
       "monthlyEur": 35.0,
+      "lineId": "ins-health-vzajemna-dopolnilno",
+      "contract": { "startDate": "2025-12-01", "termMonths": 12, "endDate": "2026-12-01", "noticePeriodDays": 30, "autoRenews": true },
       "kind": "legacy_dopolnilno",
       "attributes": {},
       "flags": [
@@ -82,6 +92,8 @@
       "provider": "Triglav",
       "planName": "Avtomobilsko zavarovanje AO (compulsory motor liability)",
       "monthlyEur": 25.0,
+      "lineId": "ins-car-triglav-ao",
+      "contract": { "startDate": "2025-11-15", "termMonths": 12, "endDate": "2026-11-15", "noticePeriodDays": 30, "autoRenews": true },
       "kind": "car_ao",
       "attributes": {},
       "flags": [],
@@ -93,6 +105,8 @@
       "provider": "JP VOKA Snaga",
       "planName": "Municipal water + sewage (Ljubljana)",
       "monthlyEur": 22.0,
+      "lineId": "water-voka",
+      "contract": null,
       "kind": "water",
       "attributes": {},
       "flags": [
