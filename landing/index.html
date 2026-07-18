@@ -3,20 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Frugl — nehaj plačevati za stvari, ki jih ne rabiš</title>
+<title>Frugl — koliko plačuješ za stvari, ki jih ne rabiš?</title>
 <meta name="description" content="Frugl ni primerjalnik cen. AI svetovalec pogleda tvoje račune in ti pokaže, kaj lahko nehaš plačevati — tudi to, kar bi ti drugi prodali." />
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json" />
 <meta name="theme-color" content="#12B76A" />
 <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<!-- Favicon -->
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="icons/favicon-16.png" sizes="16x16" type="image/png" />
+<link rel="shortcut icon" href="icons/favicon.ico" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Frugl" />
 
 <!-- Open Graph / social preview -->
-<meta property="og:title" content="Nehaj plačevati za stvari, ki jih ne rabiš — Frugl" />
+<meta property="og:title" content="Koliko plačuješ za stvari, ki jih ne rabiš? — Frugl" />
 <meta property="og:description" content="Frugl ni primerjalnik cen. AI ti pokaže, kaj plačuješ po nepotrebnem — tudi to, kar bi ti drugi prodali." />
 <meta property="og:type" content="website" />
 <meta name="og:image" content="icons/icon-512.png" />
@@ -90,8 +96,8 @@ header.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--b
 header.nav.scrolled{border-color:var(--line)}
 .nav-inner{display:flex;align-items:center;gap:20px;height:66px}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.03em;text-decoration:none}
-.logo .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-strong));
-  display:grid;place-items:center;color:#03150C;font-weight:900;box-shadow:0 6px 14px -6px rgba(18,183,106,.7)}
+.logo .mark{width:30px;height:30px;border-radius:9px;overflow:hidden;display:block;box-shadow:0 6px 14px -6px rgba(18,183,106,.7)}
+.logo .mark svg{width:100%;height:100%;display:block}
 .nav-links{display:flex;gap:26px;margin-left:14px}
 .nav-links a{text-decoration:none;color:var(--ink-soft);font-weight:600;font-size:15px}
 .nav-links a:hover{color:var(--ink)}
@@ -171,6 +177,7 @@ section.block{padding:64px 0}
 .trust .item .e{font-size:24px;flex:none}
 .trust .item h3{font-size:17px;margin-bottom:4px}
 .trust .item p{color:var(--ink-soft);font-size:15px}
+.provb{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:700;color:var(--ink-soft)}
 @media(max-width:720px){.trust{grid-template-columns:1fr}.trust-wrap{padding:28px}}
 
 /* ---- testimonial ---- */
@@ -338,10 +345,10 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
 <!-- ============================ NAV ============================ -->
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
-    <a href="#top" class="logo"><span class="mark">F</span><span>Frugl</span></a>
+    <a href="#top" class="logo"><span class="mark" aria-hidden="true"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lgMark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23CD86"/><stop offset="1" stop-color="#06965F"/></linearGradient></defs><rect width="512" height="512" fill="url(#lgMark)"/><path d="M180 150 H332 Q344 150 344 162 V270 Q344 342 256 390 Q168 342 168 270 V162 Q168 150 180 150 Z" fill="#fff"/><g fill="#047857"><rect x="200" y="180" width="40" height="132" rx="10"/><rect x="200" y="180" width="112" height="40" rx="10"/><rect x="200" y="234" width="88" height="38" rx="10"/></g></svg></span><span>Frugl</span></a>
     <nav class="nav-links">
       <a href="#how" data-t="nav_how">Kako deluje</a>
-      <a href="#what" data-t="nav_what">Kaj preveriš</a>
+      <a href="#what" data-t="nav_what">Kaj lahko preveriš</a>
       <a href="#trust" data-t="nav_trust">Zakaj zaupati</a>
       <a href="#faq" data-t="nav_faq">Vprašanja</a>
       <a href="#" class="open-app" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
@@ -351,7 +358,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
         <button data-lang="sl" class="on">SL</button>
         <button data-lang="en">EN</button>
       </div>
-      <button class="btn btn-primary" data-quiz data-t="nav_cta">Preveri brezplačno</button>
+      <button class="btn btn-primary" data-quiz data-t="nav_cta">Preverimo brezplačno</button>
     </div>
   </div>
 </header>
@@ -363,10 +370,10 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
   <div class="wrap hero-grid">
     <div>
       <div class="eyebrow" data-t="hero_eyebrow">AI svetovalec · ne primerjalnik cen</div>
-      <h1 style="margin-top:14px" data-t-html="hero_h1">Nehaj plačevati za stvari,<br><span class="hl">ki jih ne rabiš.</span></h1>
+      <h1 style="margin-top:14px" data-t-html="hero_h1">Plačuješ za stvari,<br><span class="hl">ki jih ne rabiš?</span></h1>
       <p class="sub" data-t="hero_sub">Frugl ni primerjalnik cen. Je AI svetovalec, ki pogleda tvoje račune, razume kaj res rabiš in ti pokaže, kaj lahko nehaš plačevati — tudi tisto, kar bi ti drugi prodali.</p>
       <div class="hero-cta">
-        <button class="btn btn-primary btn-lg" data-quiz data-t="hero_cta">Poglej, kaj plačuješ po nepotrebnem →</button>
+        <button class="btn btn-primary btn-lg" data-quiz data-t="hero_cta">Poglejmo, kaj plačuješ po nepotrebnem →</button>
       </div>
       <div class="microtrust">
         <span data-t="mt_bank">🔒 Brez dostopa do banke</span>
@@ -381,11 +388,11 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
       <div class="cap" style="font-size:12.5px;margin-bottom:12px" data-t="phone_sub">3 najdbe v računih · brez pritiska</div>
       <div class="calcbox">
         <div class="row"><span style="text-decoration:line-through;color:var(--ink-soft)" data-t="phone_i1">Arena Sport · športa ne gledaš</span><b style="color:var(--alert)">−5 €</b></div>
-        <div class="row"><span data-t="phone_i2">MaksiMIO 500 GB → bob 8 €</span><b style="color:var(--alert)">−20 €</b></div>
-        <div class="row"><span style="text-decoration:line-through;color:var(--ink-soft)" data-t="phone_i3">Dvojno zdravstveno (OZP)</span><b style="color:var(--alert)">−35 €</b></div>
+        <div class="row"><span data-t="phone_i2">Predrag mobilni paket → bob za 8 €</span><b style="color:var(--alert)">−20 €</b></div>
+        <div class="row"><span style="text-decoration:line-through;color:var(--ink-soft)" data-t="phone_i3">Zdravstveno plačuješ dvakrat</span><b style="color:var(--alert)">−35 €</b></div>
         <div class="row save"><span data-t="phone_save">Prihraniš</span><b>60 €/mes · 720 €/leto</b></div>
       </div>
-      <div class="cta-mini" data-t="phone_btn">Poglej svoj primer →</div>
+      <div class="cta-mini" data-t="phone_btn">Poglejmo tvoj primer →</div>
     </div>
   </div>
 
@@ -413,7 +420,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
         <ul>
           <li data-t="diff_old_1">Pokaže, kdo je najcenejši za izdelek, ki si ga že izbral.</li>
           <li data-t="diff_old_2">Ostaneš pasiven — nihče ti ne reče, da nekaj NE rabiš.</li>
-          <li data-t="diff_old_3">Ne ujame skritih postavk (dvojni OZP, GAP, mrtvi dodatki).</li>
+          <li data-t="diff_old_3">Ne ujame skritih postavk (dvakrat plačano zdravstveno, zavarovanje avtokredita, mrtvi dodatki).</li>
         </ul>
       </div>
       <div class="cmp cmp-new">
@@ -421,7 +428,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
         <ul>
           <li data-t="diff_new_1">Najprej ugotovi, kaj RES rabiš — šele nato ponudbo.</li>
           <li data-t="diff_new_2">Odstrani, kar ne rabiš — tudi tisto, kar bi ti lahko prodal.</li>
-          <li data-t="diff_new_3">Ujame, kar prodajalec skrije, in te čuva naprej (watchdog).</li>
+          <li data-t="diff_new_3">Ujame, kar prodajalec skrije, in te varuje naprej — kot čuvaj.</li>
         </ul>
       </div>
     </div>
@@ -432,14 +439,14 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
 <section class="block" id="how">
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow" data-t="how_eyebrow">Preprosto</div>
-      <h2 data-t="how_h2">Kako deluje</h2>
-      <p data-t="how_sub">Trije koraki. Nič bančnega dostopa, nič gesel — samo poveš svoj obstoječi račun.</p>
+      <div class="eyebrow" data-t="how_eyebrow">Kako deluje</div>
+      <h2 data-t="how_h2">Kako ti AI pomaga prihraniti</h2>
+      <p data-t="how_sub">Ne primerja samo cen. Razume, kaj res rabiš — in ujame, kar prodajalec zamolči.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="k">1</span><div class="ic">📄</div><h3 data-t="how1_h">Poveš svoj račun</h3><p data-t="how1_p">Samo ponudnik, koliko časa si pri njem in mesečni znesek. Brez bančnega dostopa, brez gesel.</p></div>
-      <div class="step"><span class="k">2</span><div class="ic">🔍</div><h3 data-t="how2_h">Primerjamo z vsemi</h3><p data-t="how2_p">Tvojo ceno primerjamo z vsemi ponudniki na trgu (vir: uradni AKOS / AGEN podatki).</p></div>
-      <div class="step"><span class="k">3</span><div class="ic">✅</div><h3 data-t="how3_h">Uredimo prehod</h3><p data-t="how3_p">Če najdemo bolje, ti pripravimo prehod — potrdiš vsak korak. Če ne najdemo, te nič ne stane.</p></div>
+      <div class="step"><span class="k">1</span><div class="ic">📄</div><h3 data-t="how1_h">Prebere tvoje račune</h3><p data-t="how1_p">AI pogleda, kaj točno plačuješ. Brez bančnega dostopa, brez gesel — samo tvoj obstoječi paket.</p></div>
+      <div class="step"><span class="k">2</span><div class="ic">🔍</div><h3 data-t="how2_h">Ujame skrite postavke</h3><p data-t="how2_p">Kar prodajalec zamolči: dvakrat plačano zdravstveno zavarovanje, zavarovanje avtokredita na že odplačanem avtu, dodatek, ki ga ne uporabljaš.</p></div>
+      <div class="step"><span class="k">3</span><div class="ic">✅</div><h3 data-t="how3_h">Pove, kaj odstraniti</h3><p data-t="how3_p">Ne le cenejše — pokaže, kaj lahko nehaš plačevati, in uredi prehod. Brez dodatnega prodajanja, ti potrdiš vsak korak.</p></div>
     </div>
   </div>
 </section>
@@ -448,7 +455,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
 <section class="block" id="what" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow" data-t="what_eyebrow">Vertikale</div>
+      <div class="eyebrow" data-t="what_eyebrow">Kaj vse preveriš</div>
       <h2 data-t="what_h2">Kaj lahko preveriš</h2>
     </div>
     <div class="verts">
@@ -473,6 +480,26 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
         <div class="item"><span class="e">👀</span><div><h3 data-t="t2_h">Ti odločaš</h3><p data-t="t2_p">Nič se ne zgodi brez tvoje potrditve — vsak korak potrdiš sam.</p></div></div>
         <div class="item"><span class="e">🇸🇮</span><div><h3 data-t="t3_h">Slovenski ponudniki, slovensko</h3><p data-t="t3_p">Poznamo Telemach, A1, Telekom, T-2 — ne tuj robot, ki SLO trga ne pozna.</p></div></div>
         <div class="item"><span class="e">🧾</span><div><h3 data-t="t4_h">Dokazan prihranek</h3><p data-t="t4_p">Vidiš točno staro in novo ceno, črno na belem. Nič skritega.</p></div></div>
+        <div class="item"><span class="e">🔐</span><div><h3 data-t="t5_h">Tvojih podatkov ne prodajamo</h3><p data-t="t5_p">Poveš nam samo, kaj že plačuješ. Tvojih podatkov ne damo naprej — nikomur.</p></div></div>
+      </div>
+      <div style="margin-top:24px;text-align:center">
+        <p style="font-size:13.5px;color:var(--ink-faint);font-weight:600;margin-bottom:12px" data-t="prov_label">Primerjamo vse večje slovenske ponudnike:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+          <span class="provb">Telemach</span><span class="provb">A1</span><span class="provb">Telekom</span><span class="provb">T-2</span><span class="provb">Bob</span><span class="provb">Triglav</span><span class="provb">Zav. Sava</span><span class="provb">Generali</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KAKO ZASLUŽIMO ============================ -->
+<section class="block" id="earn" style="padding-top:0">
+  <div class="wrap">
+    <div class="trust-wrap">
+      <div class="sec-head" style="margin-bottom:0">
+        <div class="eyebrow" data-t="earn_eyebrow">Brez drobnega tiska</div>
+        <h2 data-t="earn_h2">Kako Frugl zasluži</h2>
+        <p data-t="earn_p">Preverjanje je zate brezplačno. Ko ti najdemo boljšo ponudbo in se ti odločiš za prehod, nam priporočilo plača ponudnik. Ti plačaš manj, mi zaslužimo od ponudnika — nikoli od tebe. Prav zato ti nikoli ne bomo prodajali stvari, ki jih ne rabiš.</p>
       </div>
     </div>
   </div>
@@ -484,8 +511,8 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
     <div class="watchdog-band">
       <div>
         <div class="eyebrow" data-t="wd_eyebrow">Naprej te čuva</div>
-        <h2 data-t="wd_h2">Watchdog: da spet ne začneš preplačevati</h2>
-        <p data-t="wd_p">Cene tiho zrastejo, promo se izteče, doda se nova postavka. Frugl to spremlja namesto tebe in ti pošlje en email — samo takrat, ko se ti splača ukrepati.</p>
+        <h2 data-t="wd_h2">Čuvaj: da spet ne začneš preplačevati</h2>
+        <p data-t="wd_p">Cene tiho zrastejo, posebna cena (akcija) poteče, doda se nova postavka. Frugl to spremlja namesto tebe in ti pošlje en email — samo takrat, ko se ti splača ukrepati.</p>
       </div>
       <div class="wd-ping" aria-hidden="true">🔔</div>
     </div>
@@ -498,14 +525,25 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
     <div class="quote">
       <div>
         <div class="eyebrow" data-t="tm_eyebrow">Takole izgleda</div>
-        <blockquote data-t="tm_quote">„Pri istem operaterju sem bil 4 leta. Frugl mi je pokazal, da preplačujem 28 € na mesec za isti paket. V 10 minutah smo uredili prehod."</blockquote>
-        <div class="who" data-t="tm_who">— Marko, Ljubljana <span style="opacity:.6">(primer)</span></div>
+        <blockquote data-t="tm_quote">„Frugl mi je pokazal, da 4 leta plačujem 35 € na mesec za dopolnilno zdravstveno, ki je bilo 2024 ukinjeno — dvojno. Odpovedal in prihranil 420 € na leto."</blockquote>
+        <div class="who" data-t="tm_who">— Marko, Ljubljana (primer)</div>
       </div>
       <div class="demo">
         <div class="row"><span data-t="tm_old">Dvojno zdravstveno</span><b style="color:var(--alert)">−35 €/mes</b></div>
         <div class="row"><span data-t="tm_new">Arena Sport (ne gleda)</span><b style="color:var(--alert)">−5 €/mes</b></div>
         <div class="row save"><span data-t="tm_save">Prihranek</span><b>480 €/leto</b></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KDO SMO ============================ -->
+<section class="block" id="who" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-t="who_eyebrow">Kdo smo</div>
+      <h2 data-t="who_h2">Za Fruglom stojijo ljudje, ne robot</h2>
+      <p data-t="who_p">Frugl je slovenska ekipa. Nismo tuj klicni center in nismo prodajalci. Naredili smo ga, ker se nam zdi krivično, da toliko ljudi leta plačuje preveč — pa največkrat sploh ne vedo. Če česa ne razumeš, smo tu zate.</p>
     </div>
   </div>
 </section>
@@ -521,13 +559,28 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
   </div>
 </section>
 
+<!-- ============================ KAJ SE ZGODI ============================ -->
+<section class="block" id="steps" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-t="steps_eyebrow">Brez obveze</div>
+      <h2 data-t="steps_h2">Kaj se zgodi, ko klikneš</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="ic">👀</div><p data-t="steps_1">Pokažemo ti, koliko lahko privarčuješ.</p></div>
+      <div class="step"><span class="k">2</span><div class="ic">🤝</div><p data-t="steps_2">Če želiš, prehod uredimo skupaj — ti potrdiš vsak korak.</p></div>
+      <div class="step"><span class="k">3</span><div class="ic">🛡️</div><p data-t="steps_3">Nič se ne zgodi samodejno. Nikoli.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================ FINAL CTA ============================ -->
 <section class="block" style="padding-top:0">
   <div class="wrap">
     <div class="final">
-      <h2 data-t="final_h2">Poglej, kaj plačuješ po nepotrebnem. Zdaj.</h2>
+      <h2 data-t="final_h2">Poglejmo, kaj plačuješ po nepotrebnem.</h2>
       <p data-t="final_p">60 sekund. Brez registracije. Brez tveganja.</p>
-      <button class="btn btn-primary btn-lg" data-quiz data-t="final_cta">Preveri brezplačno →</button>
+      <button class="btn btn-primary btn-lg" data-quiz data-t="final_cta">Preverimo brezplačno →</button>
       <div class="sub2" data-t="final_sub">Če ti ne najdemo prihranka, te nič ne stane.</div>
     </div>
   </div>
@@ -545,9 +598,10 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
         <a href="#faq" data-t="nav_faq">Vprašanja</a>
         <a href="#" class="open-app" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
         <a href="#" data-t="foot_privacy">Zasebnost</a>
-        <a href="#" data-t="foot_contact">Kontakt</a>
+        <a href="mailto:info@frugl.si" data-t="foot_contact">Kontakt</a>
       </div>
     </div>
+    <p class="foot-help" style="margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);font-weight:600" data-t="foot_help">Rajši po telefonu? Napiši nam in te z veseljem pokličemo.</p>
     <p class="disclaimer" data-t="disclaimer">Frugl ni ponudnik storitev; primerjamo in posredujemo. Prikazan prihranek je okviren in ga je treba potrditi pri ponudniku. * Prihranek je odvisen od tvojih računov; prikazani zneski so okvirni primeri (persona Marko).</p>
   </div>
 </footer>
@@ -624,29 +678,29 @@ const PROVIDERS = {
    ========================================================================== */
 const T = {
 sl:{
-  nav_how:"Kako deluje", nav_what:"Kaj preveriš", nav_trust:"Zakaj zaupati", nav_faq:"Vprašanja",
-  nav_cta:"Preveri brezplačno", nav_app:"Odpri app →",
+  nav_how:"Kako deluje", nav_what:"Kaj lahko preveriš", nav_trust:"Zakaj zaupati", nav_faq:"Vprašanja",
+  nav_cta:"Preverimo brezplačno", nav_app:"Odpri app →",
   hero_eyebrow:"AI svetovalec · ne primerjalnik cen",
-  hero_h1:'Nehaj plačevati za stvari,<br><span class="hl">ki jih ne rabiš.</span>',
+  hero_h1:'Plačuješ za stvari,<br><span class="hl">ki jih ne rabiš?</span>',
   hero_sub:"Frugl ni primerjalnik cen. Je AI svetovalec, ki pogleda tvoje račune, razume kaj res rabiš in ti pokaže, kaj lahko nehaš plačevati — tudi tisto, kar bi ti drugi prodali.",
-  hero_cta:"Poglej, kaj plačuješ po nepotrebnem →",
+  hero_cta:"Poglejmo, kaj plačuješ po nepotrebnem →",
   mt_bank:"🔒 Brez dostopa do banke", mt_reg:"🤖 AI, ki ti ne prodaja", mt_time:"⚡ 60 sekund",
   phone_badge:"AI svetovalec", phone_dontpay:"Markov pregled", phone_sub:"3 najdbe v računih · brez pritiska",
-  phone_i1:"Arena Sport · športa ne gledaš", phone_i2:"MaksiMIO 500 GB → bob 8 €", phone_i3:"Dvojno zdravstveno (OZP)",
-  phone_save:"Prihraniš", phone_btn:"Poglej svoj primer →",
+  phone_i1:"Arena Sport · športa ne gledaš", phone_i2:"Predrag mobilni paket → bob za 8 €", phone_i3:"Zdravstveno plačuješ dvakrat",
+  phone_save:"Prihraniš", phone_btn:"Poglejmo tvoj primer →",
   stat1:"letni prihranek v tipičnem AI pregledu*", stat2n:"2 od 3", stat2:"plačujejo vsaj eno stvar, ki je ne rabijo",
   stat3:"AI pregled · brez registracije, brez banke",
-  how_eyebrow:"AI, ki dela zate", how_h2:"Kako ti AI pomaga prihraniti",
+  how_eyebrow:"Kako deluje", how_h2:"Kako ti AI pomaga prihraniti",
   how_sub:"Ne primerja samo cen. Razume, kaj res rabiš — in ujame, kar prodajalec zamolči.",
   how1_h:"Prebere tvoje račune", how1_p:"AI pogleda, kaj točno plačuješ. Brez bančnega dostopa, brez gesel — samo tvoj obstoječi paket.",
-  how2_h:"Ujame skrite postavke", how2_p:"Kar prodajalec zamolči: dvojno plačan OZP, GAP na odplačanem avtu, dodatek, ki ga ne uporabljaš.",
-  how3_h:"Pove, kaj odstraniti", how3_p:"Ne le cenejše — pokaže, kaj lahko nehaš plačevati, in uredi prehod. Brez upsella, ti potrdiš vsak korak.",
+  how2_h:"Ujame skrite postavke", how2_p:"Kar prodajalec zamolči: dvakrat plačano zdravstveno zavarovanje, zavarovanje avtokredita na že odplačanem avtu, dodatek, ki ga ne uporabljaš.",
+  how3_h:"Pove, kaj odstraniti", how3_p:"Ne le cenejše — pokaže, kaj lahko nehaš plačevati, in uredi prehod. Brez dodatnega prodajanja, ti potrdiš vsak korak.",
   diff_eyebrow:"Zakaj ni isto", diff_h2:"Primerjalnik ti pove ceno. Frugl ti pove resnico.",
   diff_sub:"Primerjalniki (naj-ceneje, mobi-tel …) ti povedo, kdo je najcenejši za nekaj, kar morda sploh ne rabiš. Frugl obrne vrstni red.",
-  diff_old_h:"📊 Primerjalnik cen", diff_old_1:"Pokaže, kdo je najcenejši za izdelek, ki si ga že izbral.", diff_old_2:"Ostaneš pasiven — nihče ti ne reče, da nekaj NE rabiš.", diff_old_3:"Ne ujame skritih postavk (dvojni OZP, GAP, mrtvi dodatki).",
-  diff_new_h:"🤖 Frugl AI svetovalec", diff_new_1:"Najprej ugotovi, kaj RES rabiš — šele nato ponudbo.", diff_new_2:"Odstrani, kar ne rabiš — tudi tisto, kar bi ti lahko prodal.", diff_new_3:"Ujame, kar prodajalec skrije, in te čuva naprej (watchdog).",
-  wd_eyebrow:"Naprej te čuva", wd_h2:"Watchdog: da spet ne začneš preplačevati", wd_p:"Cene tiho zrastejo, promo se izteče, doda se nova postavka. Frugl to spremlja namesto tebe in ti pošlje en email — samo takrat, ko se ti splača ukrepati.",
-  what_eyebrow:"Vertikale", what_h2:"Kaj lahko preveriš",
+  diff_old_h:"📊 Primerjalnik cen", diff_old_1:"Pokaže, kdo je najcenejši za izdelek, ki si ga že izbral.", diff_old_2:"Ostaneš pasiven — nihče ti ne reče, da nekaj NE rabiš.", diff_old_3:"Ne ujame skritih postavk (dvakrat plačano zdravstveno, zavarovanje avtokredita, mrtvi dodatki).",
+  diff_new_h:"🤖 Frugl AI svetovalec", diff_new_1:"Najprej ugotovi, kaj RES rabiš — šele nato ponudbo.", diff_new_2:"Odstrani, kar ne rabiš — tudi tisto, kar bi ti lahko prodal.", diff_new_3:"Ujame, kar prodajalec skrije, in te varuje naprej — kot čuvaj.",
+  wd_eyebrow:"Naprej te čuva", wd_h2:"Čuvaj: da spet ne začneš preplačevati", wd_p:"Cene tiho zrastejo, posebna cena (akcija) poteče, doda se nova postavka. Frugl to spremlja namesto tebe in ti pošlje en email — samo takrat, ko se ti splača ukrepati.",
+  what_eyebrow:"Kaj vse preveriš", what_h2:"Kaj lahko preveriš",
   v_mobile:"Mobilni paket", v_net:"Internet + TV", v_car:"Zavarovanje avta", v_energy:"Elektrika + plin", soon:"kmalu",
   trust_eyebrow:"Brez trika", trust_h2:"Zakaj nam lahko zaupaš",
   t1_h:"Brez dostopa do banke", t1_p:"Ne povezuješ računa, ne daš gesel. Samo poveš svoj obstoječi paket.",
@@ -657,29 +711,38 @@ sl:{
   tm_quote:'„Frugl mi je pokazal, da 4 leta plačujem 35 € na mesec za dopolnilno zdravstveno, ki je bilo 2024 ukinjeno — dvojno. Odpovedal in prihranil 420 € na leto."',
   tm_who:"— Marko, Ljubljana (primer)", tm_old:"Dvojno zdravstveno", tm_new:"Arena Sport (ne gleda)", tm_save:"Prihranek",
   faq_eyebrow:"Pošteno", faq_h2:"Pogosta vprašanja",
-  final_h2:"Poglej, kaj plačuješ po nepotrebnem. Zdaj.", final_p:"60 sekund. Brez registracije. Brez tveganja.",
-  final_cta:"Preveri brezplačno →", final_sub:"Če ti ne najdemo prihranka, te nič ne stane.",
+  final_h2:"Poglejmo, kaj plačuješ po nepotrebnem.", final_p:"60 sekund. Brez registracije. Brez tveganja.",
+  final_cta:"Preverimo brezplačno →", final_sub:"Če ti ne najdemo prihranka, te nič ne stane.",
+  earn_eyebrow:"Brez drobnega tiska", earn_h2:"Kako Frugl zasluži",
+  earn_p:"Preverjanje je zate brezplačno. Ko ti najdemo boljšo ponudbo in se ti odločiš za prehod, nam priporočilo plača ponudnik. Ti plačaš manj, mi zaslužimo od ponudnika — nikoli od tebe. Prav zato ti nikoli ne bomo prodajali stvari, ki jih ne rabiš.",
+  who_eyebrow:"Kdo smo", who_h2:"Za Fruglom stojijo ljudje, ne robot",
+  who_p:"Frugl je slovenska ekipa. Nismo tuj klicni center in nismo prodajalci. Naredili smo ga, ker se nam zdi krivično, da toliko ljudi leta plačuje preveč — pa največkrat sploh ne vedo. Če česa ne razumeš, smo tu zate.",
+  steps_eyebrow:"Brez obveze", steps_h2:"Kaj se zgodi, ko klikneš",
+  steps_1:"Pokažemo ti, koliko lahko privarčuješ.", steps_2:"Če želiš, prehod uredimo skupaj — ti potrdiš vsak korak.", steps_3:"Nič se ne zgodi samodejno. Nikoli.",
+  prov_label:"Primerjamo vse večje slovenske ponudnike:",
+  t5_h:"Tvojih podatkov ne prodajamo", t5_p:"Poveš nam samo, kaj že plačuješ. Tvojih podatkov ne damo naprej — nikomur.",
+  foot_help:"Rajši po telefonu? Napiši nam in te z veseljem pokličemo.",
   foot_privacy:"Zasebnost", foot_contact:"Kontakt",
   disclaimer:"Frugl ni ponudnik storitev; primerjamo in posredujemo. Prikazan prihranek je okviren in ga je treba potrditi pri ponudniku. * Prihranek je odvisen od tvojih računov; prikazani zneski so okvirni primeri (persona Marko).",
   /* FAQ */
   faq:[
     ["Je res brezplačno? V čem je trik?","Preverjanje je 100 % brezplačno. Zaslužimo šele, ko ti dejansko prihranimo — ponudnik nam plača priporočilo, ti pa dobiš nižjo ceno. Če ti ne najdemo bolje, te nič ne stane."],
-    ["Od kod veste, koliko plačam?","Ti nam poveš svoj račun. Cene ponudnikov jemljemo iz uradnih virov (AKOS za telco). Nič ne poizvedujemo za tvojim hrbtom, nič bančnega dostopa."],
+    ["Od kod veste, koliko plačam?","Ti nam poveš svoj račun. Cene ponudnikov jemljemo iz uradnih virov (npr. AKOS, agencija za telekomunikacije). Nič ne poizvedujemo za tvojim hrbtom, nič bančnega dostopa."],
     ["Kaj pa če ne najdete nič cenejšega?","Potem ostaneš, kjer si — brez stroška, brez obveze. Vsaj boš vedel, da ne preplačuješ."],
     ["Moram takoj menjati?","Ne. Pokažemo ti prihranek, ti pa se odločiš. Lahko samo pogledaš."],
     ["Kaj pa vezava / prekinitev?","Preverimo, kdaj ti poteče, in ti povemo, ali se prehod splača že zdaj ali ob izteku. Prenos številke je v SLO brezplačen (1–3 dni)."]
   ],
   /* KVIZ */
   q_close:"Zapri", q_back:"← Nazaj",
-  q0_eyebrow:"60 sekund", q0_h:"Poglejmo, koliko preplačuješ.", q0_help:"Odgovori na 4 kratka vprašanja. Brez registracije.",
+  q0_eyebrow:"60 sekund", q0_h:"Poglejmo, koliko preplačuješ.", q0_help:"Odgovoriš na 4 kratka vprašanja. Brez registracije.",
   q0_start:"Začnimo →",
   q1_eyebrow:"Vprašanje 1", q1_h:"Kaj bi rad preveril?",
   q1_mobile:"Mobilni paket", q1_net:"Internet + TV", q1_car:"Zavarovanje avta", q1_home:"Zavarovanje doma",
-  q2_eyebrow:"Vprašanje 2", q2_h:"Kdo je tvoj trenutni ponudnik?", q2_help:"Izberi enega — ali „Drugo“.",
+  q2_eyebrow:"Vprašanje 2", q2_h:"Kdo je tvoj trenutni ponudnik?", q2_help:"Izbereš enega — ali „Drugo“.",
   q3_eyebrow:"Vprašanje 3", q3_h:"Koliko časa si že pri njem?", q3_help:"Dlje ko si, več običajno preplačaš.",
   q3_lt1:"Manj kot 1 leto", q3_y12:"1–2 leti", q3_y2:"2+ let",
-  q4_eyebrow:"Vprašanje 4", q4_h:"Koliko približno plačaš na mesec?", q4_help:"Približek je dovolj — vnesi znesek ali izberi razpon.",
-  q4_ph:"npr. 35", q4_continue:"Poglej rezultat →",
+  q4_eyebrow:"Vprašanje 4", q4_h:"Koliko približno plačaš na mesec?", q4_help:"Približek je dovolj — vpišeš znesek ali izbereš razpon.",
+  q4_ph:"npr. 35", q4_continue:"Poglejmo rezultat →",
   q4_r1:"do 20 €", q4_r2:"20–35 €", q4_r3:"35–50 €", q4_r4:"50 €+",
   calc1:"Primerjam z vsemi ponudniki…", calc2:"Računam tvoj pribitek za zvestobo…", calc3:"Pripravljam rezultat…",
   res_pill:"Preplačuješ", res_over_sub:"Za popolnoma isto storitev je na voljo cenejša ponudba.",
@@ -687,36 +750,36 @@ sl:{
   res_row_old:"Tvoj trenutni paket", res_row_new:"Najboljša primerljiva ponudba", res_row_save:"Tvoj prihranek",
   res_per_mo:"/mes", res_per_yr:"/leto",
   res_mini:"Izračun je okviren. Preden karkoli uredimo, ti pokažemo točno ponudbo in jo potrdiš.",
-  res_email_h:"Kam ti pošljemo tvoj prihranek + boljšo ponudbo?", res_email_ph:"tvoj@email.si", res_email_btn:"Pošlji mi →",
-  res_watchdog:"Opozori me tudi, ko spet začnem preplačevati (watchdog).",
+  res_email_h:"Kam ti pošljemo tvoj prihranek + boljšo ponudbo?", res_email_ph:"tvoj@email.si", res_email_btn:"Želim svoj prihranek →",
+  res_watchdog:"Opozori me tudi, ko spet začnem preplačevati (kot čuvaj).",
   res_email_note:"Brez spama. Samo tvoj prihranek in opozorila ob podražitvah.",
   res_offers_h:"Boljše ponudbe zate", res_offers_sub:"Konkretne cenejše možnosti za isto storitev. Primeri — točno ponudbo potrdiš pred prehodom.",
   res_hesit_h:"Še okleveš?", res_hesit_sub:"Brez pritiska — izberi, kaj te muči, in ti povemo po pravici.",
   res_good_offers_sub:"Že si blizu najboljšega. Tole so trenutno najboljše ponudbe na trgu:",
-  res_save_badge:"prihraniš", res_switch:"Preklopi →",
-  sw_h:"Uredimo prehod na {P}", sw_help:"Pusti kontakt — pripravimo prehod, ti potrdiš vsak korak. Nič se ne zgodi brez tebe.",
-  sw_email_ph:"tvoj@email.si", sw_phone_ph:"telefon (neobvezno)", sw_btn:"Uredi prehod →", sw_done:"Super! Javimo se v 24 urah z natančno ponudbo ✓",
-  res_wd_toggle:"🔔 Naj te opozorimo, ko spet začneš preplačevati:", res_wd_btn:"Vklopi →", res_wd_done:"Vklopljeno — javimo se ob podražitvi.", res_wd_note:"Brez spama. En email, ko se ti splača ukrepati.",
+  res_save_badge:"prihraniš", res_switch:"Preklopimo →",
+  sw_h:"Uredimo prehod na {P}", sw_help:"Če pustiš kontakt, pripravimo prehod — ti potrdiš vsak korak. Nič se ne zgodi brez tebe.",
+  sw_email_ph:"tvoj@email.si", sw_phone_ph:"telefon (neobvezno)", sw_btn:"Uredimo prehod →", sw_done:"Super! Javimo se v 24 urah z natančno ponudbo ✓",
+  res_wd_toggle:"🔔 Naj te opozorimo, ko spet začneš preplačevati:", res_wd_btn:"Vklopimo →", res_wd_done:"Vklopljeno — javimo se ob podražitvi.", res_wd_note:"Brez spama. En email, ko se ti splača ukrepati.",
   toast_switch:"Javimo se v 24 urah ✓",
-  res_share_h:"Deli svoj rezultat", res_share_txt:"Ugotovil sem, da preplačujem €{X}/leto za položnice 😮 Preveri še ti →",
+  res_share_h:"Svoj rezultat lahko deliš", res_share_txt:"Ugotovil sem, da preplačujem €{X}/leto za položnice 😮 Poglej še ti →",
   res_share_copy:"Kopiraj povezavo", res_share_wa:"WhatsApp", res_share_dl:"Prenesi sliko", res_share_fb:"Facebook",
   toast_copied:"Povezava kopirana ✓", toast_email:"Super! Poslali ti bomo tvoj prihranek ✓", toast_dl:"Slika prenesena ✓",
-  err_email:"Vnesi veljaven email", err_amount:"Vnesi znesek"
+  err_email:"Prosim, vpiši veljaven email", err_amount:"Prosim, vpiši znesek"
 },
 en:{
   nav_how:"How it works", nav_what:"What you check", nav_trust:"Why trust us", nav_faq:"FAQ",
-  nav_cta:"Check for free", nav_app:"Open app →",
+  nav_cta:"Let's check for free", nav_app:"Open app →",
   hero_eyebrow:"AI advisor · not a comparison site",
-  hero_h1:'Stop paying for things<br><span class="hl">you don\'t need.</span>',
+  hero_h1:'Paying for things<br><span class="hl">you don\'t need?</span>',
   hero_sub:"Frugl isn't a price-comparison site. It's an AI advisor that reads your bills, works out what you actually need, and shows you what you can stop paying for — even the things others would sell you.",
-  hero_cta:"See what you're paying for needlessly →",
+  hero_cta:"Let's see what you're paying for needlessly →",
   mt_bank:"🔒 No bank access", mt_reg:"🤖 AI that won't upsell you", mt_time:"⚡ 60 seconds",
   phone_badge:"AI advisor", phone_dontpay:"Marko's check", phone_sub:"3 findings · no pressure",
-  phone_i1:"Arena Sport · doesn't watch sport", phone_i2:"MaksiMIO 500 GB → budget SIM €8", phone_i3:"Double health charge (OZP)",
+  phone_i1:"Arena Sport · doesn't watch sport", phone_i2:"MaksiMIO 500 GB → budget SIM €8", phone_i3:"You're paying twice for health cover",
   phone_save:"You save", phone_btn:"See your case →",
   stat1:"typical yearly saving in an AI check*", stat2n:"2 in 3", stat2:"pay for at least one thing they don't need",
   stat3:"AI check · no sign-up, no bank",
-  how_eyebrow:"AI working for you", how_h2:"How the AI helps you save",
+  how_eyebrow:"How it works", how_h2:"How the AI helps you save",
   how_sub:"It doesn't just compare prices. It understands what you actually need — and catches what the salesperson leaves out.",
   how1_h:"Reads your bills", how1_p:"The AI sees exactly what you pay for. No bank access, no passwords — just your existing plan.",
   how2_h:"Catches hidden line items", how2_p:"What the salesperson leaves out: a double-paid health charge, GAP on a paid-off car, an add-on you never use.",
@@ -726,7 +789,7 @@ en:{
   diff_old_h:"📊 Comparison site", diff_old_1:"Shows who's cheapest for a product you already chose.", diff_old_2:"You stay passive — no one tells you that you DON'T need something.", diff_old_3:"Misses hidden line items (double health charge, GAP, dead add-ons).",
   diff_new_h:"🤖 Frugl AI advisor", diff_new_1:"First works out what you actually need — then the offer.", diff_new_2:"Removes what you don't need — even things it could sell you.", diff_new_3:"Catches what the salesperson hides, and watches your back over time.",
   wd_eyebrow:"Keeps watching", wd_h2:"Watchdog: so you never overpay again", wd_p:"Prices creep up quietly, promos expire, a new charge appears. Frugl monitors it for you and sends one email — only when it's worth acting.",
-  what_eyebrow:"Verticals", what_h2:"What you can check",
+  what_eyebrow:"What you check", what_h2:"What you can check",
   v_mobile:"Mobile plan", v_net:"Internet + TV", v_car:"Car insurance", v_energy:"Electricity + gas", soon:"soon",
   trust_eyebrow:"No catch", trust_h2:"Why you can trust us",
   t1_h:"No bank access", t1_p:"You don't link an account or share passwords. You just tell us your current plan.",
@@ -737,8 +800,17 @@ en:{
   tm_quote:'"Frugl showed me I\'d paid €35/mo for 4 years for supplemental health cover that was abolished in 2024 — double. Cancelled it and saved €420 a year."',
   tm_who:"— Marko, Ljubljana (example)", tm_old:"Double health charge", tm_new:"Arena Sport (unused)", tm_save:"Savings",
   faq_eyebrow:"Honest", faq_h2:"Frequently asked questions",
-  final_h2:"See what you're paying for needlessly. Now.", final_p:"60 seconds. No sign-up. No risk.",
-  final_cta:"Check for free →", final_sub:"If we don't find you savings, it costs you nothing.",
+  final_h2:"Let's see what you're paying for needlessly.", final_p:"60 seconds. No sign-up. No risk.",
+  final_cta:"Let's check for free →", final_sub:"If we don't find you savings, it costs you nothing.",
+  earn_eyebrow:"No fine print", earn_h2:"How Frugl makes money",
+  earn_p:"The check is free for you. When we find you a better deal and you decide to switch, the provider pays us a referral fee. You pay less, we earn from the provider — never from you. That's exactly why we'll never sell you things you don't need.",
+  who_eyebrow:"Who we are", who_h2:"Real people behind Frugl, not a robot",
+  who_p:"Frugl is a Slovenian team. We're not a foreign call centre and we're not salespeople. We built it because it feels unfair that so many people overpay for years — usually without even knowing. If anything's unclear, we're here for you.",
+  steps_eyebrow:"No commitment", steps_h2:"What happens when you click",
+  steps_1:"We show you how much you could save.", steps_2:"If you want, we arrange the switch together — you approve every step.", steps_3:"Nothing happens automatically. Ever.",
+  prov_label:"We compare all major Slovenian providers:",
+  t5_h:"We don't sell your data", t5_p:"You only tell us what you already pay. We don't pass your data on — to anyone.",
+  foot_help:"Prefer a phone call? Write to us and we'll gladly call you back.",
   foot_privacy:"Privacy", foot_contact:"Contact",
   disclaimer:"Frugl is not a service provider; we advise and refer. Figures shown are indicative examples (the Marko persona) and must be confirmed with the provider. * Savings depend on your bills; local figures are updated from our own measurements.",
   faq:[
@@ -749,15 +821,15 @@ en:{
     ["What about my contract / lock-in?","We check when it expires and tell you whether switching pays off now or at renewal. Number porting is free (1–3 days)."]
   ],
   q_close:"Close", q_back:"← Back",
-  q0_eyebrow:"60 seconds", q0_h:"Let's see how much you overpay.", q0_help:"Answer 4 short questions. No sign-up.",
+  q0_eyebrow:"60 seconds", q0_h:"Let's see how much you overpay.", q0_help:"You answer 4 short questions. No sign-up.",
   q0_start:"Let's go →",
   q1_eyebrow:"Question 1", q1_h:"What would you like to check?",
   q1_mobile:"Mobile plan", q1_net:"Internet + TV", q1_car:"Car insurance", q1_home:"Home insurance",
-  q2_eyebrow:"Question 2", q2_h:"Who is your current provider?", q2_help:"Pick one — or \"Other\".",
+  q2_eyebrow:"Question 2", q2_h:"Who is your current provider?", q2_help:"Just pick one — or \"Other\".",
   q3_eyebrow:"Question 3", q3_h:"How long have you been with them?", q3_help:"The longer you stay, the more you usually overpay.",
   q3_lt1:"Less than 1 year", q3_y12:"1–2 years", q3_y2:"2+ years",
-  q4_eyebrow:"Question 4", q4_h:"Roughly how much do you pay per month?", q4_help:"An estimate is fine — type the amount or pick a range.",
-  q4_ph:"e.g. 35", q4_continue:"See my result →",
+  q4_eyebrow:"Question 4", q4_h:"Roughly how much do you pay per month?", q4_help:"An estimate is fine — you can type the amount or pick a range.",
+  q4_ph:"e.g. 35", q4_continue:"Let's see my result →",
   q4_r1:"up to €20", q4_r2:"€20–35", q4_r3:"€35–50", q4_r4:"€50+",
   calc1:"Comparing with every provider…", calc2:"Calculating your loyalty premium…", calc3:"Preparing your result…",
   res_pill:"You overpay", res_over_sub:"A cheaper offer is available for the exact same service.",
@@ -765,21 +837,21 @@ en:{
   res_row_old:"Your current plan", res_row_new:"Best comparable offer", res_row_save:"Your savings",
   res_per_mo:"/mo", res_per_yr:"/yr",
   res_mini:"This estimate is indicative (confirm with the provider). Before we arrange anything, we show you the exact offer and you confirm it.",
-  res_email_h:"Where should we send your savings + the better offer?", res_email_ph:"you@email.com", res_email_btn:"Send it →",
+  res_email_h:"Where should we send your savings + the better offer?", res_email_ph:"you@email.com", res_email_btn:"I'd like my savings →",
   res_watchdog:"Also alert me when I start overpaying again (watchdog).",
   res_email_note:"No spam. Just your savings and alerts when prices rise.",
   res_offers_h:"Better offers for you", res_offers_sub:"Concrete cheaper options for the same service. Examples — you confirm the exact offer before switching.",
   res_hesit_h:"Still deciding?", res_hesit_sub:"No pressure — pick what's stopping you and we'll be straight with you.",
   res_good_offers_sub:"You're already close to the best. Here are the top offers on the market right now:",
-  res_save_badge:"you save", res_switch:"Switch →",
-  sw_h:"Let's switch you to {P}", sw_help:"Leave your contact — we prepare the switch, you approve every step. Nothing happens without you.",
-  sw_email_ph:"you@email.com", sw_phone_ph:"phone (optional)", sw_btn:"Arrange switch →", sw_done:"Great! We'll be in touch within 24h with the exact offer ✓",
-  res_wd_toggle:"🔔 Alert me when I start overpaying again:", res_wd_btn:"Turn on →", res_wd_done:"On — we'll alert you when prices rise.", res_wd_note:"No spam. One email, when it's worth acting.",
+  res_save_badge:"you save", res_switch:"Let's switch →",
+  sw_h:"Let's switch you to {P}", sw_help:"If you leave your contact, we prepare the switch — you approve every step. Nothing happens without you.",
+  sw_email_ph:"you@email.com", sw_phone_ph:"phone (optional)", sw_btn:"Let's arrange the switch →", sw_done:"Great! We'll be in touch within 24h with the exact offer ✓",
+  res_wd_toggle:"🔔 Alert me when I start overpaying again:", res_wd_btn:"Let's turn it on →", res_wd_done:"On — we'll alert you when prices rise.", res_wd_note:"No spam. One email, when it's worth acting.",
   toast_switch:"We'll be in touch within 24h ✓",
-  res_share_h:"Share your result", res_share_txt:"Turns out I overpay €{X}/yr on my bills 😮 Check yours too →",
+  res_share_h:"You can share your result", res_share_txt:"Turns out I overpay €{X}/yr on my bills 😮 See yours too →",
   res_share_copy:"Copy link", res_share_wa:"WhatsApp", res_share_dl:"Download image", res_share_fb:"Facebook",
   toast_copied:"Link copied ✓", toast_email:"Great! We'll send you your savings ✓", toast_dl:"Image downloaded ✓",
-  err_email:"Enter a valid email", err_amount:"Enter an amount"
+  err_email:"Please enter a valid email", err_amount:"Please enter an amount"
 }
 };
 
@@ -978,7 +1050,7 @@ function renderResult(){
    a odzivi prepisani v pošten Frugl glas — NE Belfort/NEPQ close. */
 /* Vsak ugovor: pošten odgovor + PRILAGOJEN forward korak (churn-solver). */
 const HESIT_SL = [
-  { ic:"🤔", label:"Rabim še premislit", ans:"Brez pritiska. Rezultat ti shranimo, watchdog pa te opozori, ko se ti bo splačalo ukrepati — nič ne zamudiš.", act:"🔔 Shrani rezultat + opozori me", type:"watchdog" },
+  { ic:"🤔", label:"Rabim še premislit", ans:"Brez pritiska. Rezultat ti shranimo, čuvaj pa te opozori, ko se ti bo splačalo ukrepati — nič ne zamudiš.", act:"🔔 Shrani rezultat + opozori me", type:"watchdog" },
   { ic:"🕵️", label:"V čem je trik?", ans:"Trika ni. Pregled je zastonj; zaslužimo šele, ko ti dejansko prihranimo — ponudnik nam plača priporočilo, ti pa dobiš nižjo ceno. Če ne najdemo bolje, te nič ne stane.", act:"Zaupam — poglej ponudbe ↑", type:"offers" },
   { ic:"👥", label:"Moram vprašat partnerja", ans:"Logično. Pošljemo ti rezultat na email, da ga v miru pokažeš — ponudbo pripravimo, ko se oba strinjata.", act:"✉️ Pošlji mi rezultat", type:"email" },
   { ic:"🐢", label:"Nočem menjati takoj", ans:"Ni treba. Povemo ti, kdaj ti poteče vezava, in te opozorimo, ko se prehod res splača — brez naglice.", act:"🔔 Opozori me ob izteku", type:"watchdog" }
