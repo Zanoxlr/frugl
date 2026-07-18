@@ -238,9 +238,10 @@ function renderChips(v){
 function ask(q){ document.getElementById("input").value=q; send(); }
 function addMsg(role, text){
   const m=document.getElementById("msgs");
-  m.insertAdjacentHTML("beforeend", `<div class="b ${role}">${esc(text)}</div>`);
-  m.scrollTop=m.scrollHeight;
+  const el=document.createElement("div"); el.className="b "+role; el.textContent=text||"";
+  m.appendChild(el); m.scrollTop=m.scrollHeight; return el;
 }
+function scrollMsgs(){ const m=document.getElementById("msgs"); m.scrollTop=m.scrollHeight; }
 function typing(on){
   const m=document.getElementById("msgs"); let t=document.getElementById("tw");
   if(on && !t){ m.insertAdjacentHTML("beforeend",'<div class="typing" id="tw"><span></span><span></span><span></span></div>'); m.scrollTop=m.scrollHeight; }
@@ -260,15 +261,43 @@ function cannedReply(v, q){
   if(v==="energy") return "energija je odvisna od tvoje letne porabe (kwh). ce mi jo poves, ti tocno povem, ali se menjava splaca; sicer ti pokazem najnizjo ceno na kwh.";
   return "to ti tocno povem iz tvojih podatkov — pritisni 'pokazi kaj res rabim'.";
 }
+/* SSE consumer for Zan's POST /api/chat: frames `data: {"type":"token","text":..}`
+   stream into the bubble, terminal `{"type":"done","full":..}`. Fetch+ReadableStream
+   (EventSource is GET-only). Grounded on the real user's subs via `state`. */
 async function send(){
   const inp=document.getElementById("input"); const text=inp.value.trim(); if(!text) return;
-  inp.value=""; addMsg("me", text); HISTORY.push({role:"user", content:text}); TURNS++;
+  inp.value=""; addMsg("me", text); HISTORY.push({role:"user", text:text}); TURNS++;
   typing(true);
-  const res = await post("/api/chat", {vertical:VERTICAL, history:HISTORY}); // 404 until wired
-  await new Promise(r=>setTimeout(r, res?0:450));
+  let acc="", bubble=null;
+  try{
+    const resp = await fetch(API+"/api/chat?vertical="+encodeURIComponent(VERTICAL), {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ vertical:VERTICAL, history:HISTORY, state: stateForEngine(STATE) })
+    });
+    if(!resp.ok || !resp.body) throw new Error("no stream "+resp.status);
+    const reader = resp.body.getReader(), dec = new TextDecoder();
+    let buf="";
+    while(true){
+      const {value, done} = await reader.read(); if(done) break;
+      buf += dec.decode(value, {stream:true});
+      let i;
+      while((i = buf.indexOf("\n\n")) >= 0){
+        const frame = buf.slice(0,i); buf = buf.slice(i+2);
+        const dl = frame.split("\n").find(l=>l.startsWith("data:"));
+        if(!dl) continue;
+        let evt; try{ evt = JSON.parse(dl.slice(5).trim()); }catch(e){ continue; }
+        if(evt.type==="token" && evt.text){
+          if(!bubble){ typing(false); bubble = addMsg("ai",""); }
+          acc += evt.text; bubble.textContent = acc; scrollMsgs();
+        } else if(evt.type==="done" && evt.full && !acc){
+          typing(false); bubble = bubble || addMsg("ai",""); acc = evt.full; bubble.textContent = acc; scrollMsgs();
+        }
+      }
+    }
+  }catch(e){ /* offline / no backend -> grounded canned fallback below */ }
   typing(false);
-  const reply = (res && res.reply) ? res.reply : cannedReply(VERTICAL, text);
-  addMsg("ai", reply); HISTORY.push({role:"assistant", content:reply});
+  if(!acc){ acc = cannedReply(VERTICAL, text); if(bubble) bubble.textContent = acc; else addMsg("ai", acc); }
+  HISTORY.push({role:"assistant", text: acc});
   if(VERTICAL!=="water") document.getElementById("finish").style.display="block";
 }
 
