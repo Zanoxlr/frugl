@@ -287,6 +287,11 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
 .result-mini{font-size:12.5px;color:var(--ink-faint);text-align:center;margin-top:14px;line-height:1.5}
 .section-h{font-size:19px;margin:2px 0 4px}
 .offers-sub{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+.hesit-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.hesit-chip{background:var(--surface);border:1.5px solid var(--line-strong);border-radius:999px;padding:9px 14px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s}
+.hesit-chip:hover{border-color:var(--brand);color:var(--brand-strong)}
+.hesit-ans{margin-top:12px;background:var(--brand-tint);border:1px solid var(--brand);border-radius:12px;padding:13px 15px;font-size:14px;color:var(--brand-ink);line-height:1.45;display:none}
+.hesit-ans.show{display:block}
 .offers{display:grid;gap:10px}
 .offer{display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:13px 15px}
 .offer .oi{flex:1;min-width:0}
@@ -675,6 +680,7 @@ sl:{
   res_watchdog:"Opozori me tudi, ko spet začnem preplačevati (watchdog).",
   res_email_note:"Brez spama. Samo tvoj prihranek in opozorila ob podražitvah.",
   res_offers_h:"Boljše ponudbe zate", res_offers_sub:"Konkretne cenejše možnosti za isto storitev. Primeri — točno ponudbo potrdiš pred prehodom.",
+  res_hesit_h:"Te še kaj ustavlja?", res_hesit_sub:"Brez pritiska — tukaj so pošteni odgovori na najpogostejše pomisleke.",
   res_good_offers_sub:"Že si blizu najboljšega. Tole so trenutno najboljše ponudbe na trgu:",
   res_save_badge:"prihraniš", res_switch:"Preklopi →",
   sw_h:"Uredimo prehod na {P}", sw_help:"Pusti kontakt — pripravimo prehod, ti potrdiš vsak korak. Nič se ne zgodi brez tebe.",
@@ -752,6 +758,7 @@ en:{
   res_watchdog:"Also alert me when I start overpaying again (watchdog).",
   res_email_note:"No spam. Just your savings and alerts when prices rise.",
   res_offers_h:"Better offers for you", res_offers_sub:"Concrete cheaper options for the same service. Examples — you confirm the exact offer before switching.",
+  res_hesit_h:"Anything holding you back?", res_hesit_sub:"No pressure — honest answers to the most common hesitations.",
   res_good_offers_sub:"You're already close to the best. Here are the top offers on the market right now:",
   res_save_badge:"you save", res_switch:"Switch →",
   sw_h:"Let's switch you to {P}", sw_help:"Leave your contact — we prepare the switch, you approve every step. Nothing happens without you.",
@@ -950,8 +957,38 @@ function renderResult(){
     countUp(document.getElementById('numTarget'), r.overYr);
   }
   renderOffers(r);     // ⭐ advanced: takoj konkretne cenejše ponudbe (ne "daj mail")
+  renderHesit(r);      // ⭐ objection-handling NA offer-momentu (pošteno, brez pritiska)
   renderWatchdog(r);   // email demotiran → sekundarni watchdog (continuity)
   renderShare();
+}
+
+/* honest hesitation-handling AT the offer moment (per Miha: objection proces tudi na landingu).
+   Taksonomija iz jeremy-miner korpusa (STALL_THINK / TRUST_SKEPTICISM / AUTHORITY_SPOUSE),
+   a odzivi prepisani v pošten Frugl glas — NE Belfort/NEPQ close. */
+const HESIT_SL = [
+  ["Rabim še premislit","Seveda — brez pritiska. Pokazali smo ti, kje verjetno preplačuješ; watchdog te opozori, ko boš pripravljen. Nič se ne zgodi brez tvoje potrditve."],
+  ["V čem je kavelj?","Ni ga. Preverjanje je zastonj; zaslužimo šele, ko ti dejansko prihranimo (ponudnik nam plača priporočilo). Če ne najdemo bolje, te nič ne stane."],
+  ["Moram vprašat partnerja","Logično — pokaži mu tale rezultat. Nič ni nujnega; ponudbo pripravimo, ko se oba strinjata."],
+  ["Nočem menjati takoj","Ni treba. Lahko samo pogledaš. Povemo ti, kdaj ti poteče vezava in ali se prehod splača že zdaj ali ob izteku."]
+];
+const HESIT_EN = [
+  ["I need to think about it","Of course — no pressure. We've shown you where you likely overpay; the watchdog pings you when you're ready. Nothing happens without your approval."],
+  ["What's the catch?","There isn't one. The check is free; we only earn when we actually save you money (the provider pays us a referral). If we don't find better, it costs you nothing."],
+  ["I need to ask my partner","Makes sense — show them this result. Nothing's urgent; we prepare the offer once you both agree."],
+  ["I don't want to switch now","You don't have to. You can just look. We'll tell you when your contract ends and whether switching pays off now or at renewal."]
+];
+function renderHesit(r){
+  const data = (LANG==='en') ? HESIT_EN : HESIT_SL;
+  const s=document.createElement('div'); s.style.marginTop='22px';
+  s.innerHTML=`<h2 class="section-h">${t('res_hesit_h')}</h2><p class="offers-sub">${t('res_hesit_sub')}</p>`;
+  const chips=document.createElement('div'); chips.className='hesit-chips';
+  const ans=document.createElement('div'); ans.className='hesit-ans';
+  data.forEach((h,i)=>{
+    const b=document.createElement('button'); b.className='hesit-chip'; b.type='button'; b.textContent=h[0];
+    b.addEventListener('click',()=>{ ans.textContent=h[1]; ans.classList.add('show'); track('objection_open',{i}); });
+    chips.appendChild(b);
+  });
+  s.appendChild(chips); s.appendChild(ans); body.appendChild(s);
 }
 
 /* ⭐ instant offers — value-first, ne lead-gate */
