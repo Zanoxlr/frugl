@@ -8,6 +8,8 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d1117">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+<!-- Demo access key (window.FRUGL_KEY); loads before boot() so every /api call is gated. -->
+<script src="/config.js"></script>
 <style>
   :root{
     --bg:#0d1117; --card:#161b22; --card2:#1c232d; --line:#2a323d;
@@ -156,10 +158,12 @@
    /api/chat + /api/lead not wired yet -> handled client-side (stub).
    ========================================================================== */
 const API = "";
-let STATE = null, FINDINGS = null, VERTICAL = null, HISTORY = [], TURNS = 0, OFFLINE = false;
+let STATE = null, FINDINGS = null, VERTICAL = null, HISTORY = [], TURNS = 0, OFFLINE = false, BOOKING = false;
 
-async function getJSON(path){ try{ const r=await fetch(API+path); if(r.ok) return await r.json(); }catch(e){} return null; }
-async function post(path, body){ try{ const r=await fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}); if(r.ok) return await r.json(); }catch(e){} return null; }
+// Demo gate: echo the key from /config.js on every call (empty when unset -> gate 403s).
+function keyHeaders(extra){ return Object.assign({"x-frugl-key": window.FRUGL_KEY||""}, extra||{}); }
+async function getJSON(path){ try{ const r=await fetch(API+path,{headers:keyHeaders()}); if(r.ok) return await r.json(); }catch(e){} return null; }
+async function post(path, body){ try{ const r=await fetch(API+path,{method:"POST",headers:keyHeaders({"Content-Type":"application/json"}),body:JSON.stringify(body||{})}); if(r.ok) return await r.json(); }catch(e){} return null; }
 
 const ICONS  = {telco:"📶", energy:"⚡", insurance:"🛡️", water:"💧"};
 const V_TITLE= {telco:"Telko", energy:"Energija", insurance:"Zavarovanja", water:"Voda"};
@@ -275,7 +279,9 @@ async function send(){
 /* ---- the money shot: real /api/profile offer ---- */
 async function buildProfile(){
   typing(true); document.getElementById("finish").style.display="none";
-  const res = await post("/api/profile?vertical="+encodeURIComponent(VERTICAL), {});
+  // Send the real transcript + state so extraction reflects THIS chat (not the canned profile).
+  const res = await post("/api/profile?vertical="+encodeURIComponent(VERTICAL),
+                         {history:HISTORY, state:stateForEngine(STATE)});
   typing(false);
   if(res && res.offer) renderNeeds(res.offer, res.profile);
   else renderNeeds((FALLBACK_OFFER[VERTICAL]||FALLBACK_OFFER.telco), null);
@@ -322,7 +328,7 @@ function renderNeeds(offer, profile){
     ${(sav!=null && sav>0) ? "" : advisory}
     ${savHtml}
     ${(sav!=null && sav>0 && advisory)?`<p class="keepnote">${esc(offer.notes[0])}</p>`:""}
-    <button class="cta" onclick="book()">uredi prehod — ti potrdis vsak korak</button>`;
+    <button class="cta" onclick="book(this)">uredi prehod — ti potrdis vsak korak</button>`;
   renderHesit(offer);
   show("needs");
   (offer.dontPayFor||[]).forEach((_,i)=> setTimeout(()=>{ const el=document.getElementById("drop"+i); if(el) el.classList.add("struck"); }, 500+i*650));
@@ -347,7 +353,15 @@ function hesit(i){
   ans.scrollIntoView({block:"nearest"});
 }
 
-async function book(){ await post("/api/lead", {vertical:VERTICAL, history:HISTORY}); show("done"); }
+async function book(btn){
+  if(BOOKING) return;                       // guard: one lead per tap, no double-submit
+  BOOKING = true;
+  if(btn){ btn.disabled = true; btn.style.opacity = .6; btn.textContent = "pripravljam…"; }
+  await post("/api/lead?vertical="+encodeURIComponent(VERTICAL),
+             {history:HISTORY, state:stateForEngine(STATE)});
+  BOOKING = false;
+  show("done");
+}
 
 /* ---- minimal real-shaped fallback (only if backend unreachable) ---- */
 const FALLBACK_STATE = {
