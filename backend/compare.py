@@ -42,7 +42,10 @@ def _round2(value):
 
 
 def _lines_for(state, vertical):
-    return [s for s in state.get("currentSubscriptions", []) if s.get("vertical") == vertical]
+    subs = state.get("currentSubscriptions")
+    if not isinstance(subs, list):
+        return []
+    return [s for s in subs if isinstance(s, dict) and s.get("vertical") == vertical]
 
 
 def data_threshold_gb(need):
@@ -102,6 +105,8 @@ def _used_packs(signals):
     """Canonical set of TV packs the user actually watches. Prefers the explicit
     list; falls back to watchesSport so the older signal still works."""
     packs = signals.get("paidTvPacksUsed")
+    if not isinstance(packs, list):
+        packs = None  # a mistyped string would iterate chars into a garbage set; ignore it
     if packs is not None:
         return {str(p).lower() for p in packs}
     if signals.get("watchesSport"):
@@ -341,8 +346,10 @@ def compare_insurance(current, household, signals, cat):
     ozp = cat["insurance"]["ozp"]["currentMonthlyEur"]
     financing = household.get("carFinancing")
     ownership = household.get("homeOwnership")
-    health = signals.get("healthPrefs") or {}
-    cover_elsewhere = signals.get("coverElsewhere") or {}
+    health = signals.get("healthPrefs")
+    health = health if isinstance(health, dict) else {}
+    cover_elsewhere = signals.get("coverElsewhere")
+    cover_elsewhere = cover_elsewhere if isinstance(cover_elsewhere, dict) else {}
 
     for line in current:
         kind = line.get("kind") or _infer_insurance_kind(line)
@@ -410,7 +417,9 @@ def compare(vertical, state, preferences, cat=None):
     if cat is None:
         cat = catalog_module.load()
     state = state or {}
-    household = state.get("household") or {}
-    signals = (preferences or {}).get("signals") or {}
+    household = state.get("household")
+    household = household if isinstance(household, dict) else {}
+    signals = (preferences or {}).get("signals")
+    signals = signals if isinstance(signals, dict) else {}  # a list/str here 500s every rule
     current = _lines_for(state, vertical)
     return _DISPATCH[vertical](current, household, signals, cat)
