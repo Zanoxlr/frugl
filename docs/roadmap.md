@@ -18,9 +18,9 @@ The frontend and backend integrate only through these shapes. Agree changes here
 
 | Endpoint | Request | Response |
 |---|---|---|
-| `GET /api/state` | – | `{ persona, currentSubscriptions[], totals:{monthlyEur, byVertical} }` |
+| `GET /api/state` | – | `{ persona, household, currentSubscriptions[] (each with kind+attributes), totals }` |
 | `POST /api/chat` | `{ vertical, history:[{role,text}] }` | **`text/event-stream`** — token-delta events, terminal `done` event |
-| `POST /api/profile` | `{ vertical, history }` | `{ profile:<NeedsProfile>, offer:<compare() result> }` |
+| `POST /api/profile` | `{ vertical, history }` | `{ profile:<Preferences>, offer:<compare() result> }` |
 | `POST /api/lead` | `{ vertical, history }` | `{ ok, leadId }` |
 
 `offer` = the exact `compare()` result already shipped: `{ currentMonthlyEur,

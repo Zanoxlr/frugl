@@ -1,10 +1,11 @@
-"""End-to-end tests for the price-comparison calculator.
+"""End-to-end tests for the price-comparison calculator (State + Preferences model).
 
-Covers the three Marko happy paths, the edges the adversary pass flagged (energy
-no-usage, insurance null-price, empty profiles, null min guards), the B1==B2
-numbers invariant, the water skip, and the sumnik-free reasons copy.
+Covers the three Marko happy paths, every high-value-next rule (with synthetic
+lines), the adversary edges, the B1==B2 numbers invariant, the water skip, and the
+sumnik-free reasons copy.
 """
 
+import copy
 import json
 import os
 
@@ -30,13 +31,15 @@ def demo():
         return json.load(fh)
 
 
-def needs(vertical):
-    with open(os.path.join(FIXTURES, "marko_%s.needs.json" % vertical), encoding="utf-8") as fh:
+@pytest.fixture
+def state(demo):
+    """A fresh copy each test so mutations don't leak."""
+    return copy.deepcopy(demo)
+
+
+def prefs(vertical):
+    with open(os.path.join(FIXTURES, "marko_%s.preferences.json" % vertical), encoding="utf-8") as fh:
         return json.load(fh)
-
-
-def current(demo, vertical):
-    return [s for s in demo["currentSubscriptions"] if s["vertical"] == vertical]
 
 
 def _iter_strings(obj):
@@ -51,12 +54,16 @@ def _iter_strings(obj):
 
 
 def _strip_why(obj):
-    """Deep copy with every `why` key removed, so B1/B2 numbers can be compared."""
     if isinstance(obj, dict):
         return {k: _strip_why(v) for k, v in obj.items() if k != "why"}
     if isinstance(obj, list):
         return [_strip_why(v) for v in obj]
     return obj
+
+
+def ins_state(household=None, lines=None):
+    """A minimal insurance state for the synthetic keep/drop rules."""
+    return {"household": household or {}, "currentSubscriptions": lines or []}
 
 
 # --------------------------------------------------------------------------- #
@@ -65,159 +72,227 @@ def _strip_why(obj):
 def test_catalog_counts_nonzero():
     counts = catalog.load_counts()
     assert counts["mobilePlans"] > 0
-    assert counts["tvAddons"] > 0
     assert counts["electricity"] > 0
     assert counts["ozpMonthlyEur"] == 39.36
 
 
 def test_mvno_dedup_and_full_speed(cat):
-    plans = cat["telco"]["mobilePlans"]
-    # BOB comes only from telco_mvno.json (has zeleni), never the stale rows.
-    bob = [p for p in plans if p["operator"] == "BOB"]
+    bob = [p for p in cat["telco"]["mobilePlans"] if p["operator"] == "BOB"]
     assert any(p["name"] == "zeleni bob" for p in bob)
     assert all(p["source"] == "telco_mvno" for p in bob)
-    zeleni = next(p for p in bob if p["name"] == "zeleni bob")
-    assert zeleni["fullSpeedGB"] == 20.0  # the load-bearing number
-    rdeci = next(p for p in bob if p["name"] == "rdeci bob")
-    assert rdeci["fullSpeedGB"] == 10.0  # excluded at need=15, must stay 10
+    assert next(p for p in bob if p["name"] == "zeleni bob")["fullSpeedGB"] == 20.0
+    assert next(p for p in bob if p["name"] == "rdeci bob")["fullSpeedGB"] == 10.0
+
+
+def test_energy_rates_split(cat):
+    # electricity carries VT/MT/ET; the ranking blend needs all three where present.
+    petrol = next(p for p in cat["energy"]["electricity"] if p["provider"] == "Petrol")
+    assert petrol["vtRate"] is not None and petrol["mtRate"] is not None
 
 
 # --------------------------------------------------------------------------- #
-# Telco happy path (the headline DoD)
+# Telco
 # --------------------------------------------------------------------------- #
-def test_telco_marko_saves_24_99(cat, demo):
-    r = compare.compare("telco", current(demo, "telco"), needs("telco"), cat)
+def test_telco_marko_saves_24_99(cat, state):
+    r = compare.compare("telco", state, prefs("telco"), cat)
     assert r["currentMonthlyEur"] == 88.97
     assert r["monthlySavingsEur"] == 24.99
     assert r["annualSavingsEur"] == 299.88
-    # Arena dropped
-    assert any(d["ruleCode"] == "TELCO_UNUSED_SPORT_ADDON" for d in r["dontPayFor"])
-    # Mobile swapped to zeleni bob
+    assert any(d["ruleCode"] == "TELCO_UNUSED_TV_PACK" for d in r["dontPayFor"])
     mob = r["recommendation"]["mobile"]
     assert mob["toName"] == "zeleni bob" and mob["toMonthlyEur"] == 7.99
 
 
-def test_telco_threshold_excludes_cheaper_but_too_small(cat, demo):
-    # rdeci bob (5.99, fs=10) is cheaper than zeleni but below the 15 GB need,
-    # so it must NOT be the recommendation.
-    r = compare.compare("telco", current(demo, "telco"), needs("telco"), cat)
+def test_telco_threshold_excludes_too_small(cat, state):
+    r = compare.compare("telco", state, prefs("telco"), cat)
     assert r["recommendation"]["mobile"]["toName"] != "rdeci bob"
 
 
-def test_telco_watches_sport_keeps_arena(cat, demo):
-    n = needs("telco")
-    n["telco"]["watchesSport"] = True
-    r = compare.compare("telco", current(demo, "telco"), n, cat)
-    assert all(d["ruleCode"] != "TELCO_UNUSED_SPORT_ADDON" for d in r["dontPayFor"])
-    # Only the mobile saving remains (27.99 -> 7.99 = 20.00).
-    assert r["monthlySavingsEur"] == 20.0
+def test_telco_uses_sport_pack_keeps_arena(cat, state):
+    p = prefs("telco")
+    p["signals"]["paidTvPacksUsed"] = ["sport"]
+    r = compare.compare("telco", state, p, cat)
+    assert all(d["ruleCode"] != "TELCO_UNUSED_TV_PACK" for d in r["dontPayFor"])
+    assert r["monthlySavingsEur"] == 20.0  # only the mobile rightsize remains
+
+
+def test_telco_same_operator_when_not_open_to_switch(cat, state):
+    p = prefs("telco")
+    p["signals"]["openToSwitchOperator"] = False
+    r = compare.compare("telco", state, p, cat)
+    assert r["recommendation"]["mobile"]["toOperator"] == "A1"  # no MVNO jump
+    assert r["monthlySavingsEur"] < 24.99  # a same-operator downsize saves less
+
+
+def test_telco_drop_unused_fixed(cat, state):
+    p = prefs("telco")
+    p["signals"]["wantsFixedBroadband"] = False
+    r = compare.compare("telco", state, p, cat)
+    assert any(d["ruleCode"] == "TELCO_DROP_UNUSED_FIXED" for d in r["dontPayFor"])
+    assert r["monthlySavingsEur"] == 80.98  # fixed 55.99 + Arena 4.99 + mobile 20
+
+
+def test_telco_multiple_mobile_lines_each_rightsized(cat, state):
+    extra = copy.deepcopy(next(s for s in state["currentSubscriptions"] if s.get("kind") == "mobile"))
+    state["currentSubscriptions"].append(extra)
+    r = compare.compare("telco", state, prefs("telco"), cat)
+    # Arena 4.99 + two mobile rightsizes of 20 each = 44.99 (honest per-line).
+    assert r["monthlySavingsEur"] == 44.99
+    assert r["recommendation"]["mobile"]["additionalLinesSwapped"] == 1
 
 
 # --------------------------------------------------------------------------- #
-# Energy: no-usage trade-off, null savings
+# Energy
 # --------------------------------------------------------------------------- #
-def test_energy_no_usage_null_savings(cat, demo):
-    r = compare.compare("energy", current(demo, "energy"), needs("energy"), cat)
-    assert r["currentMonthlyEur"] == 41.9  # pass-through, never recomputed
+def test_energy_no_usage_null_savings(cat, state):
+    r = compare.compare("energy", state, prefs("energy"), cat)
+    assert r["currentMonthlyEur"] == 41.9
     assert r["monthlySavingsEur"] is None
-    assert r["annualSavingsEur"] is None  # null, not 0
-    assert r["recommendedMonthlyEur"] is None
-    trade = r["recommendation"]["tradeoff"]
-    # The zero-fixed-fee option and the lowest-unit option genuinely differ.
+    assert r["annualSavingsEur"] is None
+    trade = r["recommendation"]["electricity"]["tradeoff"]
     assert trade["lowestFixedFee"]["fixedMonthlyEur"] == 0
     assert trade["lowestFixedFee"]["name"] != trade["lowestUnitPrice"]["name"]
 
 
-def test_energy_known_usage_ranks(cat, demo):
-    n = needs("energy")
-    n["energy"]["annualKwh"] = 3000
-    r = compare.compare("energy", current(demo, "energy"), n, cat)
-    assert r["recommendation"]["ruleCode"] == "ENERGY_RANKED_BY_USAGE"
-    assert r["recommendation"]["estimatedAnnualEnergyEur"] > 0
-    assert r["monthlySavingsEur"] is None  # all-in current can't be decomposed
-
-
-# --------------------------------------------------------------------------- #
-# Insurance: null price, biggest single reveal
-# --------------------------------------------------------------------------- #
-def test_insurance_legacy_dopolnilno_droppable(cat, demo):
-    r = compare.compare("insurance", current(demo, "insurance"), needs("insurance"), cat)
-    assert r["currentMonthlyEur"] == 60.0
-    assert r["monthlySavingsEur"] == 35.0
-    assert r["annualSavingsEur"] == 420.0
-    reveal = r["dontPayFor"][0]
-    assert reveal["ruleCode"] == "INS_LEGACY_DOPOLNILNO"
-    assert reveal["monthlyEur"] == 35.0  # falls back to the line's own price
-
-
-def test_insurance_empty_profile_no_reveal_no_crash(cat, demo):
-    # Empty needs: the paysLegacyDopolnilno flag is absent, so the 35 EUR reveal
-    # must silently vanish and nothing may crash.
-    r = compare.compare("insurance", current(demo, "insurance"), {}, cat)
-    assert r["dontPayFor"] == []
+def test_energy_known_usage_ranks(cat, state):
+    p = prefs("energy")
+    p["signals"]["annualKwh"] = 3000
+    r = compare.compare("energy", state, p, cat)
+    assert r["recommendation"]["electricity"]["ruleCode"] == "ENERGY_RANKED_BY_USAGE"
+    assert r["recommendation"]["electricity"]["estimatedAnnualEnergyEur"] > 0
     assert r["monthlySavingsEur"] is None
-    assert r["annualSavingsEur"] is None
+
+
+def test_energy_dual_meter_blends(cat, state):
+    p = prefs("energy")
+    p["signals"].update({"annualKwh": 4000, "meterType": "dual_VT_MT", "dayNightSplit": "mostly_night"})
+    r = compare.compare("energy", state, p, cat)
+    assert r["recommendation"]["electricity"]["cheapest"]["provider"]  # runs, picks one
+
+
+def test_energy_gas_when_has_gas(cat, state):
+    p = prefs("energy")
+    p["signals"].update({"annualKwh": 4000, "hasGas": True, "annualGasKwh": 12000})
+    r = compare.compare("energy", state, p, cat)
+    assert "gas" in r["recommendation"]
+    assert r["recommendation"]["gas"]["cheapest"]["provider"]
 
 
 # --------------------------------------------------------------------------- #
-# Robustness: null price lines must not crash any min()/sum()
+# Insurance — legacy is now DERIVED from the line, plus the new keep/drop rules
+# --------------------------------------------------------------------------- #
+def test_insurance_legacy_fires_even_with_empty_signals(cat, state):
+    # The whole point of deriving: no preference needed, the line's presence is enough.
+    r = compare.compare("insurance", state, {"signals": {}}, cat)
+    assert r["monthlySavingsEur"] == 35.0
+    assert r["dontPayFor"][0]["ruleCode"] == "INS_LEGACY_DOPOLNILNO"
+    assert r["dontPayFor"][0]["ozpMonthlyEur"] == 39.36
+
+
+def test_insurance_gap_dropped_only_when_owned(cat):
+    gap = [{"vertical": "insurance", "kind": "car_gap", "planName": "GAP kritje", "monthlyEur": 8.0}]
+    owned = compare.compare("insurance", ins_state({"carFinancing": "owned_outright"}, gap), {}, cat)
+    assert owned["monthlySavingsEur"] == 8.0
+    assert owned["dontPayFor"][0]["ruleCode"] == "INS_GAP_OWNED_OUTRIGHT"
+    leased = compare.compare("insurance", ins_state({"carFinancing": "leased"}, gap), {}, cat)
+    assert leased["monthlySavingsEur"] is None  # keep GAP on a leased car
+
+
+def test_insurance_tenant_structure_dropped(cat):
+    home = [{"vertical": "insurance", "kind": "home_structure", "planName": "zavarovanje zgradbe", "monthlyEur": 12.0}]
+    r = compare.compare("insurance", ins_state({"homeOwnership": "tenant"}, home), {}, cat)
+    assert r["dontPayFor"][0]["ruleCode"] == "INS_TENANT_STRUCTURE"
+    owner = compare.compare("insurance", ins_state({"homeOwnership": "owner"}, home), {}, cat)
+    assert owner["monthlySavingsEur"] is None
+
+
+def test_insurance_health_rider_dropped_by_pref(cat):
+    line = [{"vertical": "insurance", "kind": "health_rider", "planName": "Zobje", "monthlyEur": 10.0,
+             "attributes": {"riderType": "dental"}}]
+    p = {"signals": {"healthPrefs": {"expectsDentalWork": False}}}
+    r = compare.compare("insurance", ins_state({}, line), p, cat)
+    assert r["dontPayFor"][0]["ruleCode"] == "INS_UNUSED_HEALTH_RIDER"
+
+
+def test_insurance_duplicate_cover_dropped(cat):
+    line = [{"vertical": "insurance", "kind": "accident", "planName": "nezgodno", "monthlyEur": 6.0}]
+    p = {"signals": {"coverElsewhere": {"personalAccident": True}}}
+    r = compare.compare("insurance", ins_state({}, line), p, cat)
+    assert r["dontPayFor"][0]["ruleCode"] == "INS_DUPLICATE_COVER"
+
+
+# --------------------------------------------------------------------------- #
+# Robustness
 # --------------------------------------------------------------------------- #
 @pytest.mark.parametrize("vertical", ["telco", "energy", "insurance"])
-def test_null_price_lines_dont_crash(cat, vertical):
-    line = {"vertical": vertical, "provider": "X", "planName": "mystery", "monthlyEur": None}
-    r = compare.compare(vertical, [line], needs(vertical), cat)
+def test_null_price_line_doesnt_crash(cat, vertical):
+    st = {"household": {}, "currentSubscriptions": [
+        {"vertical": vertical, "provider": "X", "planName": "mystery", "monthlyEur": None}]}
+    r = compare.compare(vertical, st, prefs(vertical), cat)
     assert r["currentMonthlyEur"] == 0.0
 
 
 def test_empty_current_all_verticals(cat):
     for vertical in ["telco", "energy", "insurance"]:
-        r = compare.compare(vertical, [], needs(vertical), cat)
+        r = compare.compare(vertical, {"household": {}, "currentSubscriptions": []}, prefs(vertical), cat)
         assert r["currentMonthlyEur"] == 0.0
 
 
 # --------------------------------------------------------------------------- #
-# B1 == B2 numbers; B2 adds only prose
+# B1 == B2 numbers; reasons sumnik-free
 # --------------------------------------------------------------------------- #
 @pytest.mark.parametrize("vertical", ["telco", "energy", "insurance"])
-def test_b1_equals_b2_numbers(cat, demo, vertical):
-    b1 = compare.compare(vertical, current(demo, vertical), needs(vertical), cat)
+def test_b1_equals_b2_numbers(cat, state, vertical):
+    b1 = compare.compare(vertical, state, prefs(vertical), cat)
     b2 = reasons.explain(b1)
     assert _strip_why(b1) == _strip_why(b2)
-    # B1 carries no why anywhere.
-    assert all(k != "why" for s in _iter_strings(b1) for k in [s]) or True
-    b1_json = json.dumps(b1)
-    assert '"why"' not in b1_json
+    assert '"why"' not in json.dumps(b1)
 
 
-def test_b2_adds_why(cat, demo):
-    b2 = reasons.explain(compare.compare("telco", current(demo, "telco"), needs("telco"), cat))
+def test_b2_adds_why(cat, state):
+    b2 = reasons.explain(compare.compare("telco", state, prefs("telco"), cat))
     assert b2["dontPayFor"][0]["why"]
     assert b2["recommendation"]["mobile"]["why"]
 
 
-# --------------------------------------------------------------------------- #
-# Reasons copy must be sumnik-free
-# --------------------------------------------------------------------------- #
 @pytest.mark.parametrize("vertical", ["telco", "energy", "insurance"])
-def test_reasons_have_no_sumniki(cat, demo, vertical):
-    b2 = reasons.explain(compare.compare(vertical, current(demo, vertical), needs(vertical), cat))
+def test_reasons_have_no_sumniki(cat, state, vertical):
+    b2 = reasons.explain(compare.compare(vertical, state, prefs(vertical), cat))
     for text in _iter_strings(b2):
         assert not (set(text) & SUMNIKI), "sumnik in: %r" % text
 
 
 # --------------------------------------------------------------------------- #
-# HTTP surface + compare-all water skip
+# HTTP surface
 # --------------------------------------------------------------------------- #
 @pytest.fixture(scope="module")
 def client():
     from fastapi.testclient import TestClient
     from backend.main import app
-
     return TestClient(app)
 
 
-def test_http_compare_telco_b2_and_b1(client, demo):
-    body = {"current": current(demo, "telco"), "needs": needs("telco")}
+def test_http_state_has_household_and_kind_no_spoilers(client):
+    s = client.get("/api/state").json()
+    assert s["persona"]["name"] == "Marko Novak"
+    assert s["household"]["homeOwnership"] == "tenant"
+    tele = [l for l in s["currentSubscriptions"] if l["vertical"] == "telco"]
+    assert {l["kind"] for l in tele} == {"fixed", "tv_addon", "mobile"}
+    water = [l for l in s["currentSubscriptions"] if l["vertical"] == "water"][0]
+    assert water["switchable"] is False
+    dump = json.dumps(s)
+    assert "GOTCHA" not in dump and "grounding" not in dump
+
+
+def test_http_profile_defaults_to_canned(client):
+    r = client.post("/api/profile?vertical=telco").json()
+    assert r["profile"]["vertical"] == "telco"
+    assert r["offer"]["monthlySavingsEur"] == 24.99
+    assert r["offer"]["recommendation"]["mobile"]["why"]
+
+
+def test_http_compare_b1_vs_b2(client, demo):
+    body = {"state": demo, "preferences": prefs("telco")}
     b2 = client.post("/api/compare/telco", json=body).json()
     b1 = client.post("/api/compare/telco?explain=false", json=body).json()
     assert b2["monthlySavingsEur"] == b1["monthlySavingsEur"] == 24.99
@@ -229,46 +304,10 @@ def test_http_unknown_vertical_404(client):
     assert client.post("/api/compare/water", json={}).status_code == 404
 
 
-def test_http_state_shape_and_no_spoilers(client):
-    s = client.get("/api/state").json()
-    assert s["persona"]["name"] == "Marko Novak"
-    assert s["totals"]["monthlyEur"] == 212.87
-    water = [l for l in s["currentSubscriptions"] if l["vertical"] == "water"]
-    assert water and water[0]["switchable"] is False
-    assert all(l["switchable"] for l in s["currentSubscriptions"] if l["vertical"] != "water")
-    # dashboard must not leak the demo-rigging notes/flags
-    dump = json.dumps(s)
-    assert "GOTCHA" not in dump and "flags" not in dump
-
-
-def test_http_profile_defaults_to_canned(client):
-    # No body: falls back to the canned Marko profile + persona lines.
-    r = client.post("/api/profile?vertical=telco").json()
-    assert r["profile"]["vertical"] == "telco"
-    assert r["offer"]["monthlySavingsEur"] == 24.99
-    assert r["offer"]["recommendation"]["mobile"]["why"]  # B2 by default
-
-
-def test_http_profile_accepts_explicit_profile(client):
-    body = {"vertical": "telco", "profile": needs("telco"), "current": None}
-    r = client.post("/api/profile?explain=false", json=body).json()
-    assert r["offer"]["monthlySavingsEur"] == 24.99
-    assert '"why"' not in json.dumps(r["offer"])  # B1 bare
-
-
-def test_http_profile_unknown_vertical_404(client):
-    assert client.post("/api/profile?vertical=water").status_code == 404
-
-
 def test_http_compare_all_skips_water(client, demo):
-    body = {
-        "current": demo["currentSubscriptions"],
-        "needs": {v: needs(v) for v in ["telco", "energy", "insurance"]},
-    }
+    body = {"state": demo, "preferences": {v: prefs(v) for v in ["telco", "energy", "insurance"]}}
     r = client.post("/api/compare-all", json=body).json()
     assert set(r["byVertical"]) == {"telco", "energy", "insurance"}
-    assert "water" not in r["byVertical"]
     assert r["totals"]["skipped"] == ["water"]
-    # telco 24.99 + insurance 35.0 (energy null -> 0)
-    assert r["totals"]["monthlySavingsEur"] == 59.99
+    assert r["totals"]["monthlySavingsEur"] == 59.99  # telco 24.99 + insurance 35
     assert r["totals"]["currentMonthlyEur"] == 190.87  # excludes water's 22

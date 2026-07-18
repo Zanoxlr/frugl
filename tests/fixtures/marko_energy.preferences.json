@@ -4,10 +4,14 @@
   "dontNeed": [
     "fiksni tarifni pribitek, ce ga ne rabi"
   ],
-  "energy": {
-    "dualFuel": false,
+  "signals": {
     "annualKwh": null,
-    "greenPreference": null,
-    "wantsFixedPrice": null
+    "meterType": null,
+    "hasGas": false,
+    "annualGasKwh": null,
+    "dayNightSplit": null,
+    "priceCertaintyPref": null,
+    "contractLockTolerance": null,
+    "eInvoiceOk": null
   }
 }

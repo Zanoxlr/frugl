@@ -14,6 +14,8 @@
       "provider": "A1",
       "planName": "A1 Xplore TV maxi+ (fiber internet + TV)",
       "monthlyEur": 55.99,
+      "kind": "fixed",
+      "attributes": {},
       "flags": [],
       "note": "Fixed fiber broadband + Xplore TV maxi+ (~180 channels). Reasonable for a 2-person household; kept as-is. Real retail price: 55.99/mo promo (70.99 regular), 24-mo commitment.",
       "grounding": "telco/retail_prices.json A1 'Xplore TV maxi+' 55.99 promo / 70.99 regular; telco/fix_packages.json operator=A1 tier='Xplore TV maxi+' (level 3, baseTvSchemeId 8)"
@@ -23,7 +25,13 @@
       "provider": "A1",
       "planName": "A1 Arena Sport Premium (TV channel add-on)",
       "monthlyEur": 4.99,
-      "flags": ["unused-addon"],
+      "kind": "tv_addon",
+      "attributes": {
+        "packType": "sport"
+      },
+      "flags": [
+        "unused-addon"
+      ],
       "note": "GOTCHA: pays 4.99/mo for the Arena Sport Premium TV package but never watches sport. Pure dead spend. Advisor should flag it for immediate removal (~60 EUR/yr saved, zero downside).",
       "grounding": "telco/tv_schemes.json operatorId=3 (A1) name='Arena Sport Premium' isAddon=1 addonPriceEur=4.99"
     },
@@ -32,7 +40,13 @@
       "provider": "A1",
       "planName": "A1 MaksiMIO (mobile, unlimited calls/SMS + 500 GB)",
       "monthlyEur": 27.99,
-      "flags": ["over-provisioned"],
+      "kind": "mobile",
+      "attributes": {
+        "dataGB": 500
+      },
+      "flags": [
+        "over-provisioned"
+      ],
       "note": "GOTCHA: top-tier mobile plan with 500 GB data; Marko actually uses ~12-15 GB/mo on WiFi most of the day. A1 MidiMIO (200 GB, 20.98) or even a HOT/BOB MVNO unlimited plan (~6-10) covers him for less. Over-provisioned by a wide margin.",
       "grounding": "telco/mobile_packages.json operator=A1 level=3 'MaksiMIO' dataGB=500 priceEur=27.99; cheaper: MidiMIO 20.98 (200GB); MVNO: telco/telco_mvno.json HOT MEGA 9.99 / BOB rumeni 9.99 (promo 5.99)"
     },
@@ -41,7 +55,11 @@
       "provider": "Petrol",
       "planName": "Petrol Redni cenik (standard variable electricity)",
       "monthlyEur": 41.9,
-      "flags": ["standard-tariff-cheaper-promo-exists"],
+      "kind": "electricity",
+      "attributes": {},
+      "flags": [
+        "standard-tariff-cheaper-promo-exists"
+      ],
       "note": "GOTCHA-LITE: on Petrol's standard variable tariff (VT 0.12795 EUR/kWh). Petrol's OWN 1-year fixed promo (Akcijski cenik, VT 0.11795) is ~1 cent/kWh cheaper and price-locked; other suppliers' promos (Energetika Ljubljana Akcija VT 0.1194) are similar. A same-supplier or switch saves a few EUR/mo with no service change. Illustrative monthly bill (energy + network + levies + 22% VAT) for a ~250 kWh/mo apartment.",
       "grounding": "energy.json Petrol 'Redni cenik' VT 0.12795 vs Petrol 'Akcijski cenik (promo, fixed 1yr)' VT 0.11795"
     },
@@ -50,7 +68,12 @@
       "provider": "Vzajemna",
       "planName": "Dopolnilno zdravstveno zavarovanje (supplemental health)",
       "monthlyEur": 35.0,
-      "flags": ["redundant", "legacy-abolished-product"],
+      "kind": "legacy_dopolnilno",
+      "attributes": {},
+      "flags": [
+        "redundant",
+        "legacy-abolished-product"
+      ],
       "note": "BIGGEST GOTCHA: Marko believes he still pays Vzajemna ~35/mo for dopolnilno zdravstveno zavarovanje. That product was ABOLISHED 31 Dec 2023 and replaced 1 Jan 2024 by the compulsory state OZP (obvezni zdravstveni prispevek, ~39.36/mo since March 2026, collected via ZZZS/payroll). If a 35/mo Vzajemna charge is still hitting his account it is either a stale legacy line or a NEW discretionary private health rider he did not realise he opted into. Advisor must surface this: he is likely paying the state OZP AND this line. Verify and cancel if redundant.",
       "grounding": "insurance.json marketNote + Vzajemna 'Dopolnilno zdravstveno zavarovanje (LEGACY - abolished)' premiumNote/notes (DEMO-CRITICAL)"
     },
@@ -59,6 +82,8 @@
       "provider": "Triglav",
       "planName": "Avtomobilsko zavarovanje AO (compulsory motor liability)",
       "monthlyEur": 25.0,
+      "kind": "car_ao",
+      "attributes": {},
       "flags": [],
       "note": "Legally mandatory car liability (AO). Kept as-is; this is a 'leave it alone' item that gives the advisor a contrast against the redundant/wasteful lines. ~300 EUR/yr paid monthly is typical for a mid-size car and Marko's bonus-malus class.",
       "grounding": "insurance.json Triglav 'Avtomobilsko zavarovanje' AO (Legally mandatory liability, typical ~200-450 EUR/yr profile-dependent)"
@@ -68,7 +93,12 @@
       "provider": "JP VOKA Snaga",
       "planName": "Municipal water + sewage (Ljubljana)",
       "monthlyEur": 22.0,
-      "flags": ["info-only", "no-switch"],
+      "kind": "water",
+      "attributes": {},
+      "flags": [
+        "info-only",
+        "no-switch"
+      ],
       "note": "Municipal monopoly tied to the address. Cannot be switched or shopped. Advisor shows this as INFO-ONLY: explain the bill line items (vodarina, omreznina, odvajanje/kanalscina, ciscenje, okoljska dajatev), never present it as a savings opportunity. Illustrative single-household water+sewage figure.",
       "grounding": "water.json JP VOKA Snaga (Ljubljana), isCompetitive=false, canSwitchProvider=false"
     }
@@ -114,5 +144,16 @@
     "status": "mock persona for POC demo",
     "purpose": "Rigged so the anti-upsell advisor lands 3 clear wins (unused add-on, over-provisioned mobile, redundant abolished insurance) plus one soft energy-tariff nudge, while water and car AO are correctly left alone.",
     "grounding": "All provider/plan names, tiers and unit prices reference the real grounding corpus in this folder; monthlyEur figures for bundles/bills without a public monthly price are illustrative and flagged as such."
+  },
+  "household": {
+    "city": "Ljubljana",
+    "hasCar": true,
+    "carFinancing": "owned_outright",
+    "homeOwnership": "tenant",
+    "lineCount": 1,
+    "dependentsAndDebt": {
+      "hasDependents": false,
+      "hasMortgageOrLoan": false
+    }
   }
 }

@@ -22,13 +22,13 @@ python3 -m uvicorn backend.main:app --reload --port 8000
 yet — stub them locally (see task 4).
 
 ## Live endpoints (already work — build against THESE exact shapes)
-- `GET  /api/state` → `{ persona, currentSubscriptions[], totals }`.
-  `persona`: `{ name, city, household }` (`household` here is a text blurb, display only).
-  each line: `{ vertical, provider, planName, monthlyEur, switchable }`.
-  `totals`: `{ monthlyEur, byVertical }`.
-  NOTE (forward-compat): a coming backend update will ADD a shared `household` facts
-  object and per-line `kind` + `attributes` fields. Those are additive — group tiles by
-  `vertical` and read the fields above, and the addition won't break you.
+- `GET  /api/state` → `{ persona, household, currentSubscriptions[], totals }`.
+  `persona`: `{ name, city, household }` (that `household` is a text blurb, display only).
+  `household` (the object): shared facts `{ city, hasCar, carFinancing, homeOwnership, lineCount, dependentsAndDebt }`.
+  each line: `{ vertical, kind, provider, planName, monthlyEur, attributes, switchable }`
+  where `kind` is the explicit line role (telco: `fixed`/`mobile`/`tv_addon`; energy:
+  `electricity`; insurance: `legacy_dopolnilno`/`car_ao`; water: `water`).
+  `totals`: `{ monthlyEur, byVertical }`. Group tiles by `vertical`.
 - `POST /api/profile?vertical=telco` → `{ profile, offer }`. Render `offer`:
   `{ currentMonthlyEur, recommendedMonthlyEur, monthlySavingsEur, annualSavingsEur,
      recommendation, dontPayFor[], notes[] }`. Each `dontPayFor` and the
@@ -52,7 +52,11 @@ yet — stub them locally (see task 4).
    Render the `offer`: hero = `monthlySavingsEur` ("prihranis X EUR/mesec"), red
    "nehaj placevati" cards from `dontPayFor[]` (show each `why`), green "zamenjaj"
    card from `recommendation` (show `why`), grey footnotes from `notes[]`. Handle the
-   `null` savings case. Acceptance: all three verticals render without error, including
+   `null` savings case. `recommendation` is a bag keyed by type — telco has
+   `recommendation.mobile`; energy has `recommendation.electricity` (with either a
+   `tradeoff` or a `cheapest`) and optionally `recommendation.gas` / `recommendation.dualFuel`;
+   insurance has `recommendation: null` (value is all in `dontPayFor`). Each sub-object
+   carries its own `why`. Acceptance: all three verticals render without error, including
    energy's `null`-savings trade-off.
 
 3. **Chat screen** — SSE consumer for `/api/chat`. Typing indicator fires the INSTANT

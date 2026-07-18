@@ -20,14 +20,17 @@ The frontend `API` base points at this. Everything is static + CORS-free on the 
 ```json
 {
   "persona": { "name": "Marko Novak", "city": "Ljubljana", "household": "..." },
+  "household": { "city": "Ljubljana", "hasCar": true, "carFinancing": "owned_outright",
+                 "homeOwnership": "tenant", "lineCount": 1, "dependentsAndDebt": {} },
   "currentSubscriptions": [
-    { "vertical": "telco", "provider": "A1", "planName": "A1 Xplore TV maxi+ (fiber internet + TV)", "monthlyEur": 55.99, "switchable": true },
-    { "vertical": "water", "provider": "JP VOKA Snaga", "planName": "Municipal water + sewage (Ljubljana)", "monthlyEur": 22.0, "switchable": false }
+    { "vertical": "telco", "kind": "mobile", "provider": "A1", "planName": "A1 MaksiMIO ...", "monthlyEur": 27.99, "attributes": { "dataGB": 500 }, "switchable": true },
+    { "vertical": "water", "kind": "water", "provider": "JP VOKA Snaga", "planName": "Municipal water + sewage", "monthlyEur": 22.0, "attributes": {}, "switchable": false }
   ],
   "totals": { "monthlyEur": 212.87, "byVertical": { "telco": 88.97, "energy": 41.9, "insurance": 60.0, "water": 22.0 } }
 }
 ```
 - Dashboard tiles = group `currentSubscriptions` by `vertical`; show the big total (`totals.monthlyEur`) up top.
+- `kind` is the explicit line role; `household` is shared facts (display or ignore).
 - `switchable: false` (water) → show as info-only, no "find a better deal" CTA.
 
 ### `POST /api/profile?vertical=telco` — the needs card (the money shot)
@@ -55,7 +58,9 @@ Render the `offer`:
 Render rules:
 - Hero number = `monthlySavingsEur` ("prihranis 24,99 EUR / mesec"). If it's `null`, show the trade-off / advisory instead of a savings number — never render `null` as `0`.
 - `dontPayFor[]` = red "nehaj placevati" cards; show each `why`.
-- `recommendation.mobile` = green "zamenjaj" card; show `toName` + `toMonthlyEur` + `why`.
+- `recommendation` is a bag keyed by type: telco → `recommendation.mobile`; energy →
+  `recommendation.electricity` (`.tradeoff` or `.cheapest`) + optional `.gas` / `.dualFuel`;
+  insurance → `null`. Each sub-object has its own `why`. Render green "zamenjaj" cards.
 - `notes[]` = grey assumption footnotes (e.g. energy "no usage" case).
 - `?explain=false` returns the same numbers with no `why` — use the default (with `why`).
 

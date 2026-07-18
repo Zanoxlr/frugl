@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cp-advisor/profile.schema.json",
+  "title": "UserState",
+  "description": "The user's objective state: shared household facts + their current subscription lines. Feeds GET /api/state and is the state input to compare(). Facts here are asked once and imported by whichever vertical's rules need them.",
+  "type": "object",
+  "required": ["household", "currentSubscriptions"],
+  "properties": {
+    "persona": {
+      "type": "object",
+      "description": "Display only; never read by the engine.",
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "city": { "type": ["string", "null"] },
+        "household": { "type": ["string", "null"], "description": "free-text blurb" }
+      }
+    },
+    "household": {
+      "type": "object",
+      "description": "Shared cross-vertical facts, asked once, imported by the per-vertical rules.",
+      "additionalProperties": false,
+      "properties": {
+        "city": { "type": ["string", "null"] },
+        "hasCar": { "type": ["boolean", "null"] },
+        "carFinancing": {
+          "type": ["string", "null"],
+          "enum": ["owned_outright", "leased", "financed", "none", null],
+          "description": "GAP cover only makes sense on leased/financed."
+        },
+        "homeOwnership": {
+          "type": ["string", "null"],
+          "enum": ["owner", "tenant", "none", null],
+          "description": "A tenant does not insure the building structure."
+        },
+        "lineCount": { "type": ["integer", "null"], "minimum": 0, "description": "household mobile SIMs; multiplies telco savings." },
+        "dependentsAndDebt": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "hasDependents": { "type": ["boolean", "null"] },
+            "hasMortgageOrLoan": { "type": ["boolean", "null"] }
+          }
+        }
+      }
+    },
+    "currentSubscriptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["vertical", "monthlyEur"],
+        "properties": {
+          "vertical": { "type": "string", "enum": ["telco", "energy", "insurance", "water"] },
+          "kind": {
+            "type": ["string", "null"],
+            "description": "Explicit line role. telco: fixed|mobile|tv_addon. energy: electricity|gas. insurance: legacy_dopolnilno|car_ao|car_kasko|car_gap|home_structure|home_contents|health_rider|life|travel|pet|accident|assistance. water: water. If null, the engine falls back to name-based inference."
+          },
+          "provider": { "type": ["string", "null"] },
+          "planName": { "type": ["string", "null"] },
+          "monthlyEur": { "type": ["number", "null"] },
+          "attributes": {
+            "type": "object",
+            "description": "Per-vertical current facts, e.g. mobile {dataGB}, tv_addon {packType}, health_rider {riderType}.",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "totals": { "type": "object" }
+  }
+}

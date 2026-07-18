@@ -1,5 +1,13 @@
 # Offer Matching — Rule-Based (no second LLM)
 
+> Canonical model now lives in [../docs/signals-research.md](../docs/signals-research.md),
+> `preferences.schema.json`, and `profile.schema.json`. Since that refactor: household facts
+> (carFinancing, homeOwnership, lineCount) moved to the shared UserState; the legacy-dopolnilno
+> drop is DERIVED from a subscription line of kind `legacy_dopolnilno` (no `paysLegacyDopolnilno`
+> preference); the sport-only TV rule generalized to `paidTvPacksUsed`. The rule *logic* below
+> still holds; treat the schema files as the source of truth for field names.
+
+
 Input: a `NeedsProfile` (needs_profile.schema.json) + the `{{VERTICAL_DATA}}` slice + `{{USER_CURRENT_SUBS}}`.
 Output (consumed by the advisor LLM, or by app code): a `recommendation` (a real item from DATA, or null) + a concrete `dontPayFor[]` list. Every entry MUST reference a real field/id in DATA. If nothing in DATA fits, output `recommendation: null` + reason. Never invent an item.
 

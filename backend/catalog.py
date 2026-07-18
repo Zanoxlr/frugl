@@ -144,32 +144,38 @@ def _load_fix_packages():
 # --------------------------------------------------------------------------- #
 # Energy
 # --------------------------------------------------------------------------- #
-def _unit_rate(energy_per_kwh):
-    """Ranking unit rate. Electricity is a {VT,MT,ET} dict -> prefer ET (single
-    tariff), fall back to VT. Gas is a bare number -> use it directly."""
-    if isinstance(energy_per_kwh, dict):
-        rate = energy_per_kwh.get("ET")
-        assumed_vt = rate is None
-        if assumed_vt:
-            rate = energy_per_kwh.get("VT")
-        return (float(rate) if rate is not None else None, assumed_vt)
-    if energy_per_kwh is None:
-        return (None, False)
-    return (float(energy_per_kwh), False)
+def _float_or_none(value):
+    return float(value) if value is not None else None
 
 
 def _load_energy():
+    """Electricity carries VT/MT/ET rates (a {VT,MT,ET} dict); gas is a bare
+    per-kWh number stored as etRate so the ranking code has one field to read.
+    `unitRateEurPerKwh` is the default single-tariff rate (ET, else VT) kept for
+    callers that don't care about meter type; compare.py picks the real rate by
+    meterType from vt/mt/et."""
     electricity, gas = [], []
     for provider in _load("energy.json")["providers"]:
         for plan in provider["plans"]:
-            rate, assumed_vt = _unit_rate(plan.get("energyEurPerKwh"))
+            raw = plan.get("energyEurPerKwh")
+            if isinstance(raw, dict):
+                et = _float_or_none(raw.get("ET"))
+                vt = _float_or_none(raw.get("VT"))
+                mt = _float_or_none(raw.get("MT"))
+            else:  # gas: a single number
+                et, vt, mt = _float_or_none(raw), None, None
+            default = et if et is not None else vt
             entry = {
                 "provider": provider["provider"],
                 "name": plan["name"],
-                "unitRateEurPerKwh": rate,
-                "assumedVt": assumed_vt,
+                "etRate": et,
+                "vtRate": vt,
+                "mtRate": mt,
+                "unitRateEurPerKwh": default,
+                "assumedVt": et is None and vt is not None,
                 "fixedMonthlyEur": plan.get("fixedMonthlyEur"),
                 "isFixed": "fixed" in (plan.get("greenOrFixed") or "").lower(),
+                "commitmentMonths": plan.get("commitmentMonths"),
             }
             if plan.get("utility") == "gas":
                 gas.append(entry)

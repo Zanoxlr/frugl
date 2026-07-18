@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cp-advisor/preferences.schema.json",
+  "title": "Preferences",
+  "description": "Per-vertical needs profile: the lean signals that drive a rule, plus a summary the advisor speaks from. Output of chat extraction, input to compare(). Household facts (carFinancing, homeOwnership, lineCount) live on the UserState, NOT here. Fields not tied to a rule the calculator can act on go in `context`, never in `signals`.",
+  "type": "object",
+  "required": ["vertical", "signals"],
+  "properties": {
+    "vertical": { "type": "string", "enum": ["telco", "energy", "insurance"] },
+    "summary": { "type": "string", "description": "one short SI sentence, no sumniki" },
+    "dontNeed": { "type": "array", "items": { "type": "string" } },
+    "context": { "type": "array", "items": { "type": "string" }, "description": "advisor-only notes; the calculator never reads these" },
+    "signals": {
+      "type": "object",
+      "description": "Load-bearing preferences. telco: dataNeedGB, watchesSport, paidTvPacksUsed[], wantsFixedBroadband, openToSwitchOperator, travelsOutsideEU, budgetPriority. energy: annualKwh, meterType(single_ET|dual_VT_MT), hasGas, annualGasKwh, dayNightSplit(mostly_day|even|mostly_night), priceCertaintyPref(cheapest_now|price_locked), contractLockTolerance(no_lock|ok_12mo), eInvoiceOk. insurance: healthPrefs{valuesFasterPrivateAccess, expectsDentalWork}, floodExposed, travelFrequency(rare|occasional|frequent), coverElsewhere{personalAccident, roadsideAssist}. Insurance's legacy-dopolnilno drop is DERIVED from a line of kind legacy_dopolnilno, not a signal.",
+      "additionalProperties": true
+    }
+  }
+}

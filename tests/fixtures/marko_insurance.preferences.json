@@ -1,0 +1,19 @@
+{
+  "vertical": "insurance",
+  "summary": "ima avto z obveznim AO, je najemnik, se vedno placuje staro dopolnilno zdravstveno",
+  "dontNeed": [
+    "dopolnilno zdravstveno zavarovanje (od 2024 ga je zamenjal obvezni OZP)"
+  ],
+  "signals": {
+    "healthPrefs": {
+      "valuesFasterPrivateAccess": null,
+      "expectsDentalWork": null
+    },
+    "floodExposed": null,
+    "travelFrequency": null,
+    "coverElsewhere": {
+      "personalAccident": null,
+      "roadsideAssist": null
+    }
+  }
+}

@@ -5,13 +5,13 @@
     "Arena Sport Premium (sporta ne gleda)",
     "500 GB mobilnih podatkov (porabi okoli 15 GB)"
   ],
-  "telco": {
-    "watchesSport": false,
-    "wantsSpecialChannels": null,
-    "phoneCount": 1,
+  "signals": {
     "dataNeedGB": "15",
-    "worksFromHome": false,
+    "watchesSport": false,
+    "paidTvPacksUsed": [],
     "wantsFixedBroadband": true,
+    "openToSwitchOperator": true,
+    "travelsOutsideEU": false,
     "budgetPriority": true
   }
 }
