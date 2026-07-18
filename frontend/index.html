@@ -275,7 +275,7 @@ async function send(){
   let acc="", bubble=null;
   try{
     const resp = await fetch(API+"/api/chat?vertical="+encodeURIComponent(VERTICAL), {
-      method:"POST", headers:{"Content-Type":"application/json"},
+      method:"POST", headers:keyHeaders({"Content-Type":"application/json"}),
       body:JSON.stringify({ vertical:VERTICAL, history:HISTORY, state: stateForEngine(STATE) })
     });
     if(!resp.ok || !resp.body) throw new Error("no stream "+resp.status);
