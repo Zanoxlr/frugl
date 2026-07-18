@@ -67,10 +67,14 @@ Render rules:
 Try the other verticals too: `?vertical=energy` (trade-off, `monthlySavingsEur: null`),
 `?vertical=insurance` (35 EUR droppable). Handle all three shapes.
 
-### `POST /api/chat` — STUB for now
-Will stream `text/event-stream` (token deltas, terminal `done` event) once Zan ships it.
-Build the streaming consumer now; point it at a local stub that emits a canned reply so
-the screen is done when the real stream lands. Don't block on it.
+### `POST /api/chat` — LIVE (streaming)
+`POST /api/chat?vertical=<v>` body `{ history:[{role,text}] }` → `text/event-stream`.
+POST, so use `fetch` + a ReadableStream reader (not `EventSource`). Frames are SSE
+`data:` lines carrying JSON:
+- `{"type":"token","text":"..."}` — append as it arrives (first token ~2s).
+- `{"type":"error","message":"..."}` — soft notice; a fallback token was already streamed, don't hard-fail.
+- `{"type":"done","full":"..."}` — terminal (always fires); `full` = complete reply to push into history.
+Render the typing indicator the instant send is tapped; stop it on `done`.
 
 ### `POST /api/lead` — STUB for now
 `{ vertical, history }` → `{ ok, leadId }`. Wire the "book" button to it; Zan makes it real.

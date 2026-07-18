@@ -36,10 +36,17 @@ yet — stub them locally (see task 4).
   IMPORTANT: `monthlySavingsEur` can be `null` (energy no-usage case) — render the
   trade-off / advisory text then, never show `null` as `0`.
 
-## Not built yet — stub these (task 4)
-- `POST /api/chat` `{vertical, history}` → will STREAM `text/event-stream` (token
-  deltas, terminal `done` event). Build the streaming consumer now; point it at a
-  local mock that emits a canned reply so the screen is finished when the real stream lands.
+## `POST /api/chat` — LIVE (streaming)
+`POST /api/chat?vertical=telco` body `{ history:[{role,text}] }` → `text/event-stream`.
+It's POST, so use `fetch` + a stream reader (NOT `EventSource`, which is GET-only).
+Frames are SSE `data:` lines, each a JSON object:
+- `data: {"type":"token","text":"..."}` — append `text` to the current bubble as it arrives.
+- `data: {"type":"error","message":"..."}` — a soft failure notice (a fallback token was already sent). Don't hard-fail the UI.
+- `data: {"type":"done","full":"..."}` — terminal; `full` is the complete reply (use it to push the finished turn into `history`).
+`done` ALWAYS fires (even on error), so key your "stop typing indicator" on it. First
+token lands ~2s after send; render the typing indicator instantly on send.
+
+## Not built yet — stub `/api/lead` (task 5)
 - `POST /api/lead` `{vertical, history}` → `{ ok, leadId }`. Wire the button; stub the response.
 
 ## Tasks (in order, commit each)

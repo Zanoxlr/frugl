@@ -8,18 +8,27 @@ Kept deliberately swappable: the whole app calls ask(); phase-2 voice reuses thi
 unchanged (STT -> ask() -> TTS).
 """
 from __future__ import annotations
+import asyncio
 import json
+import os
+import signal
 import subprocess
-from typing import Optional
+from typing import AsyncIterator, Optional
 
-CLAUDE_BIN = "/usr/bin/claude"
+CLAUDE_BIN = os.environ.get("CLAUDE_BIN", "/usr/bin/claude")
+
+_MCP_OFF = ["--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}']
 
 # Skip all MCP servers (slack/codebase-memory load on every call otherwise and ~2x latency).
-_BASE_ARGS = [
-    CLAUDE_BIN,
-    "--strict-mcp-config",
-    "--mcp-config", '{"mcpServers":{}}',
-    "--output-format", "json",
+_BASE_ARGS = [CLAUDE_BIN, *_MCP_OFF, "--output-format", "json", "-p"]
+
+# Streaming: emit token deltas as they arrive. --verbose is required for stream-json;
+# its noise goes to stderr, which we discard.
+_STREAM_ARGS = [
+    CLAUDE_BIN, *_MCP_OFF,
+    "--output-format", "stream-json",
+    "--include-partial-messages",
+    "--verbose",
     "-p",
 ]
 
@@ -66,6 +75,90 @@ def ask_safe(prompt: str, fallback: str, *, timeout: int = 45) -> tuple[str, Opt
         return ask(prompt, timeout=timeout), None
     except LlmError as e:
         return fallback, str(e)
+
+
+async def stream(prompt: str, *, timeout: int = 45) -> AsyncIterator[str]:
+    """Async-stream a grounded prompt through `claude -p`, yielding text deltas as
+    they arrive. Raises LlmError on timeout / non-zero exit / result error so callers
+    can emit a fallback. Cleans up the whole process group on any exit (incl. the
+    consumer abandoning the generator on client disconnect).
+    """
+    proc = await asyncio.create_subprocess_exec(
+        *_STREAM_ARGS,
+        stdin=asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.DEVNULL,   # --verbose noise; draining a PIPE would deadlock
+        start_new_session=True,              # own process group so killpg reaps node children
+    )
+
+    async def _feed():
+        try:
+            proc.stdin.write(prompt.encode())
+            await proc.stdin.drain()
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+        finally:
+            try:
+                proc.stdin.close()
+            except Exception:
+                pass
+
+    feeder = asyncio.create_task(_feed())  # write concurrently: no stdin/stdout deadlock
+
+    buf = b""
+    loop = asyncio.get_event_loop()
+    deadline = loop.time() + timeout
+    saw_error = False
+    try:
+        while True:
+            remaining = deadline - loop.time()
+            if remaining <= 0:
+                raise LlmError("claude -p stream timed out after %ss" % timeout)
+            try:
+                chunk = await asyncio.wait_for(proc.stdout.read(65536), timeout=remaining)
+            except asyncio.TimeoutError:
+                raise LlmError("claude -p stream timed out after %ss" % timeout)
+            if not chunk:
+                break  # EOF
+            buf += chunk
+            while b"\n" in buf:
+                raw, buf = buf.split(b"\n", 1)
+                raw = raw.strip()
+                if not raw:
+                    continue
+                try:
+                    evt = json.loads(raw)
+                except json.JSONDecodeError:
+                    continue  # partial/non-JSON line; skip
+                etype = evt.get("type")
+                if etype == "stream_event":
+                    ev = evt.get("event", {})
+                    if ev.get("type") == "content_block_delta":
+                        delta = ev.get("delta", {})
+                        # ONLY text deltas — never thinking/tool/init events.
+                        if delta.get("type") == "text_delta" and delta.get("text"):
+                            yield delta["text"]
+                elif etype == "result" and evt.get("is_error"):
+                    saw_error = True
+    finally:
+        feeder.cancel()
+        if proc.returncode is None:
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                try:
+                    proc.kill()
+                except ProcessLookupError:
+                    pass
+        try:
+            await asyncio.wait_for(proc.wait(), timeout=5)
+        except asyncio.TimeoutError:
+            pass
+
+    if saw_error:
+        raise LlmError("claude -p reported a result error")
+    if proc.returncode not in (0, None):
+        raise LlmError("claude -p exited %s" % proc.returncode)
 
 
 if __name__ == "__main__":
