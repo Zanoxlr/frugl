@@ -29,6 +29,7 @@ from . import catalog as catalog_module
 from . import compare as compare_module
 from . import extract as extract_module
 from . import grounding as grounding_module
+from . import lifecycle as lifecycle_module
 from . import llm as llm_module
 from . import reasons as reasons_module
 
@@ -246,14 +247,17 @@ async def chat(
 
 
 @app.get("/api/state")
-def get_state():
+def get_state(as_of: str = Query(None, description="pin 'today' (YYYY-MM-DD) for the demo")):
     """Dashboard state: persona, shared household facts, current lines, totals.
     Trimmed of the demo-rigging notes/flags so the reveal comes from /api/profile.
-    `switchable` is false for water (info-only municipal monopoly)."""
+    `switchable` is false for water (info-only municipal monopoly). Each line also
+    carries its `contract` + a derived `lifecycle` (status/daysRemaining/noticeDeadline)
+    so the dashboard can show 'active until X' and flag lines entering renewal."""
     demo = _demo_user()
     persona = demo.get("persona", {})
     lines = [
         {
+            "lineId": s.get("lineId"),
             "vertical": s.get("vertical"),
             "kind": s.get("kind"),
             "provider": s.get("provider"),
@@ -261,6 +265,8 @@ def get_state():
             "monthlyEur": s.get("monthlyEur"),
             "attributes": s.get("attributes", {}),
             "switchable": s.get("vertical") != "water",
+            "contract": s.get("contract"),
+            "lifecycle": lifecycle_module.lifecycle(s.get("contract"), as_of=as_of),
         }
         for s in demo.get("currentSubscriptions", [])
     ]
@@ -274,6 +280,41 @@ def get_state():
         "currentSubscriptions": lines,
         "totals": demo.get("totals", {}),
     }
+
+
+@app.get("/api/renewals")
+def get_renewals(
+    as_of: str = Query(None, description="pin 'today' (YYYY-MM-DD) for the demo"),
+    explain: bool = Query(True),
+):
+    """The 'we found you a better option' feed: lines entering their renewal window
+    (or expired + auto-renewing), each paired with a fresh right-fit offer — the same
+    compare() result the needs card renders. No-contract lines (water, variable energy,
+    add-ons) never appear. Offer errors degrade to an empty offer, never a 500.
+    Contract: { asOf, renewals:[{lineId, vertical, current, lifecycle, offer, degraded}] }."""
+    demo = _demo_user()
+    state = _demo_state()
+    prefs = _demo_preferences()
+    renewals = []
+    for due in lifecycle_module.due_for_renewal(demo.get("currentSubscriptions", []), as_of=as_of):
+        line = due["line"]
+        vertical = line.get("vertical")
+        offer, degraded = None, False
+        if vertical in VERTICALS:
+            offer, degraded = _safe_offer(vertical, state, prefs.get(vertical, {}), explain)
+        renewals.append({
+            "lineId": line.get("lineId"),
+            "vertical": vertical,
+            "current": {
+                "provider": line.get("provider"),
+                "planName": line.get("planName"),
+                "monthlyEur": line.get("monthlyEur"),
+            },
+            "lifecycle": due["lifecycle"],
+            "offer": offer,
+            "degraded": degraded,
+        })
+    return {"asOf": lifecycle_module.resolve_today(as_of).isoformat(), "renewals": renewals}
 
 
 @app.post("/api/compare/{vertical}")
