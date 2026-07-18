@@ -155,14 +155,16 @@
    POST /api/profile?vertical=  -> { profile, offer }            (the needs card)
    /api/chat + /api/lead not wired yet -> handled client-side (stub).
    ========================================================================== */
-// Mount-aware API base: "" at the site root (local dev), "/frugl" under a Tailscale
-// funnel subpath. Handles trailing slash, no slash, and /index.html — no hardcoding.
-const API = (function(){
+// The app mounts at <root>/app (root is "" for local dev, "/frugl" behind the funnel).
+// APP_BASE = the app's own dir (for sw/manifest); API = the mount root where /api/* lives
+// (NOT under /app). Handles trailing slash, no slash, /index.html — nothing hardcoded.
+const APP_BASE = (function(){
   const p = location.pathname;
-  if(p.endsWith("/")) return p.slice(0, -1);          // "/frugl/" -> "/frugl"; "/" -> ""
-  if(/\.[^\/]+$/.test(p)) return p.replace(/\/[^\/]*$/, "");  // "/frugl/index.html" -> "/frugl"
-  return p;                                            // "/frugl" -> "/frugl"
+  if(p.endsWith("/")) return p.slice(0, -1);          // "/frugl/app/" -> "/frugl/app"; "/" -> ""
+  if(/\.[^\/]+$/.test(p)) return p.replace(/\/[^\/]*$/, "");  // ".../app/index.html" -> ".../app"
+  return p;                                            // "/frugl/app" -> "/frugl/app"
 })();
+const API = APP_BASE.replace(/\/app$/, "");            // "/frugl/app" -> "/frugl"; "" -> ""
 let STATE = null, FINDINGS = null, VERTICAL = null, HISTORY = [], TURNS = 0, OFFLINE = false, BOOKING = false;
 
 async function getJSON(path){ try{ const r=await fetch(API+path); if(r.ok) return await r.json(); }catch(e){} return null; }
@@ -418,7 +420,7 @@ const FALLBACK_OFFER = {
     dontPayFor:[{name:"Dopolnilno zdravstveno zavarovanje", monthlyEur:35.0, why:"od 2024 ga je nadomestil obvezni OZP, ki ga ze placujes — najbrz dvojno placilo"}], notes:[] }
 };
 
-if("serviceWorker" in navigator){ window.addEventListener("load", ()=> navigator.serviceWorker.register(API+"/sw.js").catch(()=>{})); }
+if("serviceWorker" in navigator){ window.addEventListener("load", ()=> navigator.serviceWorker.register(APP_BASE+"/sw.js").catch(()=>{})); }
 boot();
 </script>
 </body>
