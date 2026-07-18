@@ -3,7 +3,7 @@
      fall back to cache when offline).
    - Other same-origin GET assets (icons, etc.): cache-first.
    - Never touches cross-origin (form endpoint, share links) or non-GET. */
-const CACHE = "frugl-landing-v2";
+const CACHE = "frugl-landing-v3";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", (e) => {
