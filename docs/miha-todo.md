@@ -93,3 +93,39 @@ token lands ~2s after send; render the typing indicator instantly on send.
 - The thesis is trust: show the saving and the `why`, never a hard upsell.
 - Don't invent backend behavior. If the data isn't in `/api/state` or `/api/profile`,
   ask the backend dev — don't fake it in a way that hides a missing endpoint.
+
+---
+
+## UPDATE (2026-07-18) — demo loop landed; ONE change is in your file
+
+The backend demo loop shipped: real profile extraction, lead capture, and a demo-access
+gate. Zan's lane touched `frontend/index.html` once (small) — flagged so you rebase over it
+instead of colliding. This supersedes the "not built yet" notes above.
+
+### The frontend change (commit `feat(frontend): demo-key header…`)
+- **`<script src="/config.js">`** in `<head>`: backend-served, sets `window.FRUGL_KEY`,
+  loads before `boot()`.
+- **`getJSON`/`post`** attach `x-frugl-key: window.FRUGL_KEY` via a `keyHeaders()` helper.
+  Empty key -> the gate 403s (fail closed). No other call sites changed.
+- **`buildProfile()`** posts `{history, state}` (was `{}`) so extraction runs on the real chat.
+- **`book()`** posts `{history, state}`, takes the button (`book(this)`), disables it after
+  the tap (one lead per booking).
+
+Nothing about layout/screens/PWA/service worker was touched. A rebase should only possibly
+conflict on the two `getJSON`/`post` lines and `book()`.
+
+### Contract corrections (now live)
+- `POST /api/profile?vertical=…` now returns `{ profile, offer, **degraded** }`. `degraded:true`
+  means extraction or the engine fell back — worth a subtle UI note, since a dead LLM
+  otherwise looks like a valid (floor-plan) recommendation.
+- `POST /api/lead?vertical=…` `{history, state}` -> `{ ok, leadId, degraded }` is **live** now
+  (no longer a stub). Drop your local `/api/lead` mock.
+- `GET /api/health` and `GET /config.js` are the only OPEN `/api`-ish routes. When the gate
+  is armed (only on the public deploy), every other `/api/*` needs the key. Local dev leaves
+  the gate off, so nothing changes for you day to day.
+- HISTORY can stay `{role, content}` — the backend now reads `content` OR `text`.
+
+### Deploy (not enabled yet)
+`deploy/frugl-api.service` + `deploy/RUNBOOK.md` cover the gated public demo via Tailscale
+Funnel. Zan checkpoints before exposing it. Gate key + UTC expiry live in `/etc/frugl.env`,
+never in the repo.
