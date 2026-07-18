@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Frugl">
+  <defs>
+    <linearGradient id="fg-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#23CD86"/><stop offset="1" stop-color="#06965F"/>
+    </linearGradient>
+    <linearGradient id="fg-gl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".20"/>
+      <stop offset=".55" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#fg-bg)"/>
+  <rect width="512" height="512" rx="114" fill="url(#fg-gl)"/>
+  <path d="M180 150 H332 Q344 150 344 162 V270 Q344 342 256 390 Q168 342 168 270 V162 Q168 150 180 150 Z" fill="#ffffff"/>
+  <g fill="#047857">
+    <rect x="200" y="180" width="40" height="132" rx="10"/>
+    <rect x="200" y="180" width="112" height="40" rx="10"/>
+    <rect x="200" y="234" width="88" height="38" rx="10"/>
+  </g>
+</svg>
