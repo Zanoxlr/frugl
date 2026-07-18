@@ -7,12 +7,13 @@ Wants=network-online.target
 Type=simple
 User=claude
 Group=claude
-WorkingDirectory=/home/claude/cp-advisor
+# Dedicated deploy checkout (origin/main), NOT the shared cp-advisor dev tree.
+WorkingDirectory=/home/claude/frugl-deploy
 # HOME is REQUIRED: extraction calls `claude -p`, which finds its OAuth creds under
 # /home/claude. Without it every extraction silently 401s and falls back to degraded.
 Environment=HOME=/home/claude
 Environment=PATH=/usr/local/bin:/usr/bin:/bin
-# The gate key + UTC expiry + leads path live here, NOT in the repo. See RUNBOOK.md.
+# The UTC expiry + leads path live here, NOT in the repo. See RUNBOOK.md.
 EnvironmentFile=/etc/frugl.env
 # `python3 -m` puts WorkingDirectory on sys.path so `dev_serve` imports, and StaticFiles
 # (directory="frontend") resolves relative to it. Bind localhost only; the funnel fronts it.
