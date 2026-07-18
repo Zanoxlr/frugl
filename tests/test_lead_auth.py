@@ -91,12 +91,8 @@ FUTURE = "2999-01-01T00:00:00+00:00"
 PAST = "2000-01-01T00:00:00Z"
 
 
-def _arm(monkeypatch, key="s3cret", expires=FUTURE):
+def _arm(monkeypatch, expires=FUTURE):
     monkeypatch.setenv("FRUGL_DEMO_GATE", "1")
-    if key is not None:
-        monkeypatch.setenv("FRUGL_DEMO_KEY", key)
-    else:
-        monkeypatch.delenv("FRUGL_DEMO_KEY", raising=False)
     if expires is not None:
         monkeypatch.setenv("FRUGL_DEMO_EXPIRES", expires)
     else:
@@ -108,47 +104,30 @@ def test_gate_disarmed_is_open(client, monkeypatch):
     assert client.get("/api/state").status_code == 200
 
 
-def test_gate_armed_valid_key_passes(client, monkeypatch):
+def test_gate_armed_before_expiry_is_open_no_key(client, monkeypatch):
+    # Expiry-only gate: while live, the demo is open to anyone — no key needed.
     _arm(monkeypatch)
-    assert client.get("/api/state", headers={"x-frugl-key": "s3cret"}).status_code == 200
-
-
-def test_gate_armed_no_header_403(client, monkeypatch):
-    _arm(monkeypatch)
-    assert client.get("/api/state").status_code == 403
-
-
-def test_gate_armed_wrong_key_403(client, monkeypatch):
-    _arm(monkeypatch)
-    assert client.get("/api/state", headers={"x-frugl-key": "nope"}).status_code == 403
-
-
-def test_gate_armed_but_key_unset_fails_closed(client, monkeypatch):
-    # The adversary note: armed with no configured key must NOT fail open.
-    _arm(monkeypatch, key=None)
-    assert client.get("/api/state", headers={"x-frugl-key": "anything"}).status_code == 403
+    assert client.get("/api/state").status_code == 200
 
 
 def test_gate_armed_expiry_unset_403(client, monkeypatch):
     _arm(monkeypatch, expires=None)
-    assert client.get("/api/state", headers={"x-frugl-key": "s3cret"}).status_code == 403
+    assert client.get("/api/state").status_code == 403
 
 
 def test_gate_armed_expired_403(client, monkeypatch):
     _arm(monkeypatch, expires=PAST)
-    assert client.get("/api/state", headers={"x-frugl-key": "s3cret"}).status_code == 403
+    assert client.get("/api/state").status_code == 403
 
 
 def test_gate_armed_bad_expiry_403(client, monkeypatch):
     _arm(monkeypatch, expires="not-a-date")
-    assert client.get("/api/state", headers={"x-frugl-key": "s3cret"}).status_code == 403
+    assert client.get("/api/state").status_code == 403
 
 
-def test_health_and_config_open_even_when_armed(client, monkeypatch):
+def test_health_open_even_when_armed(client, monkeypatch):
     _arm(monkeypatch)
     assert client.get("/api/health").status_code == 200
-    r = client.get("/config.js")
-    assert r.status_code == 200 and "window.FRUGL_KEY" in r.text and "s3cret" in r.text
 
 
 # --------------------------------------------------------------------------- #
