@@ -1,6 +1,6 @@
 # Phase 2: Voice Talk-Agent Roadmap
 
-Research + design doc. No build. Goal: let a user speak to the SubSmart advisor and get a
+Research + design doc. No build. Goal: let a user speak to the Frugl advisor and get a
 spoken, conversational answer back, running on THIS VPS with minimal new infrastructure.
 
 Author's note on scope: phase 1 is a text app (`POST /chat` -> `claude -p` -> text). Phase 2

@@ -93,4 +93,4 @@ Real latency today is 9-29s with big grounding context. Angles, roughly by bang-
    so the "see my offer" tap returns instantly.
 
 ## Deferred
-Voice (phase-2, `docs/voice-roadmap.md`). Stale "SubSmart" naming cleanup (README is canonical Frugl).
+Voice (phase-2, `docs/voice-roadmap.md`).
