@@ -287,11 +287,20 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
 .result-mini{font-size:12.5px;color:var(--ink-faint);text-align:center;margin-top:14px;line-height:1.5}
 .section-h{font-size:19px;margin:2px 0 4px}
 .offers-sub{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
-.hesit-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.hesit-chip{background:var(--surface);border:1.5px solid var(--line-strong);border-radius:999px;padding:9px 14px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s}
-.hesit-chip:hover{border-color:var(--brand);color:var(--brand-strong)}
-.hesit-ans{margin-top:12px;background:var(--brand-tint);border:1px solid var(--brand);border-radius:12px;padding:13px 15px;font-size:14px;color:var(--brand-ink);line-height:1.45;display:none}
-.hesit-ans.show{display:block}
+.hesit .section-h{margin-top:0}
+.concern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.concern{display:flex;align-items:center;gap:10px;text-align:left;background:var(--surface);border:1.5px solid var(--line-strong);border-radius:14px;padding:14px 15px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s;line-height:1.25}
+.concern:hover{border-color:var(--brand);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.concern .ci{font-size:20px;flex:none}
+.concern-answer{background:var(--brand-tint);border:1px solid var(--brand);border-radius:16px;padding:16px;animation:pop .25s cubic-bezier(.2,.9,.3,1.2)}
+.concern-back{color:var(--brand-ink);font-weight:700;font-size:13px;background:none;border:none;cursor:pointer;padding:0 0 8px}
+.ca-head{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800;margin-bottom:7px}
+.ca-head .ci{font-size:22px}
+.ca-ans{color:var(--ink);font-size:14.5px;line-height:1.5;margin:0 0 14px}
+.hesit-cap{display:flex;gap:8px;margin-top:10px}
+.hesit-cap input{flex:1;min-width:0;font-size:15px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink)}
+.hesit-cap input:focus{outline:none;border-color:var(--brand)}
+@media(max-width:430px){.concern-grid{grid-template-columns:1fr}}
 .offers{display:grid;gap:10px}
 .offer{display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:13px 15px}
 .offer .oi{flex:1;min-width:0}
@@ -680,7 +689,7 @@ sl:{
   res_watchdog:"Opozori me tudi, ko spet začnem preplačevati (watchdog).",
   res_email_note:"Brez spama. Samo tvoj prihranek in opozorila ob podražitvah.",
   res_offers_h:"Boljše ponudbe zate", res_offers_sub:"Konkretne cenejše možnosti za isto storitev. Primeri — točno ponudbo potrdiš pred prehodom.",
-  res_hesit_h:"Te še kaj ustavlja?", res_hesit_sub:"Brez pritiska — tukaj so pošteni odgovori na najpogostejše pomisleke.",
+  res_hesit_h:"Še okleveš?", res_hesit_sub:"Brez pritiska — izberi, kaj te muči, in ti povemo po pravici.",
   res_good_offers_sub:"Že si blizu najboljšega. Tole so trenutno najboljše ponudbe na trgu:",
   res_save_badge:"prihraniš", res_switch:"Preklopi →",
   sw_h:"Uredimo prehod na {P}", sw_help:"Pusti kontakt — pripravimo prehod, ti potrdiš vsak korak. Nič se ne zgodi brez tebe.",
@@ -758,7 +767,7 @@ en:{
   res_watchdog:"Also alert me when I start overpaying again (watchdog).",
   res_email_note:"No spam. Just your savings and alerts when prices rise.",
   res_offers_h:"Better offers for you", res_offers_sub:"Concrete cheaper options for the same service. Examples — you confirm the exact offer before switching.",
-  res_hesit_h:"Anything holding you back?", res_hesit_sub:"No pressure — honest answers to the most common hesitations.",
+  res_hesit_h:"Still deciding?", res_hesit_sub:"No pressure — pick what's stopping you and we'll be straight with you.",
   res_good_offers_sub:"You're already close to the best. Here are the top offers on the market right now:",
   res_save_badge:"you save", res_switch:"Switch →",
   sw_h:"Let's switch you to {P}", sw_help:"Leave your contact — we prepare the switch, you approve every step. Nothing happens without you.",
@@ -965,30 +974,69 @@ function renderResult(){
 /* honest hesitation-handling AT the offer moment (per Miha: objection proces tudi na landingu).
    Taksonomija iz jeremy-miner korpusa (STALL_THINK / TRUST_SKEPTICISM / AUTHORITY_SPOUSE),
    a odzivi prepisani v pošten Frugl glas — NE Belfort/NEPQ close. */
+/* Vsak ugovor: pošten odgovor + PRILAGOJEN forward korak (churn-solver). */
 const HESIT_SL = [
-  ["Rabim še premislit","Seveda — brez pritiska. Pokazali smo ti, kje verjetno preplačuješ; watchdog te opozori, ko boš pripravljen. Nič se ne zgodi brez tvoje potrditve."],
-  ["V čem je kavelj?","Ni ga. Preverjanje je zastonj; zaslužimo šele, ko ti dejansko prihranimo (ponudnik nam plača priporočilo). Če ne najdemo bolje, te nič ne stane."],
-  ["Moram vprašat partnerja","Logično — pokaži mu tale rezultat. Nič ni nujnega; ponudbo pripravimo, ko se oba strinjata."],
-  ["Nočem menjati takoj","Ni treba. Lahko samo pogledaš. Povemo ti, kdaj ti poteče vezava in ali se prehod splača že zdaj ali ob izteku."]
+  { ic:"🤔", label:"Rabim še premislit", ans:"Brez pritiska. Rezultat ti shranimo, watchdog pa te opozori, ko se ti bo splačalo ukrepati — nič ne zamudiš.", act:"🔔 Shrani rezultat + opozori me", type:"watchdog" },
+  { ic:"🕵️", label:"V čem je trik?", ans:"Trika ni. Pregled je zastonj; zaslužimo šele, ko ti dejansko prihranimo — ponudnik nam plača priporočilo, ti pa dobiš nižjo ceno. Če ne najdemo bolje, te nič ne stane.", act:"Zaupam — poglej ponudbe ↑", type:"offers" },
+  { ic:"👥", label:"Moram vprašat partnerja", ans:"Logično. Pošljemo ti rezultat na email, da ga v miru pokažeš — ponudbo pripravimo, ko se oba strinjata.", act:"✉️ Pošlji mi rezultat", type:"email" },
+  { ic:"🐢", label:"Nočem menjati takoj", ans:"Ni treba. Povemo ti, kdaj ti poteče vezava, in te opozorimo, ko se prehod res splača — brez naglice.", act:"🔔 Opozori me ob izteku", type:"watchdog" }
 ];
 const HESIT_EN = [
-  ["I need to think about it","Of course — no pressure. We've shown you where you likely overpay; the watchdog pings you when you're ready. Nothing happens without your approval."],
-  ["What's the catch?","There isn't one. The check is free; we only earn when we actually save you money (the provider pays us a referral). If we don't find better, it costs you nothing."],
-  ["I need to ask my partner","Makes sense — show them this result. Nothing's urgent; we prepare the offer once you both agree."],
-  ["I don't want to switch now","You don't have to. You can just look. We'll tell you when your contract ends and whether switching pays off now or at renewal."]
+  { ic:"🤔", label:"I need to think about it", ans:"No pressure. We save your result and the watchdog pings you when it's worth acting — you miss nothing.", act:"🔔 Save result + alert me", type:"watchdog" },
+  { ic:"🕵️", label:"What's the catch?", ans:"There's no catch. The check is free; we only earn when we actually save you money — the provider pays us a referral, you get a lower price. If we don't find better, it costs you nothing.", act:"I trust it — show offers ↑", type:"offers" },
+  { ic:"👥", label:"I need to ask my partner", ans:"Makes sense. We'll email you the result so you can show them — we prepare the offer once you both agree.", act:"✉️ Email me the result", type:"email" },
+  { ic:"🐢", label:"I don't want to switch now", ans:"You don't have to. We'll tell you when your contract ends and alert you when switching really pays off — no rush.", act:"🔔 Alert me at renewal", type:"watchdog" }
 ];
 function renderHesit(r){
-  const data = (LANG==='en') ? HESIT_EN : HESIT_SL;
-  const s=document.createElement('div'); s.style.marginTop='22px';
-  s.innerHTML=`<h2 class="section-h">${t('res_hesit_h')}</h2><p class="offers-sub">${t('res_hesit_sub')}</p>`;
-  const chips=document.createElement('div'); chips.className='hesit-chips';
-  const ans=document.createElement('div'); ans.className='hesit-ans';
-  data.forEach((h,i)=>{
-    const b=document.createElement('button'); b.className='hesit-chip'; b.type='button'; b.textContent=h[0];
-    b.addEventListener('click',()=>{ ans.textContent=h[1]; ans.classList.add('show'); track('objection_open',{i}); });
-    chips.appendChild(b);
+  const wrap=document.createElement('div'); wrap.className='hesit'; wrap.style.marginTop='24px';
+  wrap.innerHTML=`<h2 class="section-h">${t('res_hesit_h')}</h2><p class="offers-sub">${t('res_hesit_sub')}</p>`;
+  const view=document.createElement('div'); view.className='hesit-view'; wrap.appendChild(view);
+  body.appendChild(wrap);
+  hesitConcerns(view);
+}
+function hesitData(){ return (LANG==='en') ? HESIT_EN : HESIT_SL; }
+function hesitConcerns(view){
+  view.innerHTML='';
+  const grid=document.createElement('div'); grid.className='concern-grid';
+  hesitData().forEach((h,i)=>{
+    const b=document.createElement('button'); b.className='concern'; b.type='button';
+    b.innerHTML=`<span class="ci">${h.ic}</span><span>${h.label}</span>`;
+    b.addEventListener('click',()=>{ track('objection_open',{i,type:h.type}); hesitAnswer(view,i); });
+    grid.appendChild(b);
   });
-  s.appendChild(chips); s.appendChild(ans); body.appendChild(s);
+  view.appendChild(grid);
+}
+function hesitAnswer(view,i){
+  const h=hesitData()[i]; view.innerHTML='';
+  const card=document.createElement('div'); card.className='concern-answer';
+  card.innerHTML=`<button class="concern-back" type="button">‹ ${LANG==='en'?'back':'nazaj'}</button>
+    <div class="ca-head"><span class="ci">${h.ic}</span><span>${h.label}</span></div>
+    <p class="ca-ans">${h.ans}</p>`;
+  const act=document.createElement('button'); act.className='btn btn-primary btn-block'; act.type='button'; act.textContent=h.act;
+  const cap=document.createElement('div');
+  card.appendChild(act); card.appendChild(cap); view.appendChild(card);
+  card.querySelector('.concern-back').addEventListener('click',()=>hesitConcerns(view));
+  act.addEventListener('click',()=>hesitAction(h,act,cap));
+}
+function hesitAction(h,act,cap){
+  track('objection_action',{type:h.type});
+  if(h.type==='offers'){
+    const off=body.querySelector('.offers'); if(off) off.scrollIntoView({block:'center',behavior:'smooth'});
+    act.textContent=(LANG==='en')?'↑ offers above':'↑ ponudbe zgoraj'; act.disabled=true; return;
+  }
+  act.style.display='none'; cap.className='hesit-cap';
+  const inp=document.createElement('input'); inp.type='email'; inp.placeholder=(LANG==='en')?'you@email.com':'tvoj@email.si';
+  const go=document.createElement('button'); go.className='btn btn-primary'; go.type='button'; go.textContent=(LANG==='en')?'Send →':'Pošlji →';
+  cap.appendChild(inp); cap.appendChild(go); setTimeout(()=>inp.focus(),50);
+  const submit=()=>{
+    const v=inp.value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ toast(t('err_email')); return; }
+    const lead={type:h.type, objection:h.label, email:v, vertical:state.vertical, provider:state.provider,
+      tenure:state.tenure, amount:state.amount, overpay:calcResult?calcResult.overYr:null, lang:LANG};
+    saveLead(lead); track('objection_captured',{type:h.type}); postLead(lead);
+    cap.innerHTML=`<span style="color:var(--brand-strong);font-weight:700">✓ ${(LANG==='en')?"Done — we'll be in touch.":'Urejeno — javimo se.'}</span>`;
+  };
+  go.addEventListener('click',submit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submit(); });
 }
 
 /* ⭐ instant offers — value-first, ne lead-gate */
