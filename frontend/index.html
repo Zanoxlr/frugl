@@ -8,8 +8,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d1117">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<!-- Demo access key (window.FRUGL_KEY); loads before boot() so every /api call is gated. -->
-<script src="/config.js"></script>
 <style>
   :root{
     --bg:#0d1117; --card:#161b22; --card2:#1c232d; --line:#2a323d;
@@ -157,13 +155,13 @@
    POST /api/profile?vertical=  -> { profile, offer }            (the needs card)
    /api/chat + /api/lead not wired yet -> handled client-side (stub).
    ========================================================================== */
-const API = "";
+// Mount-aware API base: "" at the site root (local dev), "/frugl" when served under a
+// Tailscale funnel subpath. Derived from the page's own path so nothing is hardcoded.
+const API = location.pathname.replace(/\/[^\/]*$/, "");
 let STATE = null, FINDINGS = null, VERTICAL = null, HISTORY = [], TURNS = 0, OFFLINE = false, BOOKING = false;
 
-// Demo gate: echo the key from /config.js on every call (empty when unset -> gate 403s).
-function keyHeaders(extra){ return Object.assign({"x-frugl-key": window.FRUGL_KEY||""}, extra||{}); }
-async function getJSON(path){ try{ const r=await fetch(API+path,{headers:keyHeaders()}); if(r.ok) return await r.json(); }catch(e){} return null; }
-async function post(path, body){ try{ const r=await fetch(API+path,{method:"POST",headers:keyHeaders({"Content-Type":"application/json"}),body:JSON.stringify(body||{})}); if(r.ok) return await r.json(); }catch(e){} return null; }
+async function getJSON(path){ try{ const r=await fetch(API+path); if(r.ok) return await r.json(); }catch(e){} return null; }
+async function post(path, body){ try{ const r=await fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}); if(r.ok) return await r.json(); }catch(e){} return null; }
 
 const ICONS  = {telco:"📶", energy:"⚡", insurance:"🛡️", water:"💧"};
 const V_TITLE= {telco:"Telko", energy:"Energija", insurance:"Zavarovanja", water:"Voda"};
@@ -275,7 +273,7 @@ async function send(){
   let acc="", bubble=null;
   try{
     const resp = await fetch(API+"/api/chat?vertical="+encodeURIComponent(VERTICAL), {
-      method:"POST", headers:keyHeaders({"Content-Type":"application/json"}),
+      method:"POST", headers:{"Content-Type":"application/json"},
       body:JSON.stringify({ vertical:VERTICAL, history:HISTORY, state: stateForEngine(STATE) })
     });
     if(!resp.ok || !resp.body) throw new Error("no stream "+resp.status);
@@ -415,7 +413,7 @@ const FALLBACK_OFFER = {
     dontPayFor:[{name:"Dopolnilno zdravstveno zavarovanje", monthlyEur:35.0, why:"od 2024 ga je nadomestil obvezni OZP, ki ga ze placujes — najbrz dvojno placilo"}], notes:[] }
 };
 
-if("serviceWorker" in navigator){ window.addEventListener("load", ()=> navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+if("serviceWorker" in navigator){ window.addEventListener("load", ()=> navigator.serviceWorker.register(API+"/sw.js").catch(()=>{})); }
 boot();
 </script>
 </body>
