@@ -18,12 +18,16 @@ Endpoints:
 
 import json
 import os
+import uuid
+from datetime import datetime, timezone
 
-from fastapi import Body, FastAPI, HTTPException, Query
-from fastapi.responses import StreamingResponse
+from fastapi import Body, FastAPI, HTTPException, Query, Request
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 
+from . import auth as auth_module
 from . import catalog as catalog_module
 from . import compare as compare_module
+from . import extract as extract_module
 from . import grounding as grounding_module
 from . import llm as llm_module
 from . import reasons as reasons_module
@@ -31,6 +35,9 @@ from . import reasons as reasons_module
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 PROMPTS_DIR = os.path.join(os.path.dirname(__file__), "..", "prompts")
 VERTICALS = ("telco", "energy", "insurance")  # water is info-only, no endpoint
+
+# Where captured demo leads land. Env-overridable so tests write to tmp, never real data.
+LEADS_PATH = os.environ.get("FRUGL_LEADS_PATH") or os.path.join(DATA_DIR, "leads.jsonl")
 
 # Streamed to the client when claude -p fails before any token — never a stage error.
 FALLBACK_REPLY = "oprosti, trenutno ne morem do podatkov. probaj se enkrat cez par sekund."
@@ -42,6 +49,35 @@ CHAT_MODEL = os.environ.get("FRUGL_CHAT_MODEL") or None
 app = FastAPI(title="Frugl calculator API", version="0.3.0")
 
 _CATALOG = catalog_module.load()  # static grounding data, load once
+
+# Every /api/* route is gated behind the demo key EXCEPT these open ones. New /api routes
+# are protected by default (fail closed), so adding an endpoint can't silently expose it.
+_OPEN_API_PATHS = {"/api/health"}
+
+
+@app.middleware("http")
+async def _demo_gate(request: Request, call_next):
+    path = request.url.path
+    if path.startswith("/api/") and path not in _OPEN_API_PATHS:
+        error = auth_module.demo_gate_error(request.headers.get("x-frugl-key"))
+        if error:
+            return JSONResponse(status_code=403, content={"detail": error})
+    return await call_next(request)
+
+
+@app.get("/api/health")
+def health():
+    return {"ok": True, "gate": auth_module.is_armed()}
+
+
+@app.get("/config.js")
+def config_js():
+    """Open bootstrap script: hands the frontend the current demo key (empty when unset,
+    which fails the gate closed). No-store so a rotated key isn't served stale."""
+    key = os.environ.get("FRUGL_DEMO_KEY") or ""
+    body = "window.FRUGL_KEY=%s;" % json.dumps(key)
+    return Response(content=body, media_type="application/javascript",
+                    headers={"Cache-Control": "no-store"})
 
 with open(os.path.join(PROMPTS_DIR, "system_advisor.md"), encoding="utf-8") as _fh:
     _SYSTEM_ADVISOR = _fh.read()
@@ -79,6 +115,54 @@ def _run(vertical, state, preferences, explain):
     return reasons_module.explain(result) if explain else result
 
 
+def _empty_offer(vertical):
+    """Calculator-shaped offer with everything null/empty — the last-resort payload so a
+    compute failure degrades gracefully instead of 500-ing the demo."""
+    return {
+        "vertical": vertical,
+        "currentMonthlyEur": None,
+        "recommendation": None,
+        "recommendedMonthlyEur": None,
+        "dontPayFor": [],
+        "monthlySavingsEur": None,
+        "annualSavingsEur": None,
+        "notes": [],
+    }
+
+
+def _safe_offer(vertical, state, preferences, explain):
+    """Run the engine, but never let it raise into the request. Returns (offer, degraded).
+    On failure retries once with empty preferences, then falls back to an empty offer."""
+    try:
+        return _run(vertical, state, preferences, explain), False
+    except Exception:
+        try:
+            return _run(vertical, state, {}, explain), True
+        except Exception:
+            return _empty_offer(vertical), True
+
+
+def _resolve_preferences(vertical, payload):
+    """Pick the preferences for a vertical. Real chat `history` -> LLM extraction (may be
+    degraded); else an explicit `preferences`; else the canned demo profile. Returns
+    (preferences, degraded)."""
+    if payload.get("history"):
+        prefs = extract_module.extract_preferences(vertical, payload["history"])
+        return prefs, bool(prefs.get("degraded"))
+    if payload.get("preferences"):
+        return payload["preferences"], False
+    return _demo_preferences().get(vertical, {}), False
+
+
+def _append_lead(record):
+    """Append one lead as a JSON line. Build the full line first, then a SINGLE append
+    write, so concurrent captures never interleave a half-record."""
+    os.makedirs(os.path.dirname(LEADS_PATH), exist_ok=True)
+    line = json.dumps(record, ensure_ascii=False) + "\n"
+    with open(LEADS_PATH, "a", encoding="utf-8") as fh:
+        fh.write(line)
+
+
 def _clean_turn_text(text):
     """Flatten control chars (incl. newlines) to spaces so a pasted bill or an
     injected 'DATA:' line can't break turn boundaries or forge a data block."""
@@ -88,11 +172,17 @@ def _clean_turn_text(text):
 def _render_history(history):
     rows = []
     for turn in history or []:
+        if not isinstance(turn, dict):
+            continue
         role = turn.get("role")
         if role not in ("user", "assistant"):
             continue
+        # Frontend HISTORY items carry `content`; some callers/tests use `text`.
+        raw = turn.get("text")
+        if raw is None:
+            raw = turn.get("content")
         label = "Uporabnik" if role == "user" else "Svetovalec"
-        rows.append("%s: %s" % (label, _clean_turn_text(turn.get("text", ""))))
+        rows.append("%s: %s" % (label, _clean_turn_text(raw if raw is not None else "")))
     return "\n".join(rows) if rows else "(nov pogovor, se ni sporocil)"
 
 
@@ -233,15 +323,48 @@ def build_profile(
     payload: dict = Body(default={}),
     explain: bool = Query(True),
 ):
-    """Extraction -> right-fit offer. Extraction from `history` is not wired yet, so
-    the preferences fall back to the canned demo profile and `state` to the persona.
-    Contract stays { profile, offer } when extraction lands."""
+    """Extraction -> right-fit offer. When `history` is present the preferences are
+    extracted from the real conversation (else the canned demo profile). `degraded` is
+    true when the LLM extraction failed or the engine had to fall back — so a dead LLM
+    is visible on stage instead of silently serving the floor-plan recommendation.
+    Contract: { profile, offer, degraded }."""
     vertical = vertical or payload.get("vertical")
     if vertical not in VERTICALS:
         raise HTTPException(status_code=404, detail="unknown vertical: %s" % vertical)
 
-    preferences = payload.get("preferences") or _demo_preferences().get(vertical, {})
+    preferences, degraded = _resolve_preferences(vertical, payload)
     state = payload.get("state") or _demo_state()
 
-    offer = _run(vertical, state, preferences, explain)
-    return {"profile": preferences, "offer": offer}
+    offer, offer_degraded = _safe_offer(vertical, state, preferences, explain)
+    return {"profile": preferences, "offer": offer, "degraded": degraded or offer_degraded}
+
+
+@app.post("/api/lead")
+def capture_lead(
+    vertical: str = Query(None, description="required when not in the body"),
+    payload: dict = Body(default={}),
+    explain: bool = Query(True),
+):
+    """Capture a demo lead: resolve preferences (extracting from `history` when present),
+    compute the offer, and append one record to the leads file. SYNC def on purpose so
+    FastAPI runs it in a threadpool — a 30s blocking extraction can't freeze live SSE
+    chat streams. Returns { ok, leadId, degraded }."""
+    vertical = vertical or payload.get("vertical")
+    if vertical not in VERTICALS:
+        raise HTTPException(status_code=404, detail="unknown vertical: %s" % vertical)
+
+    preferences, degraded = _resolve_preferences(vertical, payload)
+    state = payload.get("state") or _demo_state()
+    offer, offer_degraded = _safe_offer(vertical, state, preferences, explain)
+    degraded = degraded or offer_degraded
+
+    lead_id = uuid.uuid4().hex
+    _append_lead({
+        "id": lead_id,
+        "createdAt": datetime.now(timezone.utc).isoformat(),
+        "vertical": vertical,
+        "degraded": degraded,
+        "profile": preferences,
+        "offer": offer,
+    })
+    return {"ok": True, "leadId": lead_id, "degraded": degraded}
