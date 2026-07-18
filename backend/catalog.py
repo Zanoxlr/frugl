@@ -79,6 +79,7 @@ def _load_mobile_plans():
                 "fullSpeedGB": _premium_full_speed_gb(
                     row.get("dataGB"), _to_bool(row.get("unlimited"))
                 ),
+                "restricted": row.get("restricted"),  # e.g. "senior" — excluded from general recs
                 "source": "mobile_packages",
             }
         )

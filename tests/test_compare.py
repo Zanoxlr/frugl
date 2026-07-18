@@ -120,8 +120,18 @@ def test_telco_same_operator_when_not_open_to_switch(cat, state):
     p = prefs("telco")
     p["signals"]["openToSwitchOperator"] = False
     r = compare.compare("telco", state, p, cat)
-    assert r["recommendation"]["mobile"]["toOperator"] == "A1"  # no MVNO jump
-    assert r["monthlySavingsEur"] < 24.99  # a same-operator downsize saves less
+    mob = r["recommendation"]["mobile"]
+    assert mob["toOperator"] == "A1"  # no MVNO jump
+    assert mob["toName"] != "Senior MIO"  # age-restricted plan must be excluded
+    assert mob["toName"] == "MiniMIO" and mob["toMonthlyEur"] == 15.99
+    assert r["monthlySavingsEur"] == 16.99  # Arena 4.99 + (27.99 -> 15.99)
+
+
+def test_restricted_plans_excluded_from_catalog_recs(cat):
+    senior = next(p for p in cat["telco"]["mobilePlans"] if p["name"] == "Senior MIO")
+    assert senior["restricted"] == "senior"
+    best = compare._cheapest_mobile(cat, 15.0, operator="A1")
+    assert best["name"] != "Senior MIO"
 
 
 def test_telco_drop_unused_fixed(cat, state):

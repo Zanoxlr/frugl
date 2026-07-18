@@ -116,6 +116,7 @@ def _cheapest_mobile(cat, threshold, operator=None):
     eligible = [
         p for p in pool
         if p["priceEur"] and p["fullSpeedGB"] is not None and p["fullSpeedGB"] >= threshold
+        and not p.get("restricted")  # skip age/eligibility-gated plans (e.g. Senior MIO)
     ]
     if not eligible:
         return None

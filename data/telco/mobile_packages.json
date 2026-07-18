@@ -141,6 +141,7 @@
     "level": 1,
     "dataGB": 20,
     "operator": "A1",
+    "restricted": "senior",
     "priceEur": 11.99,
     "unlimited": 1,
     "noContract": 0,
