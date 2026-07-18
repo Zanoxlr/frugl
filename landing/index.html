@@ -2,15 +2,24 @@
 <html lang="sl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Frugl — Preveri, ali preplačuješ za položnice</title>
-<meta name="description" content="Frugl ti v 60 sekundah pokaže, koliko preplačuješ za mobilni, internet in zavarovanja — brez registracije, brez dostopa do banke." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Frugl — nehaj plačevati za stvari, ki jih ne rabiš</title>
+<meta name="description" content="Frugl ni primerjalnik cen. AI svetovalec pogleda tvoje račune in ti pokaže, kaj lahko nehaš plačevati — tudi to, kar bi ti drugi prodali." />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#12B76A" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Frugl" />
 
 <!-- Open Graph / social preview -->
-<meta property="og:title" content="Preplačuješ za položnice? Preveri v 60 sekundah — Frugl" />
-<meta property="og:description" content="8 od 10 ljudi po dveh letih pri istem ponudniku plača več za popolnoma isto storitev. Poglej, koliko preplačuješ ti." />
+<meta property="og:title" content="Nehaj plačevati za stvari, ki jih ne rabiš — Frugl" />
+<meta property="og:description" content="Frugl ni primerjalnik cen. AI ti pokaže, kaj plačuješ po nepotrebnem — tudi to, kar bi ti drugi prodali." />
 <meta property="og:type" content="website" />
-<meta name="theme-color" content="#12B76A" />
+<meta name="og:image" content="icons/icon-512.png" />
 
 <style>
 /* ============================================================================
@@ -1053,6 +1062,9 @@ function getFont(){ return '-apple-system,Segoe UI,Roboto,Arial,sans-serif'; }
 
 /* init */
 applyI18n();
+
+/* PWA: register service worker */
+if('serviceWorker' in navigator){ addEventListener('load', ()=> navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 </script>
 </body>
 </html>
