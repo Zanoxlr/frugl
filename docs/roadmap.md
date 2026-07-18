@@ -19,7 +19,7 @@ The frontend and backend integrate only through these shapes. Agree changes here
 | Endpoint | Request | Response |
 |---|---|---|
 | `GET /api/state` | – | `{ persona, currentSubscriptions[], totals:{monthlyEur, byVertical} }` |
-| `POST /api/chat` | `{ vertical, history:[{role,text}] }` | `{ reply }` (later: streamed) |
+| `POST /api/chat` | `{ vertical, history:[{role,text}] }` | **`text/event-stream`** — token-delta events, terminal `done` event |
 | `POST /api/profile` | `{ vertical, history }` | `{ profile:<NeedsProfile>, offer:<compare() result> }` |
 | `POST /api/lead` | `{ vertical, history }` | `{ ok, leadId }` |
 
@@ -29,6 +29,14 @@ annualSavingsEur, notes[] }`, with B2 `why` strings when `?explain=true`.
 
 Contract rule: the backend owns these shapes; the frontend renders them. Any field
 change goes here in the same PR, so neither side breaks silently.
+
+## Decisions
+- **Chat streams from day one** (SSE). Frontend builds the streaming consumer once; the
+  perceived-latency win is baked in.
+- **Ownership principle**: Zan takes the API-based / advanced work (streaming, extraction,
+  LLM speed, lead schema). Miha takes the simpler frontend surface (PWA, screens, landing).
+- **LLM real-latency lever**: TBD, Zan's track (distillation / model-tiering / warm-process
+  / speculative extraction). Not blocking anything; picked later.
 
 ## Work split
 
@@ -49,6 +57,27 @@ change goes here in the same PR, so neither side breaks silently.
   backed by real numbers.
 - **LLM latency** (the advanced track — see options below).
 - **Lead schema**: CP-compatible, written on `/api/lead`.
+
+## Task checklists
+
+### Miha (frontend — PWA, screens, landing)
+Builds against the frozen contract; `/api/state` + `/api/profile` are live now, `/api/chat`
+can be stubbed until Zan's stream lands.
+- [ ] PWA plumbing: `manifest.json`, service worker (cache app shell + vendored CSS,
+      offline fallback), app icons + splash, add-to-home-screen prompt.
+- [ ] Dashboard: tiles from `/api/state`, total monthly spend, tap a tile → chat.
+- [ ] Chat screen: consume the SSE token stream, typing indicator fires instantly.
+- [ ] Needs card: render the `offer` object (savings, `dontPayFor`, `why` strings).
+- [ ] Book confirm → `POST /api/lead` → done screen.
+- [ ] Landing page: anti-upsell thesis, before/after, waitlist / CTA (static, reuses styling).
+
+### Zan (backend — API, LLM, speed)
+- [ ] `GET /api/state` — reshape demo-user into dashboard state. *(unblocks Miha)*
+- [ ] `POST /api/profile` — real `compare()` + a canned profile first, then wired to extraction.
+- [ ] `POST /api/chat` — SSE stream from `claude -p --output-format stream-json`.
+- [ ] Profile extraction (highest risk): `claude -p` → `NeedsProfile` JSON, try/except → fallback profile.
+- [ ] `POST /api/lead` — append to `leads.jsonl`, CP-compatible lead schema.
+- [ ] LLM real-latency lever (advanced, TBD).
 
 ## LLM latency track (Zan) — candidate approaches
 Real latency today is 9-29s with big grounding context. Angles, roughly by bang-for-buck:
