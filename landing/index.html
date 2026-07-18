@@ -344,7 +344,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
       <a href="#what" data-t="nav_what">Kaj preveriš</a>
       <a href="#trust" data-t="nav_trust">Zakaj zaupati</a>
       <a href="#faq" data-t="nav_faq">Vprašanja</a>
-      <a href="app/" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
+      <a href="#" class="open-app" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
     </nav>
     <div class="nav-right">
       <div class="lang" role="group" aria-label="Language">
@@ -543,7 +543,7 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);margin-top:64px;colo
       <div class="foot-links">
         <a href="#how" data-t="nav_how">Kako deluje</a>
         <a href="#faq" data-t="nav_faq">Vprašanja</a>
-        <a href="app/" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
+        <a href="#" class="open-app" data-t="nav_app" style="color:var(--brand-strong);font-weight:700">Odpri app →</a>
         <a href="#" data-t="foot_privacy">Zasebnost</a>
         <a href="#" data-t="foot_contact">Kontakt</a>
       </div>
@@ -1153,6 +1153,222 @@ applyI18n();
 
 /* PWA: register service worker */
 if('serviceWorker' in navigator){ addEventListener('load', ()=> navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+</script>
+
+<!-- ================= EN PWA: APP (dashboard/chat/needs-card) — svetlo, scoped, isti PWA ================= -->
+<style>
+#appView{position:fixed;inset:0;z-index:130;display:none;background:var(--bg)}
+#appView.open{display:block}
+#appView #appApp{max-width:460px;margin:0 auto;height:100%;display:flex;flex-direction:column;background:var(--surface);
+  --a-card:#FFFFFF;--a-card2:#F4F6F4;--a-line:#EAE7E0;--a-fg:#0F1B2D;--a-dim:#54637A;--a-accent:#059669;--a-accent2:#12B76A;--a-warn:#B45309;--a-strike:#DC2626;--a-blue:#2563EB}
+#appView .screen{display:none;flex-direction:column;flex:1;min-height:0;color:var(--a-fg);overflow:hidden}
+#appView .screen.active{display:flex}
+#appView header{padding:16px 18px 8px;display:flex;align-items:center;gap:12px}
+#appView .brand{display:flex;align-items:center;gap:8px}
+#appView .brand .mk{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-strong));display:grid;place-items:center;color:#04160d;font-weight:800;font-size:15px}
+#appView h1{font-size:20px;margin:0;color:var(--a-fg)}
+#appView .sub{color:var(--a-dim);font-size:13.5px;margin:2px 0 0}
+#appView .app-x{margin-left:auto;background:var(--a-card2);border:1px solid var(--a-line);color:var(--a-fg);width:34px;height:34px;border-radius:10px;font-size:16px;cursor:pointer;flex:none}
+#appView .back{background:none;border:none;color:var(--a-fg);font-size:22px;cursor:pointer;padding:0 4px 0 0}
+#appView .spend{margin:6px 18px 12px;padding:16px;background:linear-gradient(135deg,#FFFFFF,#ECFDF3);border:1px solid var(--a-line);border-radius:14px}
+#appView .spend .lbl{color:var(--a-dim);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+#appView .spend .amt{font-size:32px;font-weight:800;margin-top:2px;color:var(--a-fg)}
+#appView .spend .amt small{font-size:15px;color:var(--a-dim);font-weight:400}
+#appView .thesis{margin:2px 18px 12px;color:var(--a-dim);font-size:13px;line-height:1.45}
+#appView .tiles{padding:0 14px 20px;overflow-y:auto}
+#appView .tile{display:flex;align-items:center;gap:13px;background:var(--a-card);border:1px solid var(--a-line);border-radius:13px;padding:13px 14px;margin:8px 4px;cursor:pointer;transition:.12s;box-shadow:var(--shadow-sm)}
+#appView .tile:active{transform:scale(.985)}
+#appView .tile .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:#EEF3EF;flex:none}
+#appView .tile .mid{flex:1;min-width:0}
+#appView .tile .prov{font-weight:700;color:var(--a-fg)}
+#appView .tile .plan{color:var(--a-dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#appView .tile .price{font-weight:800;white-space:nowrap;color:var(--a-fg)}
+#appView .badge{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;margin-top:4px;font-weight:700}
+#appView .badge.warn{background:rgba(180,83,9,.12);color:var(--a-warn)}
+#appView .badge.info{background:rgba(37,99,235,.12);color:var(--a-blue)}
+#appView .msgs{flex:1;overflow-y:auto;padding:8px 14px 4px;display:flex;flex-direction:column;gap:8px}
+#appView .b{max-width:82%;padding:9px 13px;border-radius:16px;font-size:14.5px;white-space:pre-wrap;word-wrap:break-word}
+#appView .b.ai{align-self:flex-start;background:var(--a-card2);color:var(--a-fg);border-bottom-left-radius:5px}
+#appView .b.me{align-self:flex-end;background:var(--a-accent2);color:#04160d;border-bottom-right-radius:5px}
+#appView .chips{display:flex;flex-wrap:wrap;gap:7px;padding:4px 14px 8px}
+#appView .chip{background:var(--a-card2);border:1px solid var(--a-line);color:var(--a-fg);font-size:13px;padding:8px 12px;border-radius:16px;cursor:pointer}
+#appView .typing{align-self:flex-start;background:var(--a-card2);padding:11px 15px;border-radius:16px;border-bottom-left-radius:5px}
+#appView .typing span{display:inline-block;width:6px;height:6px;margin:0 1.5px;background:var(--a-dim);border-radius:50%;animation:bt 1.2s infinite}
+#appView .typing span:nth-child(2){animation-delay:.2s}#appView .typing span:nth-child(3){animation-delay:.4s}
+@keyframes bt{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+#appView .composer{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--a-line);background:var(--surface)}
+#appView .composer input{flex:1;background:var(--a-card2);border:1px solid var(--a-line);color:var(--a-fg);border-radius:22px;padding:11px 15px;font-size:15px;outline:none}
+#appView .composer button,#appView .cta,#appView .finish button{background:var(--a-accent2);color:#04160d;border:none;border-radius:22px;padding:0 18px;font-weight:700;cursor:pointer;font-size:15px}
+#appView .finish{margin:2px 14px 10px;text-align:center}#appView .finish button{padding:12px 18px;width:calc(100% - 12px);font-size:14.5px}
+#appView .card{margin:10px 16px;background:var(--a-card);border:1px solid var(--a-line);border-radius:16px;padding:18px;overflow-y:auto;box-shadow:var(--shadow-sm)}
+#appView .card h2{margin:0 0 4px;font-size:18px;color:var(--a-fg)}#appView .card .summary{color:var(--a-dim);font-size:14px;margin-bottom:14px}
+#appView .rec{background:var(--brand-tint);border:1px solid var(--brand);border-radius:12px;padding:13px;margin-bottom:14px}
+#appView .rec .t{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--brand-strong);font-weight:800}
+#appView .rec .n{font-weight:800;font-size:16px;margin-top:3px;color:var(--a-fg)}#appView .rec .w{color:var(--a-dim);font-size:13px;margin-top:4px}
+#appView .drop .t{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--a-strike);font-weight:800;margin-bottom:8px}
+#appView .drop-item{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--a-card2);border:1px solid var(--a-line);border-radius:10px;margin-bottom:8px;transition:.5s}
+#appView .drop-item.struck{opacity:.5}#appView .drop-item.struck .di-name{text-decoration:line-through;text-decoration-color:var(--a-strike)}
+#appView .di-name{font-size:13.5px;color:var(--a-fg)}#appView .di-name small{color:var(--a-dim);display:block;font-size:11.5px;margin-top:2px}
+#appView .di-price{color:var(--a-strike);font-weight:800;white-space:nowrap}
+#appView .advisory{background:var(--a-card2);border:1px dashed var(--a-line);border-radius:10px;padding:11px 12px;color:var(--a-dim);font-size:13px;margin-bottom:10px}
+#appView .saved{text-align:center;margin:14px 0 4px;font-size:15px;color:var(--a-fg)}#appView .saved b{color:var(--a-accent);font-size:26px;display:block}#appView .saved .sub{display:block}
+#appView .keepnote{color:var(--a-dim);font-size:12px;margin-top:12px;line-height:1.45}
+#appView .cta{display:block;width:calc(100% - 32px);margin:14px 16px;padding:14px;text-align:center}
+#appView .hesit{margin:6px 16px 16px;display:flex;flex-wrap:wrap;gap:7px}
+#appView .hesit-answer{margin:0 16px 14px;background:var(--brand-tint);border:1px solid var(--brand);border-radius:12px;padding:12px 14px;color:var(--brand-ink);font-size:13.5px;line-height:1.45;display:none}#appView .hesit-answer.show{display:block}
+#appView .done{padding:40px 24px;text-align:center}#appView .done .big{font-size:52px}#appView .done h2{margin:12px 0 6px;color:var(--a-fg)}
+</style>
+<div id="appView">
+ <div id="appApp">
+  <section id="dash" class="screen active">
+    <header><div class="brand"><span class="mk">F</span><div><h1>Frugl</h1><p class="sub" id="dash-sub">vsi tvoji racuni na enem mestu</p></div></div>
+      <button class="app-x" id="appClose" aria-label="Zapri">✕</button></header>
+    <div class="spend"><div class="lbl">skupaj na mesec</div><div class="amt" id="total">–<small> /mes</small></div></div>
+    <p class="thesis">nismo primerjalnik cen. povemo ti, kaj placujes po nepotrebnem — tudi to, kar bi ti drugi prodali.</p>
+    <div class="tiles" id="tiles"></div>
+  </section>
+  <section id="chat" class="screen">
+    <header><button class="back" data-app-back="dash">‹</button><div><h1 id="chat-title">Svetovalec</h1><p class="sub" id="chat-sub"></p></div></header>
+    <div class="msgs" id="msgs"></div><div class="chips" id="chips"></div>
+    <div class="finish" id="finish" style="display:none"><button data-app-build>pokazi kaj res rabim →</button></div>
+    <div class="composer"><input id="input" placeholder="vprasaj karkoli o tem racunu…" autocomplete="off"><button data-app-send aria-label="Poslji">▶</button></div>
+  </section>
+  <section id="needs" class="screen">
+    <header><button class="back" data-app-back="chat">‹</button><div><h1>Kaj res rabis</h1><p class="sub" id="needs-vertical"></p></div></header>
+    <div class="card" id="needs-card"></div><div class="hesit" id="hesit"></div><div class="hesit-answer" id="hesit-answer"></div>
+  </section>
+  <section id="done" class="screen">
+    <div class="done"><div class="big">✅</div><h2>Urejeno!</h2><p class="sub">Pripravimo ti tocno to ponudbo in potrdis vsak korak. Brez presenecenj, brez upsella.</p>
+      <button class="cta" data-app-back="dash" style="margin-top:20px">nazaj na pregled</button></div>
+  </section>
+ </div>
+</div>
+<script>
+/* EN PWA: app logika, namespaced v App.* + scoped na #appView, da NE trci z landingom.
+   Wired na Zanov zivi backend (mount-aware API base za /frugl subpath). Lazy boot ob odprtju. */
+window.App = (function(){
+  const API = (function(){ const p=location.pathname; if(p.endsWith("/")) return p.slice(0,-1); if(/\.[^\/]+$/.test(p)) return p.replace(/\/[^\/]*$/,""); return p; })();
+  let STATE=null, FINDINGS=null, VERTICAL=null, HISTORY=[], TURNS=0, BOOKING=false, booted=false;
+  const $=id=>document.getElementById(id);
+  async function getJSON(path){ try{ const r=await fetch(API+path); if(r.ok) return await r.json(); }catch(e){} return null; }
+  async function post(path, body){ try{ const r=await fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}); if(r.ok) return await r.json(); }catch(e){} return null; }
+  const ICONS={telco:"📶",energy:"⚡",insurance:"🛡️",water:"💧"};
+  const V_TITLE={telco:"Telko",energy:"Energija",insurance:"Zavarovanja",water:"Voda"};
+  const V_LABEL={telco:"mobilni, net + TV",energy:"elektrika + plin",insurance:"zavarovanja",water:"voda (informativno)"};
+  const V_ORDER=["telco","energy","insurance","water"];
+  function fmt(n){ return (n==null)?"–":(Number(n).toFixed(2).replace(".",",")+"€"); }
+  function esc(s){ return String(s==null?"":s).replace(/[<>&"']/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[c])); }
+  function show(id){ document.querySelectorAll("#appView .screen").forEach(s=>s.classList.remove("active")); $(id).classList.add("active"); }
+  function stateForEngine(s){ return { household:s.household||{}, currentSubscriptions:s.currentSubscriptions||[] }; }
+  async function boot(){
+    STATE = await getJSON("/api/state");
+    if(!STATE){ STATE=FALLBACK_STATE; }
+    FINDINGS = await post("/api/compare-all", { state: stateForEngine(STATE) });
+    renderDash();
+  }
+  function renderDash(){
+    $("total").innerHTML = fmt(STATE.totals && STATE.totals.monthlyEur)+"<small> /mes</small>";
+    const byV=(STATE.totals&&STATE.totals.byVertical)||{}; const linesByV={};
+    (STATE.currentSubscriptions||[]).forEach(l=>{ (linesByV[l.vertical]=linesByV[l.vertical]||[]).push(l); });
+    const findings=(FINDINGS&&FINDINGS.byVertical)||{}; const tiles=$("tiles"); tiles.innerHTML="";
+    V_ORDER.forEach(v=>{ const lines=linesByV[v]; if(!lines||!lines.length) return;
+      const providers=[...new Set(lines.map(l=>l.provider))].join(", "); const f=findings[v];
+      const hasFinding=f&&(((f.dontPayFor||[]).length)||(f.monthlySavingsEur>0)||(f.recommendation&&Object.keys(f.recommendation).length)||((f.notes||[]).length));
+      let badge=""; if(v==="water") badge=`<span class="badge info">samo informativno</span>`; else if(hasFinding) badge=`<span class="badge warn">vredno pogledati</span>`;
+      const n=lines.length;
+      tiles.insertAdjacentHTML("beforeend", `<div class="tile" onclick="App.openChat('${v}')"><div class="ic">${ICONS[v]||"📦"}</div>
+        <div class="mid"><div class="prov">${esc(V_TITLE[v]||v)}</div><div class="plan">${esc(providers)} · ${n} ${n===1?'postavka':(n===2?'postavki':'postavke')}</div>${badge}</div>
+        <div class="price">${fmt(byV[v])}</div></div>`);
+    });
+  }
+  function linesOf(v){ return (STATE.currentSubscriptions||[]).filter(l=>l.vertical===v); }
+  function opener(v){ if(v==="water") return "voda je obcinski monopol — menjave ni. tvoj racun je korekten, samo posteno ti razlozim postavke.";
+    const names=linesOf(v).map(l=>l.provider+" "+l.planName.replace(/\s*\(.*?\)\s*/g,"").trim());
+    return "vidim tvoje postavke: "+names.join(", ")+".\nnaj pogledam, kaj od tega res rabis in kaj placujes zaman?"; }
+  const CHIPS={telco:["a Arena Sport je zastonj?","koliko podatkov res rabim?"],energy:["a se splaca menjat dobavitelja?","zakaj je energija oznacena?"],insurance:["zakaj je zdravstveno rdece?","kaj pa avtomobilsko?"],water:["zakaj tu ni prihranka?"]};
+  function openChat(vertical){ VERTICAL=vertical; HISTORY=[]; TURNS=0;
+    $("chat-title").textContent="Svetovalec"; $("chat-sub").textContent=V_LABEL[vertical]||vertical;
+    $("msgs").innerHTML=""; $("finish").style.display="none"; renderChips(vertical); show("chat");
+    addMsg("ai", opener(vertical)); if(vertical!=="water") setTimeout(()=>{ $("finish").style.display="block"; },500); }
+  function renderChips(v){ $("chips").innerHTML=(CHIPS[v]||[]).map(c=>`<span class="chip" onclick="App.ask('${esc(c).replace(/'/g,"\\'")}')">${esc(c)}</span>`).join(""); }
+  function ask(q){ $("input").value=q; send(); }
+  function addMsg(role,text){ const m=$("msgs"); const el=document.createElement("div"); el.className="b "+role; el.textContent=text||""; m.appendChild(el); m.scrollTop=m.scrollHeight; return el; }
+  function scrollMsgs(){ const m=$("msgs"); m.scrollTop=m.scrollHeight; }
+  function typing(on){ const m=$("msgs"); let t=$("tw");
+    if(on&&!t){ m.insertAdjacentHTML("beforeend",'<div class="typing" id="tw"><span></span><span></span><span></span></div>'); m.scrollTop=m.scrollHeight; }
+    if(!on&&t) t.remove(); }
+  function cannedReply(v,q){ const t=q.toLowerCase();
+    if(v==="telco"){ if(t.includes("arena")||t.includes("sport")) return "ne. Arena Sport je locen dodatek za 4,99 eur na mesec, ni v osnovnem paketu — sporta pa ne gledas, torej cista izguba.";
+      if(t.includes("podatk")||t.includes("gb")) return "porabis okoli 15 GB, placujes pa paket s 500 GB (27,99 eur). MVNO neomejeni paketi te pokrijejo za ~8 eur."; }
+    if(v==="insurance"){ if(t.includes("zdravstv")||t.includes("rdece")||t.includes("dopoln")) return "ker placujes staro dopolnilno zdravstveno (35 eur). To je bilo 2024 ukinjeno in nadomesceno z obveznim OZP, ki ga ze placujes prek place — torej najbrz placujes dvojno.";
+      if(t.includes("avto")||t.includes("ao")) return "avtomobilsko AO je zakonsko obvezno — pustimo ga pri miru. Ni vse za rezat."; }
+    if(v==="energy") return "energija je odvisna od tvoje letne porabe (kwh). ce mi jo poves, ti tocno povem, ali se menjava splaca; sicer ti pokazem najnizjo ceno na kwh.";
+    return "to ti tocno povem iz tvojih podatkov — pritisni 'pokazi kaj res rabim'."; }
+  async function send(){ const inp=$("input"); const text=inp.value.trim(); if(!text) return;
+    inp.value=""; addMsg("me",text); HISTORY.push({role:"user",text:text}); TURNS++; typing(true);
+    let acc="",bubble=null;
+    try{ const resp=await fetch(API+"/api/chat?vertical="+encodeURIComponent(VERTICAL),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({vertical:VERTICAL,history:HISTORY,state:stateForEngine(STATE)})});
+      if(!resp.ok||!resp.body) throw new Error("no stream "+resp.status);
+      const reader=resp.body.getReader(),dec=new TextDecoder(); let buf="";
+      while(true){ const {value,done}=await reader.read(); if(done) break; buf+=dec.decode(value,{stream:true}); let i;
+        while((i=buf.indexOf("\n\n"))>=0){ const frame=buf.slice(0,i); buf=buf.slice(i+2); const dl=frame.split("\n").find(l=>l.startsWith("data:")); if(!dl) continue;
+          let evt; try{ evt=JSON.parse(dl.slice(5).trim()); }catch(e){ continue; }
+          if(evt.type==="token"&&evt.text){ if(!bubble){ typing(false); bubble=addMsg("ai",""); } acc+=evt.text; bubble.textContent=acc; scrollMsgs(); }
+          else if(evt.type==="done"&&evt.full&&!acc){ typing(false); bubble=bubble||addMsg("ai",""); acc=evt.full; bubble.textContent=acc; scrollMsgs(); } } }
+    }catch(e){}
+    typing(false); if(!acc){ acc=cannedReply(VERTICAL,text); if(bubble) bubble.textContent=acc; else addMsg("ai",acc); }
+    HISTORY.push({role:"assistant",text:acc}); if(VERTICAL!=="water") $("finish").style.display="block"; }
+  async function buildProfile(){ typing(true); $("finish").style.display="none";
+    const res=await post("/api/profile?vertical="+encodeURIComponent(VERTICAL),{history:HISTORY,state:stateForEngine(STATE)}); typing(false);
+    if(res&&res.offer) renderNeeds(res.offer,res.profile); else renderNeeds((FALLBACK_OFFER[VERTICAL]||FALLBACK_OFFER.telco),null); }
+  function recTitle(node){ if(node.toName) return esc(node.toName)+(node.toOperator?" ("+esc(node.toOperator)+")":"")+" – "+fmt(node.toMonthlyEur)+"/mes";
+    if(node.cheapest) return esc(node.cheapest.provider)+" "+esc(node.cheapest.name); if(node.tradeoff) return "primerjaj: najnizja cena/kwh ali brez mesecne takse"; return ""; }
+  function renderNeeds(offer,profile){ VERTICAL=offer.vertical||VERTICAL; $("needs-vertical").textContent=V_LABEL[offer.vertical]||offer.vertical; const c=$("needs-card");
+    let recHtml=""; const rec=offer.recommendation;
+    if(rec&&typeof rec==="object"){ Object.values(rec).forEach(node=>{ if(node&&typeof node==="object"){ const title=recTitle(node); if(title) recHtml+=`<div class="rec"><div class="t">pravo zate</div><div class="n">${title}</div><div class="w">${esc(node.why||"")}</div></div>`; } }); }
+    const drops=(offer.dontPayFor||[]).map((d,i)=>`<div class="drop-item" id="drop${i}"><div class="di-name">${esc(d.name)}${d.why?`<small>${esc(d.why)}</small>`:""}</div><div class="di-price">−${fmt(d.monthlyEur)}</div></div>`).join("");
+    const sav=offer.monthlySavingsEur; let savHtml=""; if(sav!=null&&sav>0) savHtml=`<div class="saved">prihranek <b>${fmt(sav)}/mes</b><span class="sub">${fmt(offer.annualSavingsEur)} na leto</span></div>`;
+    const advisory=(offer.notes||[]).length?`<div class="advisory">${esc(offer.notes[0])}</div>`:""; const heading=(offer.vertical==="water")?"tvoj racun je korekten":"kaj res rabis"; const summary=(profile&&profile.summary)||"";
+    c.innerHTML=`<h2>${esc(heading)}</h2>${summary?`<p class="summary">${esc(summary)}</p>`:""}${recHtml}${drops?`<div class="drop"><div class="t">za to placujes, pa ne rabis</div>${drops}</div>`:""}${(sav!=null&&sav>0)?"":advisory}${savHtml}${(sav!=null&&sav>0&&advisory)?`<p class="keepnote">${esc(offer.notes[0])}</p>`:""}<button class="cta" onclick="App.book(this)">uredi prehod — ti potrdis vsak korak</button>`;
+    renderHesit(offer); show("needs");
+    (offer.dontPayFor||[]).forEach((_,i)=> setTimeout(()=>{ const el=$("drop"+i); if(el) el.classList.add("struck"); },500+i*650)); }
+  const HESIT=[["rabim se premislit","seveda — brez pritiska. tocno ti smo pokazali, kaj placujes zaman; watchdog te opozori, ko bos pripravljen. nic se ne zgodi brez tvoje potrditve."],
+    ["v cem je kavelj?","ni ga. preverjanje je zastonj; zasluzimo sele, ko ti dejansko prihranimo (ponudnik nam placa priporocilo). ce ne najdemo bolje, te nic ne stane."],
+    ["moram vprasat partnerja","logicno — pokazi mu tole stran z rezultatom. nic ni nujnega; ponudbo pripravimo, ko se oba strinjata."],
+    ["a moram menjat takoj?","ne. lahko samo pogledas. povemo ti, kdaj ti potece vezava in ali se prehod splaca ze zdaj ali ob izteku."]];
+  function renderHesit(offer){ const el=$("hesit"); const ans=$("hesit-answer"); ans.classList.remove("show"); ans.textContent="";
+    if(offer.vertical==="water"){ el.innerHTML=""; return; } el.innerHTML=HESIT.map((h,i)=>`<span class="chip" onclick="App.hesit(${i})">${esc(h[0])}</span>`).join(""); }
+  function hesit(i){ const ans=$("hesit-answer"); ans.textContent=HESIT[i][1]; ans.classList.add("show"); ans.scrollIntoView({block:"nearest"}); }
+  async function book(btn){ if(BOOKING) return; BOOKING=true; if(btn){ btn.disabled=true; btn.style.opacity=.6; btn.textContent="pripravljam…"; }
+    await post("/api/lead?vertical="+encodeURIComponent(VERTICAL),{history:HISTORY,state:stateForEngine(STATE)}); BOOKING=false; show("done"); }
+  const FALLBACK_STATE={persona:{name:"Marko Novak",city:"Ljubljana"},household:{carFinancing:"owned_outright",homeOwnership:"tenant"},
+    currentSubscriptions:[{vertical:"telco",provider:"A1",planName:"A1 Xplore TV maxi+ (fiber internet + TV)",monthlyEur:55.99,switchable:true},
+      {vertical:"telco",provider:"A1",planName:"A1 Arena Sport Premium (TV channel add-on)",monthlyEur:4.99,switchable:true},
+      {vertical:"telco",provider:"A1",planName:"A1 MaksiMIO (mobile, 500 GB)",monthlyEur:27.99,switchable:true},
+      {vertical:"energy",provider:"Petrol",planName:"Petrol Redni cenik",monthlyEur:41.9,switchable:true},
+      {vertical:"insurance",provider:"Vzajemna",planName:"Dopolnilno zdravstveno zavarovanje",monthlyEur:35.0,switchable:true},
+      {vertical:"insurance",provider:"Triglav",planName:"Avtomobilsko AO",monthlyEur:25.0,switchable:true},
+      {vertical:"water",provider:"JP VOKA Snaga",planName:"Voda + kanalscina (Ljubljana)",monthlyEur:22.0,switchable:false}],
+    totals:{monthlyEur:212.87,byVertical:{telco:88.97,energy:41.9,insurance:60.0,water:22.0}}};
+  const FALLBACK_OFFER={telco:{vertical:"telco",currentMonthlyEur:88.97,recommendedMonthlyEur:63.98,monthlySavingsEur:24.99,annualSavingsEur:299.88,
+      recommendation:{mobile:{toName:"zeleni bob",toOperator:"BOB",toMonthlyEur:7.99,why:"placujes 27,99 eur za 500 GB, porabis pa okoli 15 GB; zeleni bob ti da dovolj za 7,99 eur"}},
+      dontPayFor:[{name:"A1 Arena Sport Premium",monthlyEur:4.99,why:"placujes 4,99 eur na mesec, sporta pa ne gledas — cista izguba"}],notes:[]},
+    insurance:{vertical:"insurance",currentMonthlyEur:60.0,monthlySavingsEur:35.0,annualSavingsEur:420.0,recommendation:null,
+      dontPayFor:[{name:"Dopolnilno zdravstveno zavarovanje",monthlyEur:35.0,why:"od 2024 ga je nadomestil obvezni OZP, ki ga ze placujes — najbrz dvojno placilo"}],notes:[]}};
+  function open(){ $("appView").classList.add("open"); document.body.style.overflow="hidden"; show("dash"); if(!booted){ booted=true; boot(); } }
+  function close(){ $("appView").classList.remove("open"); document.body.style.overflow=""; }
+  function wire(){
+    document.querySelectorAll(".open-app").forEach(a=>a.addEventListener("click",e=>{ e.preventDefault(); open(); }));
+    $("appClose") && $("appClose").addEventListener("click",close);
+    document.querySelectorAll("#appView [data-app-back]").forEach(b=>b.addEventListener("click",()=>show(b.getAttribute("data-app-back"))));
+    const bp=document.querySelector("#appView [data-app-build]"); bp && bp.addEventListener("click",buildProfile);
+    const sd=document.querySelector("#appView [data-app-send]"); sd && sd.addEventListener("click",send);
+    $("input") && $("input").addEventListener("keydown",e=>{ if(e.key==="Enter") send(); });
+    addEventListener("keydown",e=>{ if(e.key==="Escape" && $("appView").classList.contains("open")) close(); });
+  }
+  wire();
+  return { open, close, openChat, ask, buildProfile, send, book, hesit };
+})();
 </script>
 </body>
 </html>
