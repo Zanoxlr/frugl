@@ -33,6 +33,15 @@ def _demo_user():
         return json.load(fh)
 
 
+def _demo_needs():
+    with open(os.path.join(DATA_DIR, "demo_needs.json"), encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _demo_current(vertical):
+    return [s for s in _demo_user()["currentSubscriptions"] if s.get("vertical") == vertical]
+
+
 def _run(vertical, current, needs, explain):
     result = compare_module.compare(vertical, current, needs, _CATALOG)
     return reasons_module.explain(result) if explain else result
@@ -41,6 +50,57 @@ def _run(vertical, current, needs, explain):
 @app.get("/api/demo-user")
 def get_demo_user():
     return _demo_user()
+
+
+@app.get("/api/state")
+def get_state():
+    """Dashboard state: the persona, their current lines, and totals. Trimmed of the
+    demo-rigging notes/flags so the reveal comes from /api/profile, not the dashboard.
+    `switchable` is false for water (info-only municipal monopoly)."""
+    demo = _demo_user()
+    persona = demo.get("persona", {})
+    lines = [
+        {
+            "vertical": s.get("vertical"),
+            "provider": s.get("provider"),
+            "planName": s.get("planName"),
+            "monthlyEur": s.get("monthlyEur"),
+            "switchable": s.get("vertical") != "water",
+        }
+        for s in demo.get("currentSubscriptions", [])
+    ]
+    return {
+        "persona": {
+            "name": persona.get("name"),
+            "city": persona.get("city"),
+            "household": persona.get("household"),
+        },
+        "currentSubscriptions": lines,
+        "totals": demo.get("totals", {}),
+    }
+
+
+@app.post("/api/profile")
+def build_profile(
+    vertical: str = Query(None, description="required when not in the body"),
+    payload: dict = Body(default={}),
+    explain: bool = Query(True),
+):
+    """Extraction -> right-fit offer. Extraction from `history` is not wired yet, so
+    the profile falls back to the canned demo profile for the vertical; `current`
+    falls back to the persona's lines. Both become real once /api/chat + extraction
+    land, with no contract change: response stays { profile, offer }."""
+    vertical = vertical or payload.get("vertical")
+    if vertical not in VERTICALS:
+        raise HTTPException(status_code=404, detail="unknown vertical: %s" % vertical)
+
+    profile = payload.get("profile") or _demo_needs().get(vertical, {})
+    current = payload.get("current")
+    if current is None:
+        current = _demo_current(vertical)
+
+    offer = _run(vertical, current, profile, explain)
+    return {"profile": profile, "offer": offer}
 
 
 @app.post("/api/compare/{vertical}")

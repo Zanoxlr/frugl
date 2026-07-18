@@ -1,0 +1,48 @@
+{
+  "telco": {
+    "vertical": "telco",
+    "summary": "dvoclansko gospodinjstvo, gleda serije prek streaminga, sporta ne gleda, mobilno rabi zmerno",
+    "dontNeed": [
+      "Arena Sport Premium (sporta ne gleda)",
+      "500 GB mobilnih podatkov (porabi okoli 15 GB)"
+    ],
+    "telco": {
+      "watchesSport": false,
+      "wantsSpecialChannels": null,
+      "phoneCount": 1,
+      "dataNeedGB": "15",
+      "worksFromHome": false,
+      "wantsFixedBroadband": true,
+      "budgetPriority": true
+    }
+  },
+  "energy": {
+    "vertical": "energy",
+    "summary": "stanovanje v Ljubljani, ne ve svoje letne porabe kwh, zeli cim nizjo ceno brez menjave storitve",
+    "dontNeed": [
+      "fiksni tarifni pribitek, ce ga ne rabi"
+    ],
+    "energy": {
+      "dualFuel": false,
+      "annualKwh": null,
+      "greenPreference": null,
+      "wantsFixedPrice": null
+    }
+  },
+  "insurance": {
+    "vertical": "insurance",
+    "summary": "ima avto z obveznim AO, ni lastnik nepremicnine, se vedno placuje staro dopolnilno zdravstveno",
+    "dontNeed": [
+      "dopolnilno zdravstveno zavarovanje (od 2024 ga je zamenjal obvezni OZP)"
+    ],
+    "insurance": {
+      "hasCar": true,
+      "carFinanced": false,
+      "ownsHome": false,
+      "isTenant": true,
+      "needsHealthRider": false,
+      "paysLegacyDopolnilno": true,
+      "coveragePriority": false
+    }
+  }
+}

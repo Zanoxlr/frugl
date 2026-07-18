@@ -229,6 +229,37 @@ def test_http_unknown_vertical_404(client):
     assert client.post("/api/compare/water", json={}).status_code == 404
 
 
+def test_http_state_shape_and_no_spoilers(client):
+    s = client.get("/api/state").json()
+    assert s["persona"]["name"] == "Marko Novak"
+    assert s["totals"]["monthlyEur"] == 212.87
+    water = [l for l in s["currentSubscriptions"] if l["vertical"] == "water"]
+    assert water and water[0]["switchable"] is False
+    assert all(l["switchable"] for l in s["currentSubscriptions"] if l["vertical"] != "water")
+    # dashboard must not leak the demo-rigging notes/flags
+    dump = json.dumps(s)
+    assert "GOTCHA" not in dump and "flags" not in dump
+
+
+def test_http_profile_defaults_to_canned(client):
+    # No body: falls back to the canned Marko profile + persona lines.
+    r = client.post("/api/profile?vertical=telco").json()
+    assert r["profile"]["vertical"] == "telco"
+    assert r["offer"]["monthlySavingsEur"] == 24.99
+    assert r["offer"]["recommendation"]["mobile"]["why"]  # B2 by default
+
+
+def test_http_profile_accepts_explicit_profile(client):
+    body = {"vertical": "telco", "profile": needs("telco"), "current": None}
+    r = client.post("/api/profile?explain=false", json=body).json()
+    assert r["offer"]["monthlySavingsEur"] == 24.99
+    assert '"why"' not in json.dumps(r["offer"])  # B1 bare
+
+
+def test_http_profile_unknown_vertical_404(client):
+    assert client.post("/api/profile?vertical=water").status_code == 404
+
+
 def test_http_compare_all_skips_water(client, demo):
     body = {
         "current": demo["currentSubscriptions"],
