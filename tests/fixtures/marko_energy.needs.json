@@ -1,0 +1,13 @@
+{
+  "vertical": "energy",
+  "summary": "stanovanje v Ljubljani, ne ve svoje letne porabe kwh, zeli cim nizjo ceno brez menjave storitve",
+  "dontNeed": [
+    "fiksni tarifni pribitek, ce ga ne rabi"
+  ],
+  "energy": {
+    "dualFuel": false,
+    "annualKwh": null,
+    "greenPreference": null,
+    "wantsFixedPrice": null
+  }
+}

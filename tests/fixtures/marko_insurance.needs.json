@@ -1,0 +1,16 @@
+{
+  "vertical": "insurance",
+  "summary": "ima avto z obveznim AO, ni lastnik nepremicnine, se vedno placuje staro dopolnilno zdravstveno",
+  "dontNeed": [
+    "dopolnilno zdravstveno zavarovanje (od 2024 ga je zamenjal obvezni OZP)"
+  ],
+  "insurance": {
+    "hasCar": true,
+    "carFinanced": false,
+    "ownsHome": false,
+    "isTenant": true,
+    "needsHealthRider": false,
+    "paysLegacyDopolnilno": true,
+    "coveragePriority": false
+  }
+}

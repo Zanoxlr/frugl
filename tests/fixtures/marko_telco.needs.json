@@ -1,0 +1,17 @@
+{
+  "vertical": "telco",
+  "summary": "dvoclansko gospodinjstvo, gleda serije prek streaminga, sporta ne gleda, mobilno rabi zmerno",
+  "dontNeed": [
+    "Arena Sport Premium (sporta ne gleda)",
+    "500 GB mobilnih podatkov (porabi okoli 15 GB)"
+  ],
+  "telco": {
+    "watchesSport": false,
+    "wantsSpecialChannels": null,
+    "phoneCount": 1,
+    "dataNeedGB": "15",
+    "worksFromHome": false,
+    "wantsFixedBroadband": true,
+    "budgetPriority": true
+  }
+}

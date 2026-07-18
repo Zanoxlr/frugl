@@ -1,53 +1,58 @@
 # Offer Matching — Rule-Based (no second LLM)
 
 Input: a `NeedsProfile` (needs_profile.schema.json) + the `{{VERTICAL_DATA}}` slice + `{{USER_CURRENT_SUBS}}`.
-Output (consumed by the advisor LLM, or by app code): a `recommendation` (a real item from DATA) + a concrete `dontPayFor[]` list. Every recommendation and every dontPayFor entry MUST reference a real field/id in DATA. If nothing in DATA fits, output `recommendation: null` + reason. Never invent an item.
+Output (consumed by the advisor LLM, or by app code): a `recommendation` (a real item from DATA, or null) + a concrete `dontPayFor[]` list. Every entry MUST reference a real field/id in DATA. If nothing in DATA fits, output `recommendation: null` + reason. Never invent an item.
 
-These are deterministic rules. Run them in order, per vertical.
+These are the same deterministic rules the code engine (`backend/compare.py`) applies. Field names below match the REAL data files, not an idealized shape.
 
 ## Shared rules (all verticals)
-- R0. Only recommend items present in DATA. If a needed capability is not in DATA, return null + "tega ni v podatkih."
-- R1. Never recommend a higher tier than the lowest tier that satisfies the stated need.
-- R2. If the user's CURRENT sub already satisfies the profile and costs <= the best matching offer, recommend "stay" (no switch). Say it plainly.
-- R3. Any DATA item with `isAddon: true` and `addonPrice > 0` that the profile does not require -> goes to `dontPayFor` with its name + addonPrice.
+- R0. Only recommend items present in DATA. If a needed capability is missing, return null + "tega ni v podatkih."
+- R1. Never recommend a higher tier than the lowest one that satisfies the stated need.
+- R2. `currentMonthlyEur` for each vertical is ALWAYS the pass-through sum of the user's current line prices. Never recompute it from unit prices (energy's all-in bill will not reconcile from ex-VAT unit rates).
+- R3. `annualSavingsEur` is null whenever `monthlySavingsEur` is null. Never emit 0 to mean "unknown".
 
 ## Telco
-Fields: operators[].tvSchemes[].channels[] (each channel has name, isAddon, addonPrice), packages[] (tier, monthlyPrice, includedDataGB, ...), mobilePlans[] (dataGB, price), addOns[].
+Mobile plans live in TWO files: `telco/mobile_packages.json` (premium operators: Telemach id 1, Telekom id 2, A1 id 3, T2 id 4) and `telco/telco_mvno.json` (MVNOs HOT + BOB, the fresh scrape with full-speed detail). The engine uses the MVNO file for HOT/BOB and drops the stale HOT/BOB rows in `mobile_packages.json` to avoid duplicates.
 
-1. Sport: if `telco.watchesSport == false` (or null) -> every channel/scheme with `isAddon:true` that is sport (e.g. sport pack, "Sport TV", "Arena") and `addonPrice > 0` goes to `dontPayFor` as "sportni dodatek {name} {addonPrice}/mes - ne gledas sporta."
-2. Package tier: pick the LOWEST `packages[]` tier whose `includedDataGB` / speed meets `dataNeedGB`. Do not upsell "Premium" if "Basic"/"Standard" covers it.
-3. Multi-phone: if `telco.phoneCount >= 2` and DATA has a family/bundle package -> prefer it over N single mobilePlans ONLY if its total price (from DATA) is lower; otherwise recommend N × cheapest matching single plan. Never assume a bundle is cheaper without the DATA number.
-4. Data need: match `mobilePlans[]` to `dataNeedGB`. If user is 'low' data, flag any current "unlimited"/high-GB plan the user pays for as `dontPayFor` ("placujes neomejene podatke, porabis malo").
-5. Work from home: only if `worksFromHome == true` recommend fixed broadband / higher speed. If false, drop it from the recommendation.
-6. Paid channels the user does not name in `wantsSpecialChannels` but pays for now -> `dontPayFor` with name + addonPrice.
+- Mobile plan fields: `mobile_packages.json` → `group` (name), `priceEur`, `dataGB`, `unlimited` (int 0/1 → bool), `operator`. `telco_mvno.json` → `providers[].plans[]` with `name`, `monthlyEur`, `dataGB`, `unlimited`.
+- **fullSpeedGB** (the GB served at full speed before throttle) is what the need is matched against, NOT nominal "unlimited":
+  - premium/`mobile_packages`: `fullSpeedGB = dataGB` when set, else `inf` for uncapped unlimited plans. (Do NOT parse the HTML description for GB — the number there is EU-roaming GB.)
+  - MVNO/`telco_mvno`: `fullSpeedGB = dataGB` when set; else parse the "(N GB at full ...)" phrase in `keyFeatures`; else `inf`.
+- TV add-ons: `telco/tv_schemes.json` rows with `isAddon: 1` and a non-null `addonPriceEur` (e.g. A1 "Arena Sport Premium" id 24, `addonPriceEur` 4.99). `telco/addon_tier_free_paid.json` `paidPriceEur: 0.00` means "bundled-free in that tier" — it is NOT the standalone price; ignore it for pricing.
+- Fixed internet+TV packages: `telco/retail_prices.json` `operators[].packages[]` (`name`, `monthlyEur`).
+
+Rules:
+1. **Unused paid TV add-on.** If `telco.watchesSport == false` (or null) and a current line matches a sport TV add-on (`Arena`, `Sport`) with price > 0 → `dontPayFor` with its name + monthlyEur. Rule code `TELCO_UNUSED_SPORT_ADDON`.
+2. **Right-size mobile.** Threshold = `dataThreshold(telco.dataNeedGB)` (`low`→5, `mid`→20, `high`→100, `unlimited`→inf, or a number). Among ALL operators, pick the cheapest plan with `fullSpeedGB >= threshold` and `priceEur > 0`; tie-break `priceEur` then operator name. Recommend the swap ONLY if it is cheaper than the current mobile line. Rule code `TELCO_MOBILE_RIGHTSIZE`.
+3. **Keep fixed broadband** as-is unless a cheaper package meets the same need; the persona keeps it.
+4. Never assume a bundle is cheaper without a DATA price.
 
 ## Energy (electricity + gas)
-Fields: suppliers[].tariffs[] (pricePerKwh, fixedFee, isGreen, isFixedPrice, fuel: electricity|gas).
+Fields per `data/energy.json` `providers[].plans[]`: `energyEurPerKwh` (electricity → dict `{VT, MT, ET}`; gas → a single number), `energyEurPerM3` (null in this dataset), `fixedMonthlyEur` (can be 0, e.g. Energetika Ljubljana, or null), `greenOrFixed` (string; "fixed" substring ⇒ fixed-price tariff), `utility` (`electricity`|`gas`). Regulated network charges + levies + VAT (`regulatedComponents`) are supplier-independent and are the same whichever supplier wins, so they are NOT part of the comparison.
 
-1. NEVER output a fabricated monthly total. If `energy.annualKwh` is null -> recommendation compares on `pricePerKwh` + `fixedFee` only, and the advisor explains: strosek = poraba × cena/kWh + fiksna taksa.
-2. If `annualKwh` known -> compute annual = annualKwh × pricePerKwh + 12 × fixedFee for each candidate tariff and rank; show the input numbers used (grounded, since inputs come from DATA + user).
-3. Dual fuel: if `dualFuel == true`, prefer a supplier offering both electricity + gas in DATA (bundle) only if combined price beats best separate pair from DATA; else recommend cheapest per fuel separately.
-4. Green: if `greenPreference == true` filter to `isGreen: true` tariffs, then apply price ranking. If false, do NOT restrict to green (green often costs more) and if the current plan is a premium green one they did not ask for -> `dontPayFor` ("placujes zeleni tarif, nisi rekel da ti je pomembno").
-5. Fixed vs market: if `wantsFixedPrice == true` prefer `isFixedPrice:true`; if false, do not push a fixed tariff (usually pricier as a hedge they did not ask for).
-6. If current supplier's `pricePerKwh` + `fixedFee` is within noise of the best DATA offer -> recommend stay (switching energy for cents is not worth it).
+- Unit rate for ranking electricity = `ET` if present, else `VT` (state the single-tariff assumption). Gas unit rate = the number directly.
+1. **No usage → trade-off, no savings.** If `energy.annualKwh` is null, do NOT crown one winner (cheapest unit price is wrong when fixed fees differ — a zero-fixed-fee supplier beats a lower-unit one below a break-even usage). Return a trade-off: the lowest-unit-price plan AND the lowest-fixed-fee plan, `monthlySavingsEur: null`, `annualSavingsEur: null`, plus an assumption note. Rule code `ENERGY_NO_USAGE_TRADEOFF`.
+2. **Usage known →** rank candidates by `annualKwh × unitRate + 12 × fixedFee` and name the cheapest; still report savings as null here because the current line is an all-in bill that cannot be decomposed into an energy-only figure from this dataset.
+3. **Dual fuel** only if `energy.dualFuel == true`. Green filtering is dropped (no `isGreen` flag exists in the data). Null-guard every `min()` (some `fixedMonthlyEur` are null).
 
 ## Insurance
-Fields: insurers[].products[] (name, premium, riders[] where each rider has name, price, and is the upsell), plus the 2024 dopolnilno->OZP change.
+Fields per `data/insurance.json` `providers[].products[]`: `name`, `type` (`car`|`home`|`health`|`life`), `typicalMonthlyEurRange` / `typicalAnnualEurRange` (RANGES only — there are NO exact premiums; add-on `extraEur` is null throughout). `publicCoverBaseline.ozp.currentMonthlyEur` = 39.36 (state OZP since Mar 2026) is the narrative baseline.
 
-1. GAP: if `insurance.carFinanced == false` (or no car) and DATA has a GAP rider on the auto product -> `dontPayFor`: "GAP kritje {price} - avto ni na leasing, GAP nima smisla."
-2. Legacy health: if `paysLegacyDopolnilno == true` -> `dontPayFor`: "dopolnilno zdravstveno - od 2024 ga je zamenjal obvezni OZP, ce ga placujes se loceno je odvec." (High-priority flag.)
-3. No car: if `hasCar == false`, any auto product / auto riders in current subs -> `dontPayFor`.
-4. Home: recommend home/property product ONLY if `ownsHome == true`. If `isTenant == true`, do NOT recommend building insurance; at most contents ("zavarovanje opreme"), and flag any building/structure cover in current subs as `dontPayFor` ("kot najemnik ne zavarujes zgradbe, to je lastnikovo").
-5. Riders in general: every `riders[]` item in the recommended product with `price > 0` that the profile does not require -> `dontPayFor` with name + price. Riders are the upsell; default is OFF unless the need is explicit.
-6. Duplicate coverage: if the same risk is covered by two products/riders in current subs -> `dontPayFor` the more expensive duplicate.
-7. Premium tier: if `coveragePriority == false`, pick the base product that meets legal/real need, not the top package.
+- Because no exact premium exists, `recommendation.monthlyEur` is null and the value is entirely in `dontPayFor`. A `dontPayFor` entry's amount falls back to the CURRENT line's own `monthlyEur` (since `extraEur` is null).
+1. **Legacy dopolnilno (top reveal).** If `insurance.paysLegacyDopolnilno == true` and a current line is a "dopolnilno zdravstveno" product → `dontPayFor` with its monthlyEur. Rule code `INS_LEGACY_DOPOLNILNO`. Why: since 2024 the compulsory OZP replaced it; paying a private line on top is likely double-paying.
+2. **GAP / kasko add-ons** only relevant if `carFinanced == true`; drop otherwise.
+3. **Home/building** only if `ownsHome == true`; a tenant (`isTenant == true`) does not insure the structure.
+4. Mandatory car AO (`hasCar == true`) is kept — it is a "leave it alone" line, not a saving.
 
-## Output shape (for the advisor to speak from)
+## Output shape (per vertical)
 ```
-recommendation: <exact DATA item name/id or "stay" or null>
-why: <one short SI line, no sumniki>
-dontPayFor:
-  - <field-tied concrete item + price>
-  - ...
+vertical: telco|energy|insurance
+currentMonthlyEur: <pass-through sum, number>
+recommendation: <object or null>
+recommendedMonthlyEur: <number or null>
+dontPayFor: [ { name, monthlyEur, ruleCode, why? } ]
+monthlySavingsEur: <number or null>
+annualSavingsEur: <number or null>   # null iff monthlySavingsEur is null
+notes: [ <assumption strings, no sumniki> ]
 ```
-Advisor turns this into short human SI text. If dontPayFor is long, lead with the biggest euro saver first.
+`why` strings are added only in B2 (`?explain=true`), by `backend/reasons.py`, keyed to `ruleCode`. B1 (`?explain=false`) returns identical numbers with no `why`. All Slovenian text is written without sumniki (c/s/z, never č/š/ž).
