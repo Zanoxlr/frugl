@@ -155,9 +155,14 @@
    POST /api/profile?vertical=  -> { profile, offer }            (the needs card)
    /api/chat + /api/lead not wired yet -> handled client-side (stub).
    ========================================================================== */
-// Mount-aware API base: "" at the site root (local dev), "/frugl" when served under a
-// Tailscale funnel subpath. Derived from the page's own path so nothing is hardcoded.
-const API = location.pathname.replace(/\/[^\/]*$/, "");
+// Mount-aware API base: "" at the site root (local dev), "/frugl" under a Tailscale
+// funnel subpath. Handles trailing slash, no slash, and /index.html — no hardcoding.
+const API = (function(){
+  const p = location.pathname;
+  if(p.endsWith("/")) return p.slice(0, -1);          // "/frugl/" -> "/frugl"; "/" -> ""
+  if(/\.[^\/]+$/.test(p)) return p.replace(/\/[^\/]*$/, "");  // "/frugl/index.html" -> "/frugl"
+  return p;                                            // "/frugl" -> "/frugl"
+})();
 let STATE = null, FINDINGS = null, VERTICAL = null, HISTORY = [], TURNS = 0, OFFLINE = false, BOOKING = false;
 
 async function getJSON(path){ try{ const r=await fetch(API+path); if(r.ok) return await r.json(); }catch(e){} return null; }
